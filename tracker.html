@@ -1,242 +1,336 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Master Tracker — BIVVO GTM</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css">
 <style>
-.filters{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.filters label{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
-.filters select,.filters input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px}
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:18px;text-align:center;cursor:pointer;transition:all .2s}
+.stat-card:hover{border-color:var(--coral);transform:translateY(-2px)}
+.stat-card.active{border-color:var(--coral);box-shadow:0 0 20px rgba(255,107,107,.12)}
+.stat-card .num{font-family:'Space Mono',monospace;font-size:32px;font-weight:700}
+.stat-card .num.green{color:var(--green)}.stat-card .num.blue{color:#3498db}.stat-card .num.orange{color:var(--orange)}.stat-card .num.white{color:var(--white)}
+.stat-card .label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* PROGRESS */
+.progress{height:28px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;display:flex;position:relative}
+.progress .seg{height:100%;transition:width .4s;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white);font-family:'Space Mono',monospace}
+.progress .seg.done{background:var(--green)}.progress .seg.open{background:var(--blue)}.progress .seg.wait{background:var(--orange)}
+
+/* PHASE BARS */
+.phase-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:20px}
+.phase-bar{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px}
+.phase-bar .name{font-size:11px;color:var(--dim);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phase-bar .bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;display:flex}
+.phase-bar .bar .s{height:100%;transition:width .3s}
+.phase-bar .bar .s.d{background:var(--green)}.phase-bar .bar .s.w{background:var(--orange)}.phase-bar .bar .s.o{background:var(--blue)}
+.phase-bar .counts{display:flex;gap:8px;margin-top:6px;font-size:10px;font-family:'Space Mono',monospace}
+.phase-bar .counts span{color:var(--dim)}
+
+/* FILTERS */
+.filters{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:16px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filters label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.filters select,.filters input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;min-width:100px}
 .filters select:focus,.filters input:focus{outline:none;border-color:var(--coral)}
-.progress-bar{background:var(--bg);height:24px;border-radius:12px;overflow:hidden;margin-bottom:20px;position:relative}
-.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:12px;transition:width .3s}
-.progress-bar .label{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:12px;color:var(--white);font-weight:700}
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}
-.stats-row .s{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
-.stats-row .s .n{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--coral)}
-.stats-row .s .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
-.task-table{width:100%;border-collapse:collapse;font-size:12px}
-.task-table th{background:var(--navy);color:var(--white);padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;user-select:none;position:sticky;top:60px;z-index:10}
-.task-table th:hover{background:var(--blue)}
-.task-table th .arrow{margin-left:4px;color:var(--coral)}
-.task-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
-.task-table tr:hover td{background:rgba(45,90,160,.06)}
-.task-table td:nth-child(5){color:var(--white);max-width:400px}
-.task-table .phase-row td{background:var(--navy);color:var(--white);font-weight:700;font-size:13px;padding:10px;border:none}
-.task-table input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:var(--green)}
-.cat-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.cat-Legal{background:rgba(155,89,182,.2);color:#bb6bd9}.cat-Finance{background:rgba(52,152,219,.2);color:#3498db}
-.cat-Amazon{background:rgba(230,126,34,.2);color:#e67e22}.cat-Product{background:rgba(46,204,113,.2);color:#27ae60}
-.cat-Brand{background:rgba(255,107,107,.2);color:#ff6b6b}.cat-Tech{background:rgba(52,73,94,.2);color:#95a5a6}
-.cat-DTC{background:rgba(26,188,156,.2);color:#1abc9c}.cat-Content{background:rgba(241,196,15,.2);color:#f1c40f}
-.cat-QA{background:rgba(149,165,166,.2);color:#95a5a6}.cat-Email{background:rgba(155,89,182,.2);color:#bb6bd9}
-.cat-PPC{background:rgba(231,76,60,.2);color:#e74c3c}.cat-Social{background:rgba(52,152,219,.2);color:#3498db}
-.cat-Influencer{background:rgba(230,126,34,.2);color:#e67e22}.cat-Logistics{background:rgba(46,204,113,.2);color:#27ae60}
-.cat-Community{background:rgba(26,188,156,.2);color:#1abc9c}.cat-Gate{background:rgba(255,107,107,.2);color:#ff6b6b}
-.cat-Monitor{background:rgba(149,165,166,.2);color:#bdc3c7}.cat-Reviews{background:rgba(241,196,15,.2);color:#f1c40f}
-.cat-Optimize{background:rgba(52,73,94,.2);color:#7f8c8d}.cat-Inventory{background:rgba(46,204,113,.2);color:#2ecc71}
-.cat-Expo{background:rgba(230,126,34,.2);color:#e67e22}.cat-Retention{background:rgba(155,89,182,.2);color:#bb6bd9}
-.cat-Strategy{background:rgba(52,152,219,.2);color:#3498db}.cat-Analytics{background:rgba(241,196,15,.2);color:#f1c40f}
-.cat-SEO{background:rgba(46,204,113,.2);color:#27ae60}.cat-Design{background:rgba(255,107,107,.2);color:#ff6b6b}
-.cat-Compliance{background:rgba(192,57,43,.2);color:#e74c3c}.cat-Risk{background:rgba(149,165,166,.2);color:#95a5a6}
-.cat-Support{background:rgba(52,152,219,.2);color:#3498db}.cat-Launch{background:rgba(39,174,96,.2);color:#27ae60}
+
+/* TABLE */
+.tt{width:100%;border-collapse:collapse;font-size:12px}
+.tt th{background:var(--navy);color:var(--white);padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;user-select:none;position:sticky;top:56px;z-index:10}
+.tt th:hover{background:var(--blue)}
+.tt td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
+.tt tr:hover td{background:rgba(45,90,160,.05)}
+.tt .phase-hdr td{background:var(--navy);color:var(--white);font-weight:700;font-size:13px;padding:10px;border:none}
+
+/* STATUS BADGES */
+.status-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;letter-spacing:.3px}
+.status-btn.s-done{background:rgba(39,174,96,.18);color:#2ecc71}.status-btn.s-done:hover{background:rgba(39,174,96,.3)}
+.status-btn.s-open{background:rgba(52,152,219,.18);color:#3498db}.status-btn.s-open:hover{background:rgba(52,152,219,.3)}
+.status-btn.s-wait{background:rgba(230,126,34,.18);color:#f39c12}.status-btn.s-wait:hover{background:rgba(230,126,34,.3)}
+.status-btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-btn.s-done .dot{background:#2ecc71}.status-btn.s-open .dot{background:#3498db}.status-btn.s-wait .dot{background:#f39c12}
+
+/* CAT BADGE */
+.cat-b{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:rgba(45,90,160,.15);color:var(--blue)}
 </style></head><body>
-<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="tasks.html" class="nl">Tasks</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a>
-<a href="tracker.html" class="nl">Tracker</a>
-<a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<nav><div class="wrap">
+<span class="logo">BIVVO</span>
+<a href="index.html" class="nl">Dashboard</a>
+<a href="executive-summary.html" class="nl">Summary</a>
+<a href="financials.html" class="nl">Financials</a>
+<a href="projections.html" class="nl">Projections</a>
+<a href="tracker.html" class="nl active">Tracker</a>
+<a href="gaps.html" class="nl">Gaps</a>
+<a href="day-by-day.html" class="nl">Day-by-Day</a>
+<a href="content.html" class="nl">Content</a>
+<a href="shopify.html" class="nl">Shopify</a>
+<a href="files.html" class="nl">Files</a>
+<a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a>
+</div></nav>
 <div class="wrap">
 <a href="index.html" class="back">← Dashboard</a>
-<div class="page-hero"><h1>📋 Interactive Master Tracker</h1><p>Filter, sort, and track all 116 tasks. Check tasks off as you complete them — progress persists in this session.</p></div>
+<div class="page-hero"><h1>📋 Interactive Master Tracker</h1>
+<p>116 tasks across 9 phases. Click any status badge to cycle: <span style="color:#2ecc71">● Done</span> → <span style="color:#3498db">● Open</span> → <span style="color:#f39c12">● Waiting on Founder</span>. Stats update live.</p></div>
 <section>
-<div class="progress-bar"><div class="fill" id="progFill" style="width:0%"></div><div class="label" id="progLabel">0 / 116</div></div>
-<div class="stats-row" id="statsRow"></div>
+
+<!-- STAT CARDS -->
+<div class="stat-row">
+<div class="stat-card" onclick="filterStatus('all')" id="sc-all"><div class="num white" id="sn-all">116</div><div class="label">Total Tasks</div></div>
+<div class="stat-card" onclick="filterStatus('done')" id="sc-done"><div class="num green" id="sn-done">0</div><div class="label">✅ Done</div></div>
+<div class="stat-card" onclick="filterStatus('open')" id="sc-open"><div class="num blue" id="sn-open">0</div><div class="label">📋 Open</div></div>
+<div class="stat-card" onclick="filterStatus('wait')" id="sc-wait"><div class="num orange" id="sn-wait">0</div><div class="label">⏳ Waiting on Founder</div></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress" id="progBar"></div>
+
+<!-- PHASE BARS -->
+<div class="phase-bars" id="phaseBars"></div>
+
+<!-- FILTERS -->
 <div class="filters">
 <div><label>Phase</label><br><select id="fPhase" onchange="render()"><option value="">All Phases</option></select></div>
-<div><label>Category</label><br><select id="fCat" onchange="render()"><option value="">All Categories</option></select></div>
-<div><label>Week</label><br><select id="fWeek" onchange="render()"><option value="">All Weeks</option></select></div>
-<div><label>Status</label><br><select id="fStatus" onchange="render()"><option value="">All</option><option value="done">✅ Done</option><option value="todo">☐ Todo</option></select></div>
-<div><label>Search</label><br><input type="text" id="fSearch" placeholder="Search tasks..." oninput="render()" style="width:200px"></div>
+<div><label>Status</label><br><select id="fStatus" onchange="render()"><option value="">All</option><option value="done">✅ Done</option><option value="open">📋 Open</option><option value="wait">⏳ Waiting on Founder</option></select></div>
+<div><label>Category</label><br><select id="fCat" onchange="render()"><option value="">All</option></select></div>
+<div><label>Search</label><br><input type="text" id="fSearch" placeholder="Type to filter..." oninput="render()" style="width:200px"></div>
+<div style="margin-left:auto"><button onclick="resetAll()" style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:7px 16px;color:var(--dim);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px">Reset All</button></div>
 </div>
+
+<!-- TABLE -->
 <div style="overflow-x:auto">
-<table class="task-table"><thead><tr>
-<th style="width:30px">✓</th><th style="width:35px" onclick="sortBy('num')"># <span class="arrow" id="sort-num">↕</span></th>
-<th onclick="sortBy('phase')">Phase <span class="arrow" id="sort-phase">↕</span></th>
-<th onclick="sortBy('week')">Week <span class="arrow" id="sort-week">↕</span></th>
-<th>Task</th><th onclick="sortBy('cat')">Category <span class="arrow" id="sort-cat">↕</span></th>
-<th>Project</th><th>Est. Time</th>
+<table class="tt"><thead><tr>
+<th style="width:70px">Status</th>
+<th style="width:35px">#</th>
+<th>Phase</th>
+<th>Week</th>
+<th>Task</th>
+<th>Category</th>
+<th>Ref</th>
+<th>Time</th>
 </tr></thead><tbody id="tbody"></tbody></table>
 </div>
 </section></div>
-<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<footer><div class="wrap">
+BIVVO — Pinless Race Bib Clips GTM · 79 Pages · 116 Tasks · April 2026<br>
+<a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a>
+</div></footer>
 <script>
-const T=[
-{n:1,ph:"Phase 1",wk:"W-16",task:"Form Wyoming LLC via registered agent",cat:"Legal",proj:"P0H",time:"1–2 hrs"},
-{n:2,ph:"Phase 1",wk:"W-16",task:"Open Payoneer account + identity verification",cat:"Finance",proj:"P0I",time:"30 min"},
-{n:3,ph:"Phase 1",wk:"W-16",task:"Register Amazon Professional Seller ($39.99/mo)",cat:"Amazon",proj:"P3A",time:"1 hr"},
-{n:4,ph:"Phase 1",wk:"W-16",task:"Complete W-8BEN tax interview in Seller Central",cat:"Amazon",proj:"P3A",time:"30 min"},
-{n:5,ph:"Phase 1",wk:"W-16",task:"Purchase GS1 UPC barcodes (10-pack, $250)",cat:"Product",proj:"P2F",time:"30 min"},
-{n:6,ph:"Phase 1",wk:"W-16",task:"Engage IP Accelerator attorney for trademark",cat:"Legal",proj:"P2A",time:"1–2 hrs"},
-{n:7,ph:"Phase 1",wk:"W-16",task:"Submit Brand Registry application via IP Accelerator",cat:"Amazon",proj:"P3A",time:"1 hr"},
-{n:8,ph:"Phase 1",wk:"W-16",task:"Register bivvo.com domain → point DNS to Shopify",cat:"Tech",proj:"P2A",time:"30 min"},
-{n:9,ph:"Phase 1",wk:"W-16",task:"Obtain product liability insurance ($500K–$1M)",cat:"Legal",proj:"P5C",time:"1 hr"},
-{n:10,ph:"Phase 2",wk:"W-14",task:"Finalize product specs with Chinese factory (P1E)",cat:"Product",proj:"P1E",time:"2–3 hrs"},
-{n:11,ph:"Phase 2",wk:"W-14",task:"Approve injection mold tooling ($2,500–$4,000)",cat:"Product",proj:"P1B",time:"1 hr"},
-{n:12,ph:"Phase 2",wk:"W-14",task:"Confirm production run: 5,000 units, 5 colors. Sign PO.",cat:"Product",proj:"P0G",time:"1 hr"},
-{n:13,ph:"Phase 2",wk:"W-13",task:"Finalize all brand assets: logo, colors, typography",cat:"Brand",proj:"P2B",time:"3–4 hrs"},
-{n:14,ph:"Phase 2",wk:"W-13",task:"Create packaging design files (RTE carton + insert card)",cat:"Brand",proj:"P2D",time:"3–4 hrs"},
-{n:15,ph:"Phase 2",wk:"W-13",task:"Send packaging design to factory for printing",cat:"Product",proj:"P2D",time:"30 min"},
-{n:16,ph:"Phase 2",wk:"W-12",task:"Begin Phase 1 product photography (DIY/Fiverr)",cat:"Content",proj:"P2E",time:"3–5 hrs"},
-{n:17,ph:"Phase 3",wk:"W-12",task:"Install Shopify Basic ($39/mo). Connect domain.",cat:"Tech",proj:"P3E",time:"2 hrs"},
-{n:18,ph:"Phase 3",wk:"W-12",task:"Customize Dawn theme: BIVVO colors, fonts, logo",cat:"DTC",proj:"P3E",time:"3–4 hrs"},
-{n:19,ph:"Phase 3",wk:"W-11",task:"Create all 11 Shopify pages",cat:"DTC",proj:"P3E",time:"5–8 hrs"},
-{n:20,ph:"Phase 3",wk:"W-11",task:"Install 9 essential Shopify apps",cat:"Tech",proj:"P3E",time:"2 hrs"},
-{n:21,ph:"Phase 3",wk:"W-11",task:"Configure Shopify Payments, PayPal, Shop Pay",cat:"DTC",proj:"P3E",time:"1 hr"},
-{n:22,ph:"Phase 3",wk:"W-10",task:"Write ALL Amazon listing copy: title, bullets, description",cat:"Content",proj:"P3B",time:"3–4 hrs"},
-{n:23,ph:"Phase 3",wk:"W-10",task:"Prepare backend search terms (≤249 bytes each)",cat:"Content",proj:"P3B",time:"2 hrs"},
-{n:24,ph:"Phase 3",wk:"W-10",task:"Validate backend byte counts",cat:"QA",proj:"P3B",time:"30 min"},
-{n:25,ph:"Phase 3",wk:"W-10",task:"Design A+ Content (5 modules) + Brand Story",cat:"Content",proj:"P3B",time:"4–6 hrs"},
-{n:26,ph:"Phase 3",wk:"W-10",task:"Film 15–30 second product demo video",cat:"Content",proj:"P2E",time:"1–2 hrs"},
-{n:27,ph:"Phase 3",wk:"W-10",task:"Order QIMA pre-shipment inspection ($250–$350)",cat:"QA",proj:"P3D",time:"30 min"},
-{n:28,ph:"Phase 3",wk:"W-10",task:"Configure Omnisend: Welcome + Abandoned Cart flows",cat:"Email",proj:"P3E",time:"3–4 hrs"},
-{n:29,ph:"Phase 3",wk:"W-10",task:"Build post-purchase email sequence (8 touchpoints)",cat:"Email",proj:"P4E",time:"2–3 hrs"},
-{n:30,ph:"Phase 3",wk:"W-10",task:"Build win-back email sequence (5 emails)",cat:"Email",proj:"P4E",time:"1–2 hrs"},
-{n:31,ph:"Phase 3",wk:"W-10",task:"Verify Omnisend sender domain (hello@bivvo.com)",cat:"Email",proj:"P3E",time:"30 min"},
-{n:32,ph:"Phase 4",wk:"W-8",task:"Approve pre-shipment inspection results",cat:"QA",proj:"P3D",time:"1 hr"},
-{n:33,ph:"Phase 4",wk:"W-8",task:"Arrange air freight: China → US prep center",cat:"Logistics",proj:"P3D",time:"1–2 hrs"},
-{n:34,ph:"Phase 4",wk:"W-8",task:"Upload flat file for parent-child ASIN structure",cat:"Amazon",proj:"P3B",time:"2–3 hrs"},
-{n:35,ph:"Phase 4",wk:"W-8",task:"Upload all 6 images + 1 video per child ASIN",cat:"Amazon",proj:"P3B",time:"2 hrs"},
-{n:36,ph:"Phase 4",wk:"W-8",task:"Submit A+ Content + Brand Story for approval",cat:"Amazon",proj:"P3B",time:"1 hr"},
-{n:37,ph:"Phase 4",wk:"W-7",task:"Build all 8 PPC campaigns in Seller Central (PAUSED)",cat:"PPC",proj:"P3C",time:"3–4 hrs"},
-{n:38,ph:"Phase 4",wk:"W-7",task:"Add negative keyword list (20+ terms) to all campaigns",cat:"PPC",proj:"P3C",time:"1 hr"},
-{n:39,ph:"Phase 4",wk:"W-7",task:"Generate Amazon Attribution links for external traffic",cat:"PPC",proj:"P3C",time:"30 min"},
-{n:40,ph:"Phase 4",wk:"W-7",task:"Create Instagram @bivvo.run Business account",cat:"Social",proj:"P4A",time:"1 hr"},
-{n:41,ph:"Phase 4",wk:"W-7",task:"Create TikTok @bivvo.run Business account",cat:"Social",proj:"P4A",time:"1 hr"},
-{n:42,ph:"Phase 4",wk:"W-7",task:"Publish 5–8 pre-launch posts on Instagram",cat:"Social",proj:"P4A",time:"2–3 hrs"},
-{n:43,ph:"Phase 4",wk:"W-7",task:"Create Strava Club ('BIVVO Runners Club')",cat:"Community",proj:"P4E",time:"30 min"},
-{n:44,ph:"Phase 4",wk:"W-7",task:"Configure Canva Pro brand kit",cat:"Design",proj:"P4A",time:"30 min"},
-{n:45,ph:"Phase 4",wk:"W-6",task:"Identify first 10–15 nano/micro influencer creators",cat:"Influencer",proj:"P4B",time:"2–3 hrs"},
-{n:46,ph:"Phase 4",wk:"W-6",task:"Send outreach DMs to creators. Ship product samples.",cat:"Influencer",proj:"P4B",time:"2 hrs"},
-{n:47,ph:"Phase 4",wk:"W-6",task:"Select prep center and confirm onboarding",cat:"Logistics",proj:"P3D",time:"1–2 hrs"},
-{n:48,ph:"Phase 4",wk:"W-6",task:"Write + publish blog post #1",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:49,ph:"Phase 4",wk:"W-5",task:"Write + publish blog post #2",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:50,ph:"Phase 4",wk:"W-5",task:"Install GA4, Meta Pixel, TikTok Pixel on Shopify",cat:"Analytics",proj:"P3E",time:"1–2 hrs"},
-{n:51,ph:"Phase 4",wk:"W-5",task:"Submit sitemap to Google Search Console",cat:"SEO",proj:"P4D",time:"30 min"},
-{n:52,ph:"Phase 5",wk:"W-4",task:"Prep center receives shipment. Confirm count.",cat:"Logistics",proj:"P3D",time:"30 min"},
-{n:53,ph:"Phase 5",wk:"W-4",task:"Prep center applies FNSKU labels + master cartons",cat:"Logistics",proj:"P3D",time:"N/A"},
-{n:54,ph:"Phase 5",wk:"W-4",task:"Create FBA shipment plan in Seller Central",cat:"Amazon",proj:"P3D",time:"1 hr"},
-{n:55,ph:"Phase 5",wk:"W-4",task:"Ship from prep center to Amazon FC",cat:"Logistics",proj:"P3D",time:"30 min"},
-{n:56,ph:"Phase 5",wk:"W-3",task:"Monitor Amazon receiving + check-in (3–7 days)",cat:"Amazon",proj:"P3D",time:"10 min/day"},
-{n:57,ph:"Phase 5",wk:"W-3",task:"Write + publish blog post #3 (Race Day Checklist)",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:58,ph:"Phase 5",wk:"W-3",task:"Batch-create first 2 weeks of launch social content",cat:"Social",proj:"P4A",time:"3–4 hrs"},
-{n:59,ph:"Phase 5",wk:"W-2",task:"Enroll in Amazon Vine ($0–$75)",cat:"Amazon",proj:"P3B",time:"30 min"},
-{n:60,ph:"Phase 5",wk:"W-2",task:"Create coupons: 15–20% off for launch day",cat:"PPC",proj:"P3B",time:"30 min"},
-{n:61,ph:"Phase 5",wk:"W-2",task:"Verify keyword indexing for all ASINs",cat:"QA",proj:"P3B",time:"30 min"},
-{n:62,ph:"Phase 5",wk:"W-2",task:"Verify Listing Quality Dashboard: 100% compliance",cat:"QA",proj:"P3B",time:"30 min"},
-{n:63,ph:"Phase 5",wk:"W-2",task:"Activate Brand Catalog Lock",cat:"Amazon",proj:"P3B",time:"15 min"},
-{n:64,ph:"Phase 5",wk:"W-2",task:"Run Shopify test order via Bogus Gateway",cat:"QA",proj:"P3E",time:"30 min"},
-{n:65,ph:"Phase 5",wk:"W-2",task:"Test all Omnisend email flows with test subscriber",cat:"QA",proj:"P3E",time:"30 min"},
-{n:66,ph:"Phase 5",wk:"W-2",task:"Prepare GCC compliance document (Prop 65)",cat:"Compliance",proj:"P5C",time:"1–2 hrs"},
-{n:67,ph:"Phase 5",wk:"W-2",task:"Organize documentation vault: 13 folders in Drive",cat:"Risk",proj:"P5C",time:"1–2 hrs"},
-{n:68,ph:"Go/No-Go",wk:"W-1",task:"Run 103-point launch readiness checklist (P5E)",cat:"Gate",proj:"P5E",time:"2–3 hrs"},
-{n:69,ph:"Go/No-Go",wk:"W-1",task:"Confirm ALL 5 child ASINs: Available + Buy Box won",cat:"Gate",proj:"P5B",time:"15 min"},
-{n:70,ph:"Go/No-Go",wk:"W-1",task:"Set launch date. Notify influencer creators.",cat:"Launch",proj:"P4B",time:"30 min"},
-{n:71,ph:"Go/No-Go",wk:"W-1",task:"Claim $200 Brand Registry advertising credits",cat:"Finance",proj:"P3A",time:"15 min"},
-{n:72,ph:"Launch Day",wk:"W0",task:"6:00 AM — Verify all 5 ASINs buyable + Buy Box",cat:"Amazon",proj:"P5B",time:"15 min"},
-{n:73,ph:"Launch Day",wk:"W0",task:"6:30 AM — ACTIVATE PPC Campaigns #1 + #2",cat:"PPC",proj:"P3C",time:"15 min"},
-{n:74,ph:"Launch Day",wk:"W0",task:"7:00 AM — ACTIVATE coupons (15–20% off)",cat:"PPC",proj:"P3B",time:"15 min"},
-{n:75,ph:"Launch Day",wk:"W0",task:"7:30 AM — Publish launch posts (IG Reel + TikTok)",cat:"Social",proj:"P4A",time:"30 min"},
-{n:76,ph:"Launch Day",wk:"W0",task:"8:00 AM — Send Omnisend launch email to list",cat:"Email",proj:"P3E",time:"15 min"},
-{n:77,ph:"Launch Day",wk:"W0",task:"9:00 AM — Activate external traffic (Attribution)",cat:"PPC",proj:"P3C",time:"30 min"},
-{n:78,ph:"Launch Day",wk:"W0",task:"10:00 AM — DM all seeded creators: 'We're live!'",cat:"Influencer",proj:"P4B",time:"30 min"},
-{n:79,ph:"Launch Day",wk:"W0",task:"12:00 PM — Mid-day PPC/impressions check",cat:"Monitor",proj:"P5B",time:"15 min"},
-{n:80,ph:"Launch Day",wk:"W0",task:"6:00 PM — Evening orders/messages tally",cat:"Monitor",proj:"P5B",time:"30 min"},
-{n:81,ph:"Launch Day",wk:"W0",task:"9:00 PM — Document Day 1 results. Plan Day 2.",cat:"Monitor",proj:"P5B",time:"30 min"},
-{n:82,ph:"Post-Launch",wk:"W1",task:"Monitor PPC daily (impressions, clicks, CTR, orders)",cat:"PPC",proj:"P3C",time:"15 min/day"},
-{n:83,ph:"Post-Launch",wk:"W1",task:"Respond to ALL customer messages within 24 hours",cat:"Support",proj:"P4E",time:"15 min/day"},
-{n:84,ph:"Post-Launch",wk:"W1",task:"Post social content daily from pre-created batch",cat:"Social",proj:"P4A",time:"15 min/day"},
-{n:85,ph:"Post-Launch",wk:"W2",task:"Download first Search Term Report → keyword harvesting",cat:"PPC",proj:"P3C",time:"45 min"},
-{n:86,ph:"Post-Launch",wk:"W2",task:"Add negative keywords from Search Term Report",cat:"PPC",proj:"P3C",time:"30 min"},
-{n:87,ph:"Post-Launch",wk:"W2",task:"Click 'Request a Review' on ALL orders",cat:"Reviews",proj:"P4E",time:"15 min"},
-{n:88,ph:"Post-Launch",wk:"W3",task:"Activate PPC Campaigns #3 (Exact), #4 (ASIN), #6 (Brand)",cat:"PPC",proj:"P3C",time:"1 hr"},
-{n:89,ph:"Post-Launch",wk:"W3",task:"Launch Sponsored Brands Video (Campaign #7)",cat:"PPC",proj:"P3C",time:"1 hr"},
-{n:90,ph:"Post-Launch",wk:"W3",task:"Begin A/B testing main image (Manage Your Experiments)",cat:"Optimize",proj:"P3B",time:"30 min"},
-{n:91,ph:"Post-Launch",wk:"W4",task:"Publish blog post #4 + Pillar Page",cat:"Content",proj:"P4D",time:"4–5 hrs"},
-{n:92,ph:"Post-Launch",wk:"W4",task:"First inventory restock order",cat:"Inventory",proj:"P3D",time:"1 hr"},
-{n:93,ph:"Post-Launch",wk:"W4",task:"Activate Campaigns #5 (Auto CatchAll) + #8 (SD Retarget)",cat:"PPC",proj:"P3C",time:"1 hr"},
-{n:94,ph:"Post-Launch",wk:"W6",task:"Publish blog post #5",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:95,ph:"Post-Launch",wk:"W6",task:"Attend first race expo (per P4C checklist)",cat:"Expo",proj:"P4C",time:"Full day"},
-{n:96,ph:"Post-Launch",wk:"W8",task:"Publish blog post #6",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:97,ph:"Post-Launch",wk:"W8",task:"Launch referral program ('Share the Click' via Smile.io)",cat:"Retention",proj:"P4E",time:"2 hrs"},
-{n:98,ph:"Post-Launch",wk:"W9",task:"Scale influencer seeding to 25–40 creators",cat:"Influencer",proj:"P4B",time:"3–4 hrs"},
-{n:99,ph:"Post-Launch",wk:"W10",task:"Monthly P&L reconciliation vs P5A projections",cat:"Finance",proj:"P5A",time:"1–2 hrs"},
-{n:100,ph:"Post-Launch",wk:"W12",task:"Publish blog post #7 (15 Best Gifts)",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:101,ph:"Post-Launch",wk:"W12",task:"90-day review: full P&L, update scenarios, evaluate Year 2",cat:"Strategy",proj:"P5A",time:"3–4 hrs"},
-{n:102,ph:"Ongoing",wk:"Daily",task:"Check FBA inventory levels (any SKU <14 days?)",cat:"Inventory",proj:"P5C",time:"10 min"},
-{n:103,ph:"Ongoing",wk:"Daily",task:"Check Account Health Rating (≥200 green?)",cat:"Amazon",proj:"P5C",time:"5 min"},
-{n:104,ph:"Ongoing",wk:"Daily",task:"Respond to customer messages (Amazon+Shopify+IG)",cat:"Support",proj:"P4E",time:"15–30 min"},
-{n:105,ph:"Ongoing",wk:"Weekly",task:"Review PPC: search term report, bids, negatives",cat:"PPC",proj:"P3C",time:"30–45 min"},
-{n:106,ph:"Ongoing",wk:"Weekly",task:"Check reviews: any negatives? Respond within 24 hrs.",cat:"Reviews",proj:"P4E",time:"15 min"},
-{n:107,ph:"Ongoing",wk:"Weekly",task:"Check listing status: suppressions or warnings?",cat:"Amazon",proj:"P5C",time:"10 min"},
-{n:108,ph:"Ongoing",wk:"Weekly",task:"Post social: 3 IG feed + 2 TikTok + 3 Stories",cat:"Social",proj:"P4A",time:"2–3 hrs"},
-{n:109,ph:"Ongoing",wk:"Bi-weekly",task:"Check Buy Box ownership (still 100% BIVVO?)",cat:"Amazon",proj:"P5C",time:"10 min"},
-{n:110,ph:"Ongoing",wk:"Monthly",task:"Full P&L reconciliation: revenue, COGS, OPEX, net",cat:"Finance",proj:"P5A",time:"1 hr"},
-{n:111,ph:"Ongoing",wk:"Monthly",task:"Cash flow check: Payoneer balance + restock costs",cat:"Finance",proj:"P5A",time:"30 min"},
-{n:112,ph:"Ongoing",wk:"Monthly",task:"Competitor check: new entrants, prices, reviews",cat:"Strategy",proj:"P5C",time:"30 min"},
-{n:113,ph:"Ongoing",wk:"Monthly",task:"Publish 1 blog post (per P4D calendar, #8–12)",cat:"Content",proj:"P4D",time:"3–4 hrs"},
-{n:114,ph:"Ongoing",wk:"Quarterly",task:"Tariff/trade news + Amazon fee announcement review",cat:"Risk",proj:"P5C",time:"30 min"},
-{n:115,ph:"Ongoing",wk:"Quarterly",task:"Scenario re-evaluation: Bear/Base/Bull update",cat:"Finance",proj:"P5A",time:"1–2 hrs"},
-{n:116,ph:"Ongoing",wk:"Annually",task:"Renew insurance. Update documentation vault.",cat:"Legal",proj:"P5C",time:"1 hr"},
+// s: default status. 'wait' = tasks requiring founder's external action (factory, photography, customs, negotiations etc.)
+var T=[
+{n:1,ph:"1-Legal",wk:"W-16",task:"Form Wyoming LLC via registered agent",cat:"Legal",ref:"P0H",time:"1-2h",s:"wait"},
+{n:2,ph:"1-Legal",wk:"W-16",task:"Open Payoneer account + identity verification",cat:"Legal",ref:"P0I",time:"30m",s:"wait"},
+{n:3,ph:"1-Legal",wk:"W-16",task:"Register Amazon Professional Seller ($39.99/mo)",cat:"Amazon",ref:"P3A",time:"1h",s:"wait"},
+{n:4,ph:"1-Legal",wk:"W-16",task:"Complete W-8BEN tax interview in Seller Central",cat:"Amazon",ref:"P3A",time:"30m",s:"open"},
+{n:5,ph:"1-Legal",wk:"W-16",task:"Purchase GS1 UPC barcodes (10-pack, $250)",cat:"Product",ref:"P2F",time:"30m",s:"wait"},
+{n:6,ph:"1-Legal",wk:"W-16",task:"Engage IP Accelerator attorney for trademark",cat:"Legal",ref:"P2A",time:"1-2h",s:"wait"},
+{n:7,ph:"1-Legal",wk:"W-16",task:"Submit Brand Registry application via IP Accelerator",cat:"Amazon",ref:"P3A",time:"1h",s:"open"},
+{n:8,ph:"1-Legal",wk:"W-16",task:"Register bivvo.com domain → point to Shopify",cat:"Tech",ref:"P2A",time:"30m",s:"wait"},
+{n:9,ph:"1-Legal",wk:"W-16",task:"Obtain product liability insurance ($500K–$1M)",cat:"Legal",ref:"P5C",time:"1h",s:"wait"},
+{n:10,ph:"2-Manufacturing",wk:"W-14",task:"Finalize product specs with Chinese factory",cat:"Product",ref:"P1E",time:"2-3h",s:"wait"},
+{n:11,ph:"2-Manufacturing",wk:"W-14",task:"Approve injection mold tooling ($2,500–$4,000)",cat:"Product",ref:"P1B",time:"1h",s:"wait"},
+{n:12,ph:"2-Manufacturing",wk:"W-14",task:"Confirm production run: 5,000 units, 5 colors. Sign PO.",cat:"Product",ref:"P0G",time:"1h",s:"wait"},
+{n:13,ph:"2-Manufacturing",wk:"W-13",task:"Finalize all brand assets: logo, colors, typography",cat:"Brand",ref:"P2B",time:"3-4h",s:"open"},
+{n:14,ph:"2-Manufacturing",wk:"W-13",task:"Create packaging design files (RTE carton + insert)",cat:"Brand",ref:"P2D",time:"3-4h",s:"open"},
+{n:15,ph:"2-Manufacturing",wk:"W-13",task:"Send packaging design to factory for printing",cat:"Product",ref:"P2D",time:"30m",s:"wait"},
+{n:16,ph:"2-Manufacturing",wk:"W-12",task:"Begin Phase 1 product photography (DIY/Fiverr)",cat:"Content",ref:"P2E",time:"3-5h",s:"wait"},
+{n:17,ph:"3-Content",wk:"W-12",task:"Install Shopify Basic ($39/mo). Connect domain.",cat:"Tech",ref:"P3E",time:"2h",s:"open"},
+{n:18,ph:"3-Content",wk:"W-12",task:"Customize Dawn theme: BIVVO colors, fonts, logo",cat:"DTC",ref:"P3E",time:"3-4h",s:"open"},
+{n:19,ph:"3-Content",wk:"W-11",task:"Create all 11 Shopify pages",cat:"DTC",ref:"P3E",time:"5-8h",s:"open"},
+{n:20,ph:"3-Content",wk:"W-11",task:"Install 9 essential Shopify apps",cat:"Tech",ref:"P3E",time:"2h",s:"open"},
+{n:21,ph:"3-Content",wk:"W-11",task:"Configure Shopify Payments, PayPal, Shop Pay",cat:"DTC",ref:"P3E",time:"1h",s:"open"},
+{n:22,ph:"3-Content",wk:"W-10",task:"Write ALL Amazon listing copy: title, bullets, description",cat:"Content",ref:"P3B",time:"3-4h",s:"open"},
+{n:23,ph:"3-Content",wk:"W-10",task:"Prepare backend search terms (≤249 bytes each)",cat:"Content",ref:"P3B",time:"2h",s:"open"},
+{n:24,ph:"3-Content",wk:"W-10",task:"Validate backend byte counts (mothereff.in)",cat:"QA",ref:"P3B",time:"30m",s:"open"},
+{n:25,ph:"3-Content",wk:"W-10",task:"Design A+ Content (5 modules) + Brand Story",cat:"Content",ref:"P3B",time:"4-6h",s:"open"},
+{n:26,ph:"3-Content",wk:"W-10",task:"Film 15–30 second product demo video",cat:"Content",ref:"P2E",time:"1-2h",s:"wait"},
+{n:27,ph:"3-Content",wk:"W-10",task:"Order QIMA pre-shipment inspection ($250–$350)",cat:"QA",ref:"P3D",time:"30m",s:"wait"},
+{n:28,ph:"3-Content",wk:"W-10",task:"Configure Omnisend: Welcome + Abandoned Cart flows",cat:"Email",ref:"P3E",time:"3-4h",s:"open"},
+{n:29,ph:"3-Content",wk:"W-10",task:"Build post-purchase email sequence (8 touchpoints)",cat:"Email",ref:"P4E",time:"2-3h",s:"open"},
+{n:30,ph:"3-Content",wk:"W-10",task:"Build win-back email sequence (5 emails)",cat:"Email",ref:"P4E",time:"1-2h",s:"open"},
+{n:31,ph:"3-Content",wk:"W-10",task:"Verify Omnisend sender domain (hello@bivvo.com)",cat:"Email",ref:"P3E",time:"30m",s:"open"},
+{n:32,ph:"4-Logistics",wk:"W-8",task:"Approve pre-shipment inspection results",cat:"QA",ref:"P3D",time:"1h",s:"wait"},
+{n:33,ph:"4-Logistics",wk:"W-8",task:"Arrange air freight: China → US prep center",cat:"Logistics",ref:"P3D",time:"1-2h",s:"wait"},
+{n:34,ph:"4-Logistics",wk:"W-8",task:"Upload flat file for parent-child ASIN structure",cat:"Amazon",ref:"P3B",time:"2-3h",s:"open"},
+{n:35,ph:"4-Logistics",wk:"W-8",task:"Upload all 6 images + 1 video per child ASIN",cat:"Amazon",ref:"P3B",time:"2h",s:"open"},
+{n:36,ph:"4-Logistics",wk:"W-8",task:"Submit A+ Content + Brand Story for approval",cat:"Amazon",ref:"P3B",time:"1h",s:"open"},
+{n:37,ph:"4-Logistics",wk:"W-7",task:"Build all 8 PPC campaigns in Seller Central (PAUSED)",cat:"PPC",ref:"P3C",time:"3-4h",s:"open"},
+{n:38,ph:"4-Logistics",wk:"W-7",task:"Add negative keyword list (20+ terms) to all campaigns",cat:"PPC",ref:"P3C",time:"1h",s:"open"},
+{n:39,ph:"4-Logistics",wk:"W-7",task:"Generate Amazon Attribution links for external traffic",cat:"PPC",ref:"P3C",time:"30m",s:"open"},
+{n:40,ph:"4-Logistics",wk:"W-7",task:"Create Instagram @bivvo.run Business account",cat:"Social",ref:"P4A",time:"1h",s:"wait"},
+{n:41,ph:"4-Logistics",wk:"W-7",task:"Create TikTok @bivvo.run Business account",cat:"Social",ref:"P4A",time:"1h",s:"wait"},
+{n:42,ph:"4-Logistics",wk:"W-7",task:"Publish 5–8 pre-launch posts on Instagram",cat:"Social",ref:"P4A",time:"2-3h",s:"open"},
+{n:43,ph:"4-Logistics",wk:"W-7",task:"Create Strava Club ('BIVVO Runners Club')",cat:"Community",ref:"P4E",time:"30m",s:"open"},
+{n:44,ph:"4-Logistics",wk:"W-7",task:"Configure Canva Pro brand kit with BIVVO assets",cat:"Brand",ref:"P4A",time:"30m",s:"open"},
+{n:45,ph:"4-Logistics",wk:"W-6",task:"Identify first 10–15 nano/micro influencer creators",cat:"Influencer",ref:"P4B",time:"2-3h",s:"wait"},
+{n:46,ph:"4-Logistics",wk:"W-6",task:"Send outreach DMs to creators. Ship product samples.",cat:"Influencer",ref:"P4B",time:"2h",s:"wait"},
+{n:47,ph:"4-Logistics",wk:"W-6",task:"Select prep center and confirm onboarding",cat:"Logistics",ref:"P3D",time:"1-2h",s:"wait"},
+{n:48,ph:"4-Logistics",wk:"W-6",task:"Write + publish blog post #1",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:49,ph:"4-Logistics",wk:"W-5",task:"Write + publish blog post #2",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:50,ph:"4-Logistics",wk:"W-5",task:"Install GA4, Meta Pixel, TikTok Pixel on Shopify",cat:"Analytics",ref:"P3E",time:"1-2h",s:"open"},
+{n:51,ph:"4-Logistics",wk:"W-5",task:"Submit sitemap to Google Search Console",cat:"SEO",ref:"P4D",time:"30m",s:"open"},
+{n:52,ph:"5-FBA",wk:"W-4",task:"Prep center receives shipment. Confirm count.",cat:"Logistics",ref:"P3D",time:"30m",s:"wait"},
+{n:53,ph:"5-FBA",wk:"W-4",task:"Prep center applies FNSKU labels + master cartons",cat:"Logistics",ref:"P3D",time:"N/A",s:"wait"},
+{n:54,ph:"5-FBA",wk:"W-4",task:"Create FBA shipment plan in Seller Central",cat:"Amazon",ref:"P3D",time:"1h",s:"open"},
+{n:55,ph:"5-FBA",wk:"W-4",task:"Ship from prep center to Amazon FC",cat:"Logistics",ref:"P3D",time:"30m",s:"wait"},
+{n:56,ph:"5-FBA",wk:"W-3",task:"Monitor Amazon receiving + check-in (3–7 days)",cat:"Amazon",ref:"P3D",time:"10m/d",s:"open"},
+{n:57,ph:"5-FBA",wk:"W-3",task:"Write + publish blog post #3 (Race Day Checklist)",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:58,ph:"5-FBA",wk:"W-3",task:"Batch-create first 2 weeks of launch social content",cat:"Social",ref:"P4A",time:"3-4h",s:"open"},
+{n:59,ph:"5-FBA",wk:"W-2",task:"Enroll in Amazon Vine ($0–$75)",cat:"Amazon",ref:"P3B",time:"30m",s:"open"},
+{n:60,ph:"5-FBA",wk:"W-2",task:"Create coupons: 15–20% off for launch day",cat:"Amazon",ref:"P3B",time:"30m",s:"open"},
+{n:61,ph:"5-FBA",wk:"W-2",task:"Verify keyword indexing for all ASINs",cat:"QA",ref:"P3B",time:"30m",s:"open"},
+{n:62,ph:"5-FBA",wk:"W-2",task:"Verify Listing Quality Dashboard: 100% compliance",cat:"QA",ref:"P3B",time:"30m",s:"open"},
+{n:63,ph:"5-FBA",wk:"W-2",task:"Activate Brand Catalog Lock",cat:"Amazon",ref:"P3B",time:"15m",s:"open"},
+{n:64,ph:"5-FBA",wk:"W-2",task:"Run Shopify test order via Bogus Gateway",cat:"QA",ref:"P3E",time:"30m",s:"open"},
+{n:65,ph:"5-FBA",wk:"W-2",task:"Test all Omnisend email flows with test subscriber",cat:"QA",ref:"P3E",time:"30m",s:"open"},
+{n:66,ph:"5-FBA",wk:"W-2",task:"Prepare GCC compliance document (Prop 65)",cat:"Compliance",ref:"P5C",time:"1-2h",s:"open"},
+{n:67,ph:"5-FBA",wk:"W-2",task:"Organize documentation vault: 13 folders in Drive",cat:"Admin",ref:"P5C",time:"1-2h",s:"open"},
+{n:68,ph:"6-Gate",wk:"W-1",task:"Run 103-point launch readiness checklist (P5E)",cat:"Gate",ref:"P5E",time:"2-3h",s:"open"},
+{n:69,ph:"6-Gate",wk:"W-1",task:"Confirm ALL 5 child ASINs: Available + Buy Box won",cat:"Gate",ref:"P5B",time:"15m",s:"open"},
+{n:70,ph:"6-Gate",wk:"W-1",task:"Set launch date. Notify influencer creators.",cat:"Gate",ref:"P4B",time:"30m",s:"open"},
+{n:71,ph:"6-Gate",wk:"W-1",task:"Claim $200 Brand Registry advertising credits",cat:"Finance",ref:"P3A",time:"15m",s:"open"},
+{n:72,ph:"7-Launch",wk:"W0",task:"6:00 AM — Verify all 5 ASINs buyable + Buy Box",cat:"Launch",ref:"P5B",time:"15m",s:"open"},
+{n:73,ph:"7-Launch",wk:"W0",task:"6:30 AM — ACTIVATE PPC Campaigns #1 + #2",cat:"Launch",ref:"P3C",time:"15m",s:"open"},
+{n:74,ph:"7-Launch",wk:"W0",task:"7:00 AM — ACTIVATE coupons (15–20% off)",cat:"Launch",ref:"P3B",time:"15m",s:"open"},
+{n:75,ph:"7-Launch",wk:"W0",task:"7:30 AM — Publish launch posts (IG Reel + TikTok)",cat:"Launch",ref:"P4A",time:"30m",s:"open"},
+{n:76,ph:"7-Launch",wk:"W0",task:"8:00 AM — Send Omnisend launch email to list",cat:"Launch",ref:"P3E",time:"15m",s:"open"},
+{n:77,ph:"7-Launch",wk:"W0",task:"9:00 AM — Activate external traffic (Attribution)",cat:"Launch",ref:"P3C",time:"30m",s:"open"},
+{n:78,ph:"7-Launch",wk:"W0",task:"10:00 AM — DM all seeded creators: 'We're live!'",cat:"Launch",ref:"P4B",time:"30m",s:"open"},
+{n:79,ph:"7-Launch",wk:"W0",task:"12:00 PM — Mid-day PPC/impressions check",cat:"Launch",ref:"P5B",time:"15m",s:"open"},
+{n:80,ph:"7-Launch",wk:"W0",task:"6:00 PM — Evening orders/messages tally",cat:"Launch",ref:"P5B",time:"30m",s:"open"},
+{n:81,ph:"7-Launch",wk:"W0",task:"9:00 PM — Document Day 1 results. Plan Day 2.",cat:"Launch",ref:"P5B",time:"30m",s:"open"},
+{n:82,ph:"8-PostLaunch",wk:"W1",task:"Monitor PPC daily (impressions, clicks, CTR, orders)",cat:"PPC",ref:"P3C",time:"15m/d",s:"open"},
+{n:83,ph:"8-PostLaunch",wk:"W1",task:"Respond to ALL customer messages within 24 hours",cat:"Support",ref:"P4E",time:"15m/d",s:"open"},
+{n:84,ph:"8-PostLaunch",wk:"W1",task:"Post social content daily from pre-created batch",cat:"Social",ref:"P4A",time:"15m/d",s:"open"},
+{n:85,ph:"8-PostLaunch",wk:"W2",task:"Download first Search Term Report → keyword harvest",cat:"PPC",ref:"P3C",time:"45m",s:"open"},
+{n:86,ph:"8-PostLaunch",wk:"W2",task:"Add negative keywords from Search Term Report",cat:"PPC",ref:"P3C",time:"30m",s:"open"},
+{n:87,ph:"8-PostLaunch",wk:"W2",task:"Click 'Request a Review' on ALL orders",cat:"Reviews",ref:"P4E",time:"15m",s:"open"},
+{n:88,ph:"8-PostLaunch",wk:"W3",task:"Activate PPC Campaigns #3 (Exact), #4 (ASIN), #6 (Brand)",cat:"PPC",ref:"P3C",time:"1h",s:"open"},
+{n:89,ph:"8-PostLaunch",wk:"W3",task:"Launch Sponsored Brands Video (Campaign #7)",cat:"PPC",ref:"P3C",time:"1h",s:"open"},
+{n:90,ph:"8-PostLaunch",wk:"W3-4",task:"Begin A/B testing main image (Manage Your Experiments)",cat:"Optimize",ref:"P3B",time:"30m",s:"open"},
+{n:91,ph:"8-PostLaunch",wk:"W4",task:"Publish blog post #4 + Pillar Page",cat:"Content",ref:"P4D",time:"4-5h",s:"open"},
+{n:92,ph:"8-PostLaunch",wk:"W4",task:"First inventory restock order to factory",cat:"Inventory",ref:"P3D",time:"1h",s:"wait"},
+{n:93,ph:"8-PostLaunch",wk:"W4-6",task:"Activate Campaigns #5 (Auto CatchAll) + #8 (SD Retarget)",cat:"PPC",ref:"P3C",time:"1h",s:"open"},
+{n:94,ph:"8-PostLaunch",wk:"W6",task:"Publish blog post #5",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:95,ph:"8-PostLaunch",wk:"W6-8",task:"Attend first race expo (per P4C packing checklist)",cat:"Expo",ref:"P4C",time:"Full day",s:"wait"},
+{n:96,ph:"8-PostLaunch",wk:"W8",task:"Publish blog post #6",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:97,ph:"8-PostLaunch",wk:"W8-9",task:"Launch referral program (Smile.io 'Share the Click')",cat:"Retention",ref:"P4E",time:"2h",s:"open"},
+{n:98,ph:"8-PostLaunch",wk:"W9-10",task:"Scale influencer seeding to 25–40 creators",cat:"Influencer",ref:"P4B",time:"3-4h",s:"wait"},
+{n:99,ph:"8-PostLaunch",wk:"W10",task:"Monthly P&L reconciliation vs P5A projections",cat:"Finance",ref:"P5A",time:"1-2h",s:"open"},
+{n:100,ph:"8-PostLaunch",wk:"W12",task:"Publish blog post #7 (15 Best Gifts for Runners)",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:101,ph:"8-PostLaunch",wk:"W12",task:"90-day full review: P&L, scenarios, Year 2 eval",cat:"Strategy",ref:"P5A",time:"3-4h",s:"open"},
+{n:102,ph:"9-Ongoing",wk:"Daily",task:"Check FBA inventory levels (any SKU <14 days?)",cat:"Inventory",ref:"P5C",time:"10m",s:"open"},
+{n:103,ph:"9-Ongoing",wk:"Daily",task:"Check Account Health Rating (≥200 green?)",cat:"Amazon",ref:"P5C",time:"5m",s:"open"},
+{n:104,ph:"9-Ongoing",wk:"Daily",task:"Respond to customer messages (Amazon+Shopify+IG)",cat:"Support",ref:"P4E",time:"15-30m",s:"open"},
+{n:105,ph:"9-Ongoing",wk:"Weekly",task:"Review PPC: search term report, bids, negatives",cat:"PPC",ref:"P3C",time:"30-45m",s:"open"},
+{n:106,ph:"9-Ongoing",wk:"Weekly",task:"Check reviews: respond to negatives within 24 hrs",cat:"Reviews",ref:"P4E",time:"15m",s:"open"},
+{n:107,ph:"9-Ongoing",wk:"Weekly",task:"Check listing suppressions or warnings",cat:"Amazon",ref:"P5C",time:"10m",s:"open"},
+{n:108,ph:"9-Ongoing",wk:"Weekly",task:"Post social: 3 IG feed + 2 TikTok + 3 Stories",cat:"Social",ref:"P4A",time:"2-3h",s:"open"},
+{n:109,ph:"9-Ongoing",wk:"Bi-wkly",task:"Check Buy Box ownership (still 100%?)",cat:"Amazon",ref:"P5C",time:"10m",s:"open"},
+{n:110,ph:"9-Ongoing",wk:"Monthly",task:"Full P&L reconciliation: revenue, COGS, OPEX, net",cat:"Finance",ref:"P5A",time:"1h",s:"open"},
+{n:111,ph:"9-Ongoing",wk:"Monthly",task:"Cash flow check: Payoneer balance + restock costs",cat:"Finance",ref:"P5A",time:"30m",s:"open"},
+{n:112,ph:"9-Ongoing",wk:"Monthly",task:"Competitor check: new entrants, prices, reviews",cat:"Strategy",ref:"P5C",time:"30m",s:"open"},
+{n:113,ph:"9-Ongoing",wk:"Monthly",task:"Publish 1 blog post (per P4D calendar, #8–12)",cat:"Content",ref:"P4D",time:"3-4h",s:"open"},
+{n:114,ph:"9-Ongoing",wk:"Qtly",task:"Tariff/trade news + Amazon fee announcement review",cat:"Risk",ref:"P5C",time:"30m",s:"open"},
+{n:115,ph:"9-Ongoing",wk:"Qtly",task:"Scenario re-evaluation: Bear/Base/Bull update",cat:"Finance",ref:"P5A",time:"1-2h",s:"open"},
+{n:116,ph:"9-Ongoing",wk:"Annual",task:"Renew insurance. Update documentation vault.",cat:"Legal",ref:"P5C",time:"1h",s:"open"}
 ];
-let done=new Set();let sortCol='num';let sortAsc=true;
-function toggle(n){done.has(n)?done.delete(n):done.add(n);render();}
-function sortBy(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}render();}
+
+var phaseNames={"1-Legal":"Phase 1: Legal & Foundation","2-Manufacturing":"Phase 2: Manufacturing & Brand","3-Content":"Phase 3: Content & Digital","4-Logistics":"Phase 4: Logistics & PPC","5-FBA":"Phase 5: FBA & Final QA","6-Gate":"Go/No-Go Gate","7-Launch":"⭐ LAUNCH DAY","8-PostLaunch":"Post-Launch (Days 1–90)","9-Ongoing":"Ongoing Recurring"};
+var statusCycle=['open','done','wait'];
+
+function cycleStatus(n){
+  var t=T.find(function(x){return x.n===n});
+  var i=statusCycle.indexOf(t.s);
+  t.s=statusCycle[(i+1)%3];
+  render();
+}
+
+function filterStatus(s){
+  document.getElementById('fStatus').value=(s==='all'?'':s);
+  render();
+}
+function resetAll(){T.forEach(function(t){t.s=t._orig||'open'});render();}
+
 function render(){
-  const fp=document.getElementById('fPhase').value;
-  const fc=document.getElementById('fCat').value;
-  const fw=document.getElementById('fWeek').value;
-  const fs=document.getElementById('fStatus').value;
-  const fq=document.getElementById('fSearch').value.toLowerCase();
-  let filtered=T.filter(t=>{
-    if(fp&&t.ph!==fp)return false;if(fc&&t.cat!==fc)return false;if(fw&&t.wk!==fw)return false;
-    if(fs==='done'&&!done.has(t.n))return false;if(fs==='todo'&&done.has(t.n))return false;
-    if(fq&&!t.task.toLowerCase().includes(fq)&&!t.cat.toLowerCase().includes(fq))return false;
+  var fp=document.getElementById('fPhase').value;
+  var fs=document.getElementById('fStatus').value;
+  var fc=document.getElementById('fCat').value;
+  var fq=document.getElementById('fSearch').value.toLowerCase();
+
+  // Stats
+  var done=T.filter(function(t){return t.s==='done'}).length;
+  var open=T.filter(function(t){return t.s==='open'}).length;
+  var wait=T.filter(function(t){return t.s==='wait'}).length;
+  document.getElementById('sn-all').textContent=T.length;
+  document.getElementById('sn-done').textContent=done;
+  document.getElementById('sn-open').textContent=open;
+  document.getElementById('sn-wait').textContent=wait;
+
+  // Highlight active stat
+  ['all','done','open','wait'].forEach(function(s){
+    document.getElementById('sc-'+s).classList.toggle('active',fs===s||(fs===''&&s==='all'));
+  });
+
+  // Progress bar
+  var pct_d=done/T.length*100,pct_o=open/T.length*100,pct_w=wait/T.length*100;
+  document.getElementById('progBar').innerHTML=
+    '<div class="seg done" style="width:'+pct_d+'%">'+(done>0?done:'')+'</div>'+
+    '<div class="seg open" style="width:'+pct_o+'%">'+(open>0?open:'')+'</div>'+
+    '<div class="seg wait" style="width:'+pct_w+'%">'+(wait>0?wait:'')+'</div>';
+
+  // Phase bars
+  var phases=[...new Set(T.map(function(t){return t.ph}))];
+  var pbHtml='';
+  phases.forEach(function(ph){
+    var all=T.filter(function(t){return t.ph===ph});
+    var d=all.filter(function(t){return t.s==='done'}).length;
+    var w=all.filter(function(t){return t.s==='wait'}).length;
+    var o=all.length-d-w;
+    pbHtml+='<div class="phase-bar"><div class="name">'+(phaseNames[ph]||ph)+'</div>'+
+      '<div class="bar"><div class="s d" style="width:'+(d/all.length*100)+'%"></div><div class="s w" style="width:'+(w/all.length*100)+'%"></div><div class="s o" style="width:'+(o/all.length*100)+'%"></div></div>'+
+      '<div class="counts"><span style="color:#2ecc71">'+d+'✓</span> <span style="color:#3498db">'+o+'○</span> <span style="color:#f39c12">'+w+'⏳</span></div></div>';
+  });
+  document.getElementById('phaseBars').innerHTML=pbHtml;
+
+  // Filter
+  var filtered=T.filter(function(t){
+    if(fp&&t.ph!==fp) return false;
+    if(fs&&t.s!==fs) return false;
+    if(fc&&t.cat!==fc) return false;
+    if(fq&&t.task.toLowerCase().indexOf(fq)===-1&&t.cat.toLowerCase().indexOf(fq)===-1) return false;
     return true;
   });
-  // Sort
-  filtered.sort((a,b)=>{
-    let va,vb;
-    if(sortCol==='num'){va=a.n;vb=b.n;}
-    else if(sortCol==='phase'){va=a.ph;vb=b.ph;}
-    else if(sortCol==='week'){va=a.wk;vb=b.wk;}
-    else if(sortCol==='cat'){va=a.cat;vb=b.cat;}
-    else{va=a.n;vb=b.n;}
-    if(typeof va==='number')return sortAsc?va-vb:vb-va;
-    return sortAsc?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va));
-  });
-  let html='';let lastPh='';
-  filtered.forEach(t=>{
-    if(t.ph!==lastPh&&!fp){html+=`<tr class="phase-row"><td colspan="8">${t.ph}</td></tr>`;lastPh=t.ph;}
-    const isDone=done.has(t.n);
-    html+=`<tr style="${isDone?'opacity:.5':''}"><td><input type="checkbox" ${isDone?'checked':''} onchange="toggle(${t.n})"></td><td style="font-family:'Space Mono',monospace;font-weight:700">${t.n}</td><td style="font-size:11px;color:var(--dim)">${t.ph}</td><td style="font-family:'Space Mono',monospace;color:var(--blue);font-size:12px">${t.wk}</td><td style="color:var(--white)">${t.task}</td><td><span class="cat-badge cat-${t.cat}">${t.cat}</span></td><td style="font-size:11px">${t.proj}</td><td style="font-family:'Space Mono',monospace;font-size:11px">${t.time}</td></tr>`;
+
+  // Render table
+  var html='';var lastPh='';
+  filtered.forEach(function(t){
+    if(t.ph!==lastPh&&!fp){
+      html+='<tr class="phase-hdr"><td colspan="8">'+(phaseNames[t.ph]||t.ph)+'</td></tr>';
+      lastPh=t.ph;
+    }
+    var sc=t.s==='done'?'s-done':t.s==='wait'?'s-wait':'s-open';
+    var sl=t.s==='done'?'Done':t.s==='wait'?'Waiting':'Open';
+    var opacity=t.s==='done'?'opacity:.45':'';
+    html+='<tr style="'+opacity+'">'+
+      '<td><button class="status-btn '+sc+'" onclick="cycleStatus('+t.n+')"><span class="dot"></span>'+sl+'</button></td>'+
+      '<td style="font-family:Space Mono,monospace;font-weight:700">'+t.n+'</td>'+
+      '<td style="font-size:11px;color:var(--dim)">'+(phaseNames[t.ph]||t.ph).replace(/^(Phase \d|⭐|Go\/No-Go|Post-Launch|Ongoing).*/,'$1')+'</td>'+
+      '<td style="font-family:Space Mono,monospace;color:var(--blue);font-size:12px">'+t.wk+'</td>'+
+      '<td style="color:var(--white)">'+t.task+'</td>'+
+      '<td><span class="cat-b">'+t.cat+'</span></td>'+
+      '<td style="font-size:11px">'+t.ref+'</td>'+
+      '<td style="font-family:Space Mono,monospace;font-size:11px">'+t.time+'</td></tr>';
   });
   document.getElementById('tbody').innerHTML=html;
-  // Progress
-  const pct=Math.round(done.size/T.length*100);
-  document.getElementById('progFill').style.width=pct+'%';
-  document.getElementById('progLabel').textContent=`${done.size} / ${T.length} (${pct}%)`;
-  // Stats
-  const phases=[...new Set(T.map(t=>t.ph))];
-  document.getElementById('statsRow').innerHTML=phases.map(ph=>{
-    const total=T.filter(t=>t.ph===ph).length;
-    const d=T.filter(t=>t.ph===ph&&done.has(t.n)).length;
-    return `<div class="s"><div class="n">${d}/${total}</div><div class="l">${ph}</div></div>`;
-  }).join('');
 }
+
+// Init: save original statuses
+T.forEach(function(t){t._orig=t.s});
+
 // Populate filter dropdowns
-const phases=[...new Set(T.map(t=>t.ph))];
-const cats=[...new Set(T.map(t=>t.cat))].sort();
-const weeks=[...new Set(T.map(t=>t.wk))];
-phases.forEach(p=>document.getElementById('fPhase').innerHTML+=`<option value="${p}">${p}</option>`);
-cats.forEach(c=>document.getElementById('fCat').innerHTML+=`<option value="${c}">${c}</option>`);
-weeks.forEach(w=>document.getElementById('fWeek').innerHTML+=`<option value="${w}">${w}</option>`);
+var phases=[...new Set(T.map(function(t){return t.ph}))];
+var cats=[...new Set(T.map(function(t){return t.cat}))].sort();
+phases.forEach(function(p){document.getElementById('fPhase').innerHTML+='<option value="'+p+'">'+(phaseNames[p]||p)+'</option>'});
+cats.forEach(function(c){document.getElementById('fCat').innerHTML+='<option value="'+c+'">'+c+'</option>'});
+
 render();
 </script></body></html>
