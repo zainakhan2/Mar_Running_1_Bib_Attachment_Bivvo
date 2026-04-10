@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Launch Date Calculator — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.calc{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:32px;margin-bottom:24px}
+.calc h3{color:var(--coral);margin-bottom:16px}
+.ir{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ir label{font-size:13px;color:var(--dim);min-width:200px}
+.ir input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--white);font-family:'Space Mono',monospace;font-size:14px}
+.ir input:focus{outline:none;border-color:var(--coral)}
+.tl{margin-top:24px}.tl-row{display:flex;align-items:stretch;margin-bottom:2px;font-size:13px;border-radius:4px;overflow:hidden;transition:all .2s}
+.tl-row:hover{transform:translateX(4px)}
+.tl-week{min-width:70px;padding:10px 12px;background:var(--navy);color:var(--blue);font-family:'Space Mono',monospace;font-weight:700;display:flex;align-items:center}
+.tl-date{min-width:120px;padding:10px 12px;background:var(--card2);color:var(--coral);font-family:'Space Mono',monospace;font-weight:600;display:flex;align-items:center}
+.tl-phase{min-width:200px;padding:10px 12px;background:var(--card);color:var(--white);font-weight:600;display:flex;align-items:center}
+.tl-detail{flex:1;padding:10px 12px;background:var(--card);color:var(--dim);display:flex;align-items:center;border-left:1px solid var(--border)}
+.tl-row.launch .tl-week,.tl-row.launch .tl-date{background:var(--green)}.tl-row.launch .tl-week,.tl-row.launch .tl-date{color:var(--white)}
+.tl-row.launch .tl-phase,.tl-row.launch .tl-detail{background:rgba(39,174,96,.15)}
+.warn{background:rgba(230,126,34,.1);border:1px solid var(--orange);border-radius:8px;padding:16px;margin-top:16px;font-size:13px;color:var(--orange)}
+.presets{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.presets button{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:8px 16px;color:var(--dim);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.presets button:hover{border-color:var(--coral);color:var(--coral)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="tasks.html" class="nl">116 Tasks</a><a href="gaps.html" class="nl">Gaps</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📅 Launch Date Calculator</h1><p>Pick your target launch date → see the exact calendar dates for all 16 weeks of preparation. Based on P5B timeline and G-13 resolution.</p></div>
+<section>
+<div class="calc">
+<h3>Select Launch Date</h3>
+<div class="presets">
+<button onclick="setDate('2026-09-01')">Sep 1, 2026 (Fall ★)</button>
+<button onclick="setDate('2026-09-15')">Sep 15, 2026</button>
+<button onclick="setDate('2027-03-01')">Mar 1, 2027 (Spring)</button>
+<button onclick="setDate('2027-03-15')">Mar 15, 2027</button>
+</div>
+<div class="ir"><label>Target Launch Date (W0)</label><input type="date" id="launchDate" value="2026-09-01" onchange="calc()"></div>
+</div>
+<h2>16-Week <span>Countdown</span></h2>
+<div id="timeline" class="tl"></div>
+<div id="warnings"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+function setDate(d){document.getElementById('launchDate').value=d;calc();}
+const phases=[
+{week:-16,phase:'Phase 1: Legal',detail:'LLC formation, Payoneer, Amazon Seller, IP Accelerator, Brand Registry, domain, insurance (9 tasks)',tasks:9},
+{week:-14,phase:'Phase 2: Manufacturing',detail:'Factory specs, tooling approval, production PO, brand assets, packaging design (7 tasks)',tasks:7},
+{week:-12,phase:'Phase 3: Content',detail:'Shopify install, theme, listing copy, backend keywords, A+ Content, email flows (15 tasks)',tasks:15},
+{week:-10,phase:'Phase 3 cont.',detail:'Demo video, QIMA inspection, Omnisend flows, post-purchase + win-back sequences',tasks:0},
+{week:-8,phase:'Phase 4: Logistics',detail:'Approve inspection, arrange freight, upload flat file, images, A+ Content submit (20 tasks)',tasks:20},
+{week:-7,phase:'Phase 4: PPC & Social',detail:'Build 8 PPC campaigns (paused), negative keywords, IG+TikTok accounts, Strava Club, influencer outreach',tasks:0},
+{week:-6,phase:'Phase 4: Content',detail:'Influencer DMs + samples, prep center onboarding, blog posts #1-2, GA4/pixels',tasks:0},
+{week:-4,phase:'Phase 5: FBA Inbound',detail:'Prep center receives, FNSKU labels, FBA shipment plan, ship to Amazon FC (16 tasks)',tasks:16},
+{week:-3,phase:'Phase 5: Wait + Content',detail:'Amazon receiving (3-7 days), blog post #3, batch-create launch social content',tasks:0},
+{week:-2,phase:'Phase 5: Final QA',detail:'Vine enrollment, coupons, keyword indexing, Listing Quality, Brand Catalog Lock, test orders, GCC doc',tasks:0},
+{week:-1,phase:'GO / NO-GO GATE',detail:'103-point checklist, verify all ASINs Available + Buy Box, set launch date, claim $200 credits (4 tasks)',tasks:4},
+{week:0,phase:'⭐ LAUNCH DAY',detail:'Hour-by-hour: 6AM verify → PPC → coupons → social → email → creators → mid-day → evening (10 tasks)',tasks:10,launch:true},
+{week:2,phase:'Post-Launch Wk 1-2',detail:'Daily PPC monitoring, customer service, social posting, first Search Term Report, keyword harvesting',tasks:0},
+{week:4,phase:'Post-Launch Wk 3-4',detail:'Activate remaining PPC campaigns, A/B testing, blog post #4 + pillar page, first restock order',tasks:0},
+{week:8,phase:'Post-Launch Month 2',detail:'Blog post #5-6, first race expo, referral program launch, scale influencers to 25-40',tasks:0},
+{week:12,phase:'Post-Launch Month 3',detail:'Blog post #7, 90-day review, full P&L, Year 2 evaluation, scenario update',tasks:0},
+];
+function fmt(d){return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});}
+function calc(){
+  const ld=new Date(document.getElementById('launchDate').value+'T12:00:00');
+  let html='';
+  phases.forEach(p=>{
+    const d=new Date(ld);d.setDate(d.getDate()+p.week*7);
+    const isLaunch=p.launch?'launch':'';
+    html+=`<div class="tl-row ${isLaunch}"><div class="tl-week">W${p.week>=0?'+':''}${p.week}</div><div class="tl-date">${fmt(d)}</div><div class="tl-phase">${p.phase}</div><div class="tl-detail">${p.detail}</div></div>`;
+  });
+  document.getElementById('timeline').innerHTML=html;
+  // Chinese New Year warning
+  const startDate=new Date(ld);startDate.setDate(startDate.getDate()-16*7);
+  const freightDate=new Date(ld);freightDate.setDate(freightDate.getDate()-8*7);
+  let warns='';
+  if(freightDate.getMonth()===0||(freightDate.getMonth()===1&&freightDate.getDate()<15)){
+    warns+=`<div class="warn">⚠️ <strong>Chinese New Year Warning:</strong> Your freight shipping date (W-8: ${fmt(freightDate)}) falls during or near Chinese New Year factory closures (typically Jan 20 – Feb 10). Place your factory order at least 4 weeks earlier than planned, or shift your launch date to avoid delays.</div>`;
+  }
+  if(ld.getMonth()>=2&&ld.getMonth()<=5){
+    warns+=`<div class="warn">⚠️ <strong>Spring Launch:</strong> Good for spring race season (March–May) but misses the peak fall marathon season (Sep–Nov). Consider a September launch for maximum expo + seasonal demand alignment.</div>`;
+  }
+  if(ld.getMonth()>=8&&ld.getMonth()<=10){
+    warns+=`<div class="warn" style="border-color:var(--green);color:var(--green);background:rgba(39,174,96,.1)">✅ <strong>Fall Launch (Recommended):</strong> Captures September–November marathon peak season. Highest concentration of race expos and motivated buyers.</div>`;
+  }
+  document.getElementById('warnings').innerHTML=warns;
+}
+calc();
+</script></body></html>

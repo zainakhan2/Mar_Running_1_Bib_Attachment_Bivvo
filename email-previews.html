@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Email Flow Previews — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.flow-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.flow-tabs button{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:8px 16px;color:var(--dim);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.flow-tabs button:hover{border-color:var(--coral);color:var(--coral)}
+.flow-tabs button.active{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.flow-diagram{display:flex;gap:0;align-items:flex-start;overflow-x:auto;padding:20px 0}
+.email-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:0;min-width:280px;max-width:300px;flex-shrink:0}
+.email-header{background:var(--navy);padding:12px 16px;border-radius:var(--rad) var(--rad) 0 0}
+.email-header .num{font-family:'Space Mono',monospace;font-size:11px;color:var(--coral);font-weight:700}
+.email-header .subj{font-size:14px;color:var(--white);font-weight:600;margin-top:4px}
+.email-header .preview{font-size:11px;color:var(--dim);margin-top:2px}
+.email-body{padding:16px}
+.email-body .trigger{font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:700}
+.email-body .content{font-size:12px;color:var(--dim);line-height:1.5}
+.email-body .cta{display:inline-block;background:var(--coral);color:var(--white);padding:6px 16px;border-radius:4px;font-size:12px;font-weight:700;margin:8px 0}
+.email-body .code{background:var(--bg);border:1px dashed var(--border);padding:6px 12px;border-radius:4px;font-family:'Space Mono',monospace;font-size:13px;color:var(--coral);display:inline-block;margin:8px 0}
+.arrow{display:flex;align-items:center;justify-content:center;min-width:40px;color:var(--border);font-size:24px;flex-shrink:0}
+.flow-meta{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;margin-bottom:24px}
+.flow-meta .row{display:flex;gap:24px;font-size:13px;flex-wrap:wrap}
+.flow-meta .row span{color:var(--dim)}.flow-meta .row strong{color:var(--white)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="content.html" class="nl">Content</a><a href="day-by-day.html" class="nl">Day-by-Day</a>
+<a href="tracker.html" class="nl">Tracker</a>
+<a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📧 Email Flow Previews</h1><p>Visual preview of all 7 Omnisend flows (22 emails + 1 referral). Click a flow tab to see the sequence with subject lines, triggers, and content previews.</p></div>
+<section>
+<div class="flow-tabs" id="tabs"></div>
+<div class="flow-meta" id="meta"></div>
+<div class="flow-diagram" id="diagram"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+const flows={
+welcome:{name:'Welcome Series',emails:3,trigger:'Email signup / first site visit',discount:'WELCOME10 (10% off)',emails_data:[
+{num:'W1',subj:'Welcome to BIVVO 🏃',preview:'You just joined the pinless revolution',trigger:'Immediately',content:'Brand intro, origin story, "bivouac" etymology, what to expect from emails',cta:'Shop BIVVO Clips'},
+{num:'W2',subj:'How BIVVO Works (15-Second Demo)',preview:'Insert. Twist. Click.',trigger:'Day 2',content:'3-step how-to with visual, product benefits, timing chip safety explanation',cta:'Watch Demo Video'},
+{num:'W3',subj:'Your 10% Off Is Waiting ⏰',preview:'WELCOME10 — one-time code',trigger:'Day 4',content:'Discount urgency, 5 color showcase, 500+ race durability, social proof snippet',cta:'Use Code: WELCOME10',code:'WELCOME10'},
+]},
+cart:{name:'Abandoned Cart',emails:3,trigger:'Cart abandoned (items in cart, no purchase)',discount:'None initially, 10% in E3',emails_data:[
+{num:'AC1',subj:'You left something behind 👀',preview:'Your BIVVO clips are waiting',trigger:'1 hour after abandon',content:'Cart contents reminder, product image, urgency-free tone',cta:'Complete Your Order'},
+{num:'AC2',subj:'Still thinking about it?',preview:'Here\'s why runners love BIVVO',trigger:'24 hours',content:'Social proof (reviews), timing chip safety reminder, free shipping mention',cta:'Return to Cart'},
+{num:'AC3',subj:'Last chance — 10% off your BIVVO clips',preview:'We saved your cart + a little something',trigger:'72 hours',content:'Final nudge with discount, scarcity mention (color selling fast), CTA',cta:'Get 10% Off',code:'CART10'},
+]},
+postpurchase:{name:'Post-Purchase',emails:4,trigger:'Order delivered',discount:'BIVVO-REPEAT (10% off 2nd order)',emails_data:[
+{num:'PP1',subj:'Your BIVVOs are here! 🎉',preview:'Unbox + try the click',trigger:'Delivery confirmed',content:'Congratulations, unboxing excitement, 3-step how-to reminder, care tips',cta:'Try Them Now'},
+{num:'PP2',subj:'Race morning just got 10x easier',preview:'Tips from the BIVVO community',trigger:'Day 5–7',content:'Race day tips, how runners use clips, Strava Club invitation, #DitchThePins',cta:'Join Our Strava Club'},
+{num:'PP3',subj:'How are your BIVVOs working?',preview:'We\'d love your honest feedback',trigger:'Day 14',content:'Review request (neutral tone), Amazon review link, Judge.me link',cta:'Leave a Review'},
+{num:'PP4',subj:'Know a runner who still uses pins? 😏',preview:'Give $3, get $3',trigger:'Day 21',content:'Referral nudge, Share the Click program, unique referral link via Smile.io',cta:'Share My Link',code:'FRIEND3'},
+]},
+browse:{name:'Browse Abandonment',emails:2,trigger:'Product page viewed, no cart add',discount:'None',emails_data:[
+{num:'BA1',subj:'Curious about BIVVO?',preview:'Here\'s what runners are saying',trigger:'2 hours after browse',content:'Dynamic product image, 3 top review snippets, benefit reminder',cta:'Take Another Look'},
+{num:'BA2',subj:'The click that changed race morning',preview:'See BIVVO in action',trigger:'48 hours',content:'Video embed link, comparison vs safety pins, timing chip safety',cta:'Watch the Demo'},
+]},
+winback:{name:'Win-Back',emails:5,trigger:'No purchase in 60+ days',discount:'COMEBACK15 / WINBACK15',emails_data:[
+{num:'WB1',subj:'We miss you at the start line 🏁',preview:'It\'s been a while',trigger:'Day 60',content:'Gentle re-engagement, new content/blog links, community update',cta:'See What\'s New'},
+{num:'WB2',subj:'15% off — just for you',preview:'Code: WINBACK15',trigger:'Day 90',content:'Discount offer, new colors (if applicable), customer testimonials',cta:'Shop with 15% Off',code:'WINBACK15'},
+{num:'WB3',subj:'Runners are switching — here\'s why',preview:'The #DitchThePins movement',trigger:'Day 120',content:'Social proof compilation, UGC photos, community growth stats',cta:'Rejoin the Movement'},
+{num:'WB4',subj:'Last chance: 15% off expires soon ⏰',preview:'Code COMEBACK15 won\'t last',trigger:'Day 150',content:'Final discount push, urgency, direct product link',cta:'Use Code Now',code:'COMEBACK15'},
+{num:'WB5',subj:'Should we stop emailing?',preview:'Just say the word',trigger:'Day 180',content:'Respectful opt-out offer, one-click preference update',cta:'Stay Subscribed'},
+]},
+sunset:{name:'Sunset',emails:2,trigger:'No opens in 90+ days',discount:'None',emails_data:[
+{num:'SS1',subj:'Are we still friends? 🤔',preview:'We noticed you haven\'t opened our emails',trigger:'90 days no open',content:'Re-engagement ask, "click here to stay" CTA, content value reminder',cta:'Yes, Keep Sending!'},
+{num:'SS2',subj:'Goodbye (for now) 👋',preview:'We\'re removing you from our list',trigger:'7 days after SS1 if no open',content:'Final farewell, unsubscribe confirmation, "changed your mind?" link',cta:'Wait — Keep Me!'},
+]},
+vip:{name:'VIP Loyalty',emails:3,trigger:'3+ purchases or $50+ lifetime spend',discount:'Early access',emails_data:[
+{num:'VIP1',subj:'You\'re officially a BIVVO VIP 🏆',preview:'Thank you for being one of our top supporters',trigger:'VIP threshold reached',content:'Recognition, exclusive status, what VIP means (early access, special offers)',cta:'Explore VIP Perks'},
+{num:'VIP2',subj:'New color drop — VIPs get first look 👀',preview:'Before anyone else sees it',trigger:'New product launch',content:'Early access to new SKUs, VIP-exclusive 24hr window, behind-the-scenes',cta:'Shop First'},
+{num:'VIP3',subj:'Your year with BIVVO 📊',preview:'Races run, pins ditched, community impact',trigger:'Annual anniversary',content:'Personalized stats (if available), community milestones, thank you',cta:'Share Your Story'},
+]},
+};
+let activeFlow='welcome';
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=Object.entries(flows).map(([k,f])=>`<button class="${k===activeFlow?'active':''}" onclick="setFlow('${k}')">${f.name} (${f.emails})</button>`).join('');
+}
+function setFlow(k){activeFlow=k;renderTabs();renderFlow();}
+function renderFlow(){
+  const f=flows[activeFlow];
+  document.getElementById('meta').innerHTML=`<div class="row"><span>Flow: <strong>${f.name}</strong></span><span>Emails: <strong>${f.emails}</strong></span><span>Trigger: <strong>${f.trigger}</strong></span><span>Discount: <strong>${f.discount}</strong></span></div>`;
+  let html='';
+  f.emails_data.forEach((e,i)=>{
+    if(i>0) html+='<div class="arrow">→</div>';
+    html+=`<div class="email-card"><div class="email-header"><div class="num">EMAIL ${e.num}</div><div class="subj">${e.subj}</div><div class="preview">${e.preview}</div></div><div class="email-body"><div class="trigger">⏰ ${e.trigger}</div><div class="content">${e.content}</div>${e.code?`<div class="code">${e.code}</div>`:''}<div class="cta">${e.cta}</div></div></div>`;
+  });
+  document.getElementById('diagram').innerHTML=html;
+}
+renderTabs();renderFlow();
+</script></body></html>

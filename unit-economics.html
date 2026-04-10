@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Unit Economics Calculator — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.calc{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:32px;margin-bottom:24px}
+.calc h3{color:var(--coral);margin-bottom:16px;font-size:18px}
+.input-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.input-row label{font-size:13px;color:var(--dim);min-width:200px}
+.input-row input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--white);font-family:'Space Mono',monospace;font-size:14px;width:120px}
+.input-row input:focus{outline:none;border-color:var(--coral)}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+.result-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;text-align:center}
+.result-card .ch{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.result-card .val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--green)}
+.result-card .val.neg{color:var(--coral)}
+.result-card .sub{font-size:12px;color:var(--dim);margin-top:4px}
+.waterfall{margin-top:16px}
+.wf-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px}
+.wf-row .wf-label{min-width:200px;color:var(--dim)}
+.wf-row .wf-bar{height:20px;border-radius:3px;min-width:4px;transition:width .3s}
+.wf-row .wf-val{font-family:'Space Mono',monospace;color:var(--white);min-width:80px;text-align:right}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span>
+<a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="tasks.html" class="nl">116 Tasks</a><a href="gaps.html" class="nl">Gaps</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="day-by-day.html" class="nl">Day-by-Day</a>
+<a href="tracker.html" class="nl">Tracker</a>
+<a href="files.html" class="nl">Files</a>
+<a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>💰 Unit Economics Calculator</h1><p>Adjust any input to see real-time margin calculations across all 4 sales channels. Yellow inputs are editable.</p></div>
+<section>
+<div class="calc">
+<h3>📝 Inputs (edit any field)</h3>
+<div class="input-row"><label>Sale Price (per 4-pack)</label><input type="number" id="price" value="14.99" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$</span></div>
+<div class="input-row"><label>COGS (landed unit cost)</label><input type="number" id="cogs" value="2.50" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$</span></div>
+<div class="input-row"><label>Amazon Referral Fee (%)</label><input type="number" id="amzRef" value="15" step="0.5" oninput="calc()"><span style="color:var(--dim);font-size:12px">%</span></div>
+<div class="input-row"><label>FBA Fulfillment Fee</label><input type="number" id="fbaFee" value="3.40" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$</span></div>
+<div class="input-row"><label>Amazon PPC ACOS</label><input type="number" id="acos" value="20" step="1" oninput="calc()"><span style="color:var(--dim);font-size:12px">%</span></div>
+<div class="input-row"><label>MCF Fulfillment (DTC)</label><input type="number" id="mcf" value="4.50" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$</span></div>
+<div class="input-row"><label>Shopify Processing (%+$)</label><input type="number" id="shopPct" value="2.9" step="0.1" oninput="calc()"><span style="color:var(--dim);font-size:12px">% + $0.30</span></div>
+<div class="input-row"><label>Walmart Referral Fee (%)</label><input type="number" id="wmRef" value="15" step="0.5" oninput="calc()"><span style="color:var(--dim);font-size:12px">%</span></div>
+<div class="input-row"><label>WFS Fulfillment Fee</label><input type="number" id="wfs" value="2.59" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$ (25% new seller disc)</span></div>
+<div class="input-row"><label>TikTok Referral (%)</label><input type="number" id="ttRef" value="6" step="0.5" oninput="calc()"><span style="color:var(--dim);font-size:12px">%</span></div>
+<div class="input-row"><label>FBT Fulfillment Fee</label><input type="number" id="fbt" value="3.58" step="0.01" oninput="calc()"><span style="color:var(--dim);font-size:12px">$</span></div>
+<div class="input-row"><label>Creator Commission (%)</label><input type="number" id="ttComm" value="12" step="1" oninput="calc()"><span style="color:var(--dim);font-size:12px">%</span></div>
+</div>
+<h2>Results — <span>All 4 Channels</span></h2>
+<div class="result-grid">
+<div class="result-card"><div class="ch">Amazon FBA</div><div class="val" id="r-amz-pct">23.1%</div><div class="sub" id="r-amz-abs">$3.46 / unit</div></div>
+<div class="result-card"><div class="ch">Shopify DTC</div><div class="val" id="r-dtc-pct">38.4%</div><div class="sub" id="r-dtc-abs">$5.76 / unit</div></div>
+<div class="result-card"><div class="ch">Walmart</div><div class="val" id="r-wm-pct">25.9%</div><div class="sub" id="r-wm-abs">$3.88 / unit</div></div>
+<div class="result-card"><div class="ch">TikTok Shop</div><div class="val" id="r-tt-pct">40.4%</div><div class="sub" id="r-tt-abs">$6.06 / unit</div></div>
+<div class="result-card"><div class="ch">Break-Even Units/Mo</div><div class="val" id="r-be">44</div><div class="sub">at $660 monthly fixed costs</div></div>
+</div>
+<h3 style="margin-top:32px;color:var(--white)">Amazon FBA Waterfall</h3>
+<div class="waterfall" id="waterfall"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+function v(id){return parseFloat(document.getElementById(id).value)||0}
+function calc(){
+  const price=v('price'),cogs=v('cogs'),amzRef=v('amzRef')/100,fba=v('fbaFee'),acos=v('acos')/100;
+  const mcf=v('mcf'),shopPct=v('shopPct')/100,wmRef=v('wmRef')/100,wfs=v('wfs');
+  const ttRef=v('ttRef')/100,fbt=v('fbt'),ttComm=v('ttComm')/100;
+  // Amazon
+  const amzRefAmt=price*amzRef, amzPPC=price*acos, amzNet=price-amzRefAmt-fba-0.03-cogs-amzPPC-0.35;
+  const amzPct=(amzNet/price*100);
+  // DTC
+  const shopFee=price*shopPct+0.30, dtcNet=price-shopFee-mcf-cogs-1.50;
+  const dtcPct=(dtcNet/price*100);
+  // Walmart
+  const wmRefAmt=price*wmRef, wmPPC=price*0.25, wmNet=price-wmRefAmt-wfs-0.02-cogs-wmPPC;
+  const wmPct=(wmNet/price*100);
+  // TikTok
+  const ttRefAmt=price*ttRef, ttProc=price*0.01, ttCommAmt=price*ttComm, ttNet=price-ttRefAmt-ttProc-fbt-cogs-ttCommAmt;
+  const ttPct=(ttNet/price*100);
+  // Break-even
+  const be=amzNet>0?Math.ceil(660/amzNet):'N/A';
+  function set(id,val,isMoney){
+    const el=document.getElementById(id);
+    if(typeof val==='number'){el.textContent=isMoney?'$'+val.toFixed(2):val.toFixed(1)+'%';el.className='val'+(val<0?' neg':'');}
+    else el.textContent=val;
+  }
+  set('r-amz-pct',amzPct);document.getElementById('r-amz-abs').textContent='$'+amzNet.toFixed(2)+' / unit';
+  set('r-dtc-pct',dtcPct);document.getElementById('r-dtc-abs').textContent='$'+dtcNet.toFixed(2)+' / unit';
+  set('r-wm-pct',wmPct);document.getElementById('r-wm-abs').textContent='$'+wmNet.toFixed(2)+' / unit';
+  set('r-tt-pct',ttPct);document.getElementById('r-tt-abs').textContent='$'+ttNet.toFixed(2)+' / unit';
+  document.getElementById('r-be').textContent=be;
+  // Waterfall
+  const wf=[
+    ['Sale Price',price,'#2D5AA0'],['Referral Fee',-amzRefAmt,'#C0392B'],['FBA Fulfillment',-fba,'#C0392B'],
+    ['COGS',-cogs,'#C0392B'],['PPC ('+v('acos')+'% ACOS)',-amzPPC,'#E67E22'],['Other',-0.38,'#E67E22'],['Net Profit',amzNet,amzNet>=0?'#27AE60':'#C0392B']
+  ];
+  const maxV=price;
+  document.getElementById('waterfall').innerHTML=wf.map(w=>`<div class="wf-row"><span class="wf-label">${w[0]}</span><div class="wf-bar" style="width:${Math.abs(w[1])/maxV*300}px;background:${w[2]}"></div><span class="wf-val">${w[1]>=0?'$'+w[1].toFixed(2):'-$'+Math.abs(w[1]).toFixed(2)}</span></div>`).join('');
+}
+calc();
+</script></body></html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Day-by-Day Action Plan — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.ph{margin-bottom:24px}.ph-hd{background:var(--navy);border-radius:var(--rad) var(--rad) 0 0;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.ph-hd:hover{background:var(--card2)}.ph-hd h3{color:var(--white);font-size:15px;margin:0}
+.ph-hd .b{font-family:'Space Mono',monospace;font-size:12px;padding:3px 10px;border-radius:10px;font-weight:700;color:var(--coral);background:rgba(255,107,107,.15)}
+.ph-bd{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--rad) var(--rad);overflow:hidden}
+.dr{display:grid;grid-template-columns:90px 70px 1fr 90px;border-bottom:1px solid var(--border);font-size:13px;transition:background .15s}
+.dr:hover{background:rgba(45,90,160,.05)}.dr:last-child{border:none}
+.dr .d{padding:10px 12px;font-family:'Space Mono',monospace;color:var(--coral);font-weight:700;font-size:11px}
+.dr .w{padding:10px 12px;font-family:'Space Mono',monospace;color:var(--blue);font-size:11px}
+.dr .t{padding:10px 12px;color:var(--text)}.dr .tm{padding:10px 12px;font-family:'Space Mono',monospace;color:var(--dim);font-size:11px;text-align:right}
+.dr.hl{background:rgba(39,174,96,.06);border-left:3px solid var(--green)}
+.bar{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:14px 20px;margin-bottom:20px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:10px}
+.bar .i{text-align:center}.bar .n{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--coral)}.bar .l{font-size:10px;color:var(--dim);text-transform:uppercase}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="tasks.html" class="nl">Tasks</a><a href="day-by-day.html" class="nl">Day-by-Day</a>
+<a href="tracker.html" class="nl">Tracker</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📅 Day-by-Day Action Plan</h1><p>Visual chronological timeline — every task mapped to specific days. Click any phase header to expand/collapse.</p></div>
+<section>
+<div class="bar">
+<div class="i"><div class="n">116</div><div class="l">Tasks</div></div>
+<div class="i"><div class="n">16</div><div class="l">Weeks Pre-Launch</div></div>
+<div class="i"><div class="n">90</div><div class="l">Days Post-Launch</div></div>
+<div class="i"><div class="n">~180</div><div class="l">Hours Total</div></div>
+<div class="i"><div class="n">9</div><div class="l">Phases</div></div>
+</div>
+<div id="out"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Home</a></div></footer>
+<script>
+var P=[
+{n:"Phase 1: Legal & Foundation",tm:"W-16 to W-14",tk:[
+["Day 1","W-16","Form Wyoming LLC via registered agent","1-2h"],
+["Day 1-2","W-16","Open Payoneer account","30m"],
+["Day 2-3","W-16","Register Amazon Professional Seller","1h"],
+["Day 3","W-16","Complete W-8BEN tax interview","30m"],
+["Day 3-4","W-16","Purchase GS1 UPC barcodes ($250)","30m"],
+["Day 3-5","W-16","Engage IP Accelerator attorney","1-2h"],
+["Day 5-7","W-16","Submit Brand Registry application","1h"],
+["Day 5-7","W-16","Register bivvo.com domain","30m"],
+["Day 7","W-16","Obtain product liability insurance","1h"]]},
+{n:"Phase 2: Manufacturing & Brand",tm:"W-14 to W-10",tk:[
+["Day 1-3","W-14","Finalize product specs with factory","2-3h"],
+["Day 3-5","W-14","Approve injection mold tooling","1h"],
+["Day 5-7","W-14","Confirm production run: 5,000 units","1h"],
+["Day 1-5","W-13","Finalize brand assets (logo/colors/type)","3-4h"],
+["Day 1-5","W-13","Create packaging design files","3-4h"],
+["Day 5-10","W-13","Send packaging to factory","30m"],
+["Day 1-10","W-12","Begin Phase 1 photography","3-5h"]]},
+{n:"Phase 3: Content & Digital",tm:"W-12 to W-8",tk:[
+["Day 1-3","W-12","Install Shopify + connect domain","2h"],
+["Day 3-7","W-12","Customize Dawn theme","3-4h"],
+["Day 1-5","W-11","Create 11 Shopify pages","5-8h"],
+["Day 1-3","W-11","Install 9 Shopify apps","2h"],
+["Day 3-5","W-11","Configure payments + shipping","1h"],
+["Day 1-5","W-10","Write ALL Amazon listing copy","3-4h"],
+["Day 1-5","W-10","Prepare backend search terms","2h"],
+["Day 5","W-10","Validate backend byte counts","30m"],
+["Day 1-3","W-10","Design A+ Content (5 modules)","4-6h"],
+["Day 3-5","W-10","Film product demo video","1-2h"],
+["Day 1-5","W-10","Order QIMA inspection","30m"],
+["Day 1-5","W-10","Configure Omnisend flows","3-4h"],
+["Day 5-7","W-10","Build post-purchase sequence","2-3h"],
+["Day 5-7","W-10","Build win-back sequence","1-2h"],
+["Day 7","W-10","Verify sender domain","30m"]]},
+{n:"Phase 4: Logistics & PPC",tm:"W-8 to W-4",tk:[
+["Day 1-2","W-8","Approve inspection results","1h"],
+["Day 2-3","W-8","Arrange air freight","1-2h"],
+["Day 1-5","W-8","Upload flat file (ASINs)","2-3h"],
+["Day 3-5","W-8","Upload images + video","2h"],
+["Day 5-7","W-8","Submit A+ Content","1h"],
+["Day 1-5","W-7","Build 8 PPC campaigns (PAUSED)","3-4h",1],
+["Day 3-5","W-7","Add 20+ negative keywords","1h"],
+["Day 5","W-7","Generate Attribution links","30m"],
+["Day 1-3","W-7","Create IG + TikTok accounts","2h"],
+["Day 3-7","W-7","Publish pre-launch IG posts","2-3h"],
+["Day 5-7","W-7","Strava Club + Canva brand kit","1h"],
+["Day 1-3","W-6","Identify 10-15 influencers","2-3h"],
+["Day 3-5","W-6","Send DMs + ship samples","2h",1],
+["Day 1-3","W-6","Onboard prep center","1-2h"],
+["Day 5-7","W-6","Publish blog post #1","3-4h"],
+["Day 1-3","W-5","Publish blog post #2","3-4h"],
+["Day 3-5","W-5","Install GA4/Meta/TikTok pixels","1-2h"],
+["Day 5","W-5","Submit sitemap to GSC","30m"]]},
+{n:"Phase 5: FBA & Final QA",tm:"W-4 to W-1",tk:[
+["Day 1-2","W-4","Prep center receives shipment","30m"],
+["Day 2-3","W-4","FNSKU labels + master cartons","N/A"],
+["Day 3-4","W-4","Create FBA shipment plan","1h"],
+["Day 4-5","W-4","Ship to Amazon FC","30m"],
+["Day 1-7","W-3","Monitor Amazon receiving","10m/d"],
+["Day 1-3","W-3","Publish blog post #3","3-4h"],
+["Day 1-5","W-3","Batch-create launch social","3-4h"],
+["Day 1","W-2","Enroll in Amazon Vine","30m"],
+["Day 1-2","W-2","Create launch coupons","30m"],
+["Day 1-2","W-2","Verify keyword indexing","30m"],
+["Day 2-3","W-2","Verify Listing Quality","30m"],
+["Day 2-3","W-2","Activate Brand Catalog Lock","15m"],
+["Day 3","W-2","Shopify test order","30m"],
+["Day 3","W-2","Test Omnisend flows","30m"],
+["Day 3-4","W-2","Prepare GCC document","1-2h"],
+["Day 4-5","W-2","Organize doc vault (13 folders)","1-2h"]]},
+{n:"Go / No-Go Gate",tm:"W-1",tk:[
+["Day 1-2","W-1","Run 103-point checklist (P5E)","2-3h",1],
+["Day 2","W-1","Verify all 5 ASINs Available","15m"],
+["Day 3","W-1","Set launch date + notify creators","30m"],
+["Day 3-5","W-1","Claim $200 Brand Registry credits","15m"]]},
+{n:"⭐ LAUNCH DAY",tm:"Week 0",tk:[
+["6:00 AM","W0","Verify all ASINs buyable + Buy Box","15m",1],
+["6:30 AM","W0","ACTIVATE PPC Campaigns #1+#2","15m",1],
+["7:00 AM","W0","ACTIVATE coupons (15-20% off)","15m"],
+["7:30 AM","W0","Publish launch posts (IG+TikTok)","30m"],
+["8:00 AM","W0","Send Omnisend launch email","15m"],
+["9:00 AM","W0","Activate external traffic","30m"],
+["10:00 AM","W0","DM creators: 'We're live!'","30m"],
+["12:00 PM","W0","Mid-day PPC check","15m"],
+["6:00 PM","W0","Evening orders tally","30m"],
+["9:00 PM","W0","Document Day 1 results","30m"]]},
+{n:"Post-Launch (Days 1-90)",tm:"W1-W12",tk:[
+["Day 1-7","W1","Monitor PPC daily","15m/d"],
+["Day 1-7","W1","Respond to ALL messages <24h","15m/d"],
+["Day 1-7","W1","Post social content daily","15m/d"],
+["Day 7-14","W2","First Search Term Report","45m"],
+["Day 14","W2","Request a Review on all orders","15m"],
+["Day 14-21","W3","Activate Campaigns #3,#4,#6,#7","2h"],
+["Day 21-30","W3-4","A/B test main image","30m"],
+["Day 30","W4","Blog post #4 + Pillar Page","4-5h"],
+["Day 30","W4","First restock order","1h"],
+["Day 30-45","W4-6","Activate Campaigns #5+#8","1h"],
+["Day 45","W6","Blog post #5","3-4h"],
+["Day 45-60","W6-8","First race expo","Full day"],
+["Day 60","W8","Blog #6 + referral program","5h"],
+["Day 60-75","W8-10","Scale to 25-40 influencers","3-4h"],
+["Day 75","W10","Monthly P&L reconciliation","1-2h"],
+["Day 90","W12","Blog #7 + 90-day full review","6-8h",1]]},
+{n:"Ongoing Recurring",tm:"Daily/Weekly/Monthly",tk:[
+["Daily","—","Inventory + Health + messages","30-45m"],
+["Weekly","—","PPC + reviews + listing + social","3-4h"],
+["Bi-weekly","—","Buy Box ownership check","10m"],
+["Monthly","—","P&L + cash flow + competitors + blog","3-4h"],
+["Quarterly","—","Tariff review + scenario update","1-2h"],
+["Annually","—","Renew insurance + update vault","1h"]]}
+];
+var h='';
+P.forEach(function(ph){
+h+='<div class="ph"><div class="ph-hd" onclick="var b=this.nextElementSibling;b.style.display=b.style.display===\'none\'?\'block\':\'none\'"><h3>'+ph.n+' <span style="color:var(--dim);font-weight:400">('+ph.tm+')</span></h3><span class="b">'+ph.tk.length+' tasks</span></div><div class="ph-bd">';
+ph.tk.forEach(function(t){
+var hl=t.length>4&&t[4]?' hl':'';
+h+='<div class="dr'+hl+'"><div class="d">'+t[0]+'</div><div class="w">'+t[1]+'</div><div class="t">'+t[2]+'</div><div class="tm">'+t[3]+'</div></div>';
+});
+h+='</div></div>';
+});
+document.getElementById('out').innerHTML=h;
+</script></body></html>

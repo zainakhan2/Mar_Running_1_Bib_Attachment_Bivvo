@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PPC Budget Calculator — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.calc{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:32px;margin-bottom:24px}
+.calc h3{color:var(--coral);margin-bottom:16px}
+.ir{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.ir label{font-size:13px;color:var(--dim);min-width:240px}
+.ir input,.ir select{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--white);font-family:'Space Mono',monospace;font-size:14px;width:120px}
+.ir input:focus,.ir select:focus{outline:none;border-color:var(--coral)}
+.camp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:20px}
+.camp-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.camp-card .name{font-weight:700;color:var(--white);font-size:14px;margin-bottom:8px}
+.camp-card .type{font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.camp-card .row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid var(--border)}
+.camp-card .row span:first-child{color:var(--dim)}.camp-card .row span:last-child{color:var(--white);font-family:'Space Mono',monospace}
+.totals{background:var(--card);border:2px solid var(--green);border-radius:var(--rad);padding:24px;margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.tot{text-align:center}.tot .n{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:var(--green)}.tot .l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="financials.html" class="nl">Financials</a><a href="tasks.html" class="nl">116 Tasks</a><a href="gaps.html" class="nl">Gaps</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📊 PPC Budget Calculator</h1><p>Set your total daily PPC budget and see how it splits across 8 campaigns by type and phase. Based on P3C's 70/20/10 SP/SB/SD allocation.</p></div>
+<section>
+<div class="calc">
+<h3>Budget Inputs</h3>
+<div class="ir"><label>Total Daily PPC Budget ($)</label><input type="number" id="dailyBudget" value="75" step="5" oninput="calc()"></div>
+<div class="ir"><label>SP/SB/SD Split</label><span style="color:var(--dim);font-size:13px">70% / 20% / 10% (per P3C)</span></div>
+<div class="ir"><label>Average CPC ($)</label><input type="number" id="avgCpc" value="0.80" step="0.05" oninput="calc()"></div>
+<div class="ir"><label>Conversion Rate (%)</label><input type="number" id="cvr" value="12" step="1" oninput="calc()"></div>
+<div class="ir"><label>Sale Price ($)</label><input type="number" id="price" value="14.99" step="0.01" oninput="calc()"></div>
+<div class="ir"><label>Launch Phase</label><select id="phase" onchange="calc()"><option value="launch">Launch (W0, C1+C2 only)</option><option value="week3">Week 3 (+C3,C4,C6,C7)</option><option value="full" selected>Full (all 8 campaigns)</option></select></div>
+</div>
+<h2>Campaign <span>Budget Split</span></h2>
+<div class="camp-grid" id="campGrid"></div>
+<div class="totals" id="totals"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+const camps=[
+{id:'C1',name:'BIVVO-SP-Auto-Discovery',type:'SP Auto',pct:0.22,phase:'launch'},
+{id:'C2',name:'BIVVO-SP-Manual-Broad',type:'SP Manual',pct:0.22,phase:'launch'},
+{id:'C3',name:'BIVVO-SP-Exact-Winners',type:'SP Manual',pct:0.15,phase:'week3'},
+{id:'C4',name:'BIVVO-SP-ASIN-Targeting',type:'SP Product',pct:0.11,phase:'week3'},
+{id:'C5',name:'BIVVO-SP-Auto-CatchAll',type:'SP Auto',pct:0.08,phase:'full'},
+{id:'C6',name:'BIVVO-SP-Brand-Defense',type:'SP Manual',pct:0.04,phase:'week3'},
+{id:'C7',name:'BIVVO-SB-Video',type:'SB Video',pct:0.11,phase:'week3'},
+{id:'C8',name:'BIVVO-SD-Retargeting',type:'SD Audience',pct:0.07,phase:'full'},
+];
+const phases={launch:['launch'],week3:['launch','week3'],full:['launch','week3','full']};
+function calc(){
+  const daily=parseFloat(document.getElementById('dailyBudget').value)||0;
+  const cpc=parseFloat(document.getElementById('avgCpc').value)||0.80;
+  const cvr=(parseFloat(document.getElementById('cvr').value)||12)/100;
+  const price=parseFloat(document.getElementById('price').value)||14.99;
+  const phase=document.getElementById('phase').value;
+  const active=camps.filter(c=>phases[phase].includes(c.phase));
+  const totalPct=active.reduce((s,c)=>s+c.pct,0);
+  let html='';
+  active.forEach(c=>{
+    const share=c.pct/totalPct;
+    const d=daily*share;
+    const m=d*30;
+    const clicks=d/cpc;
+    const orders=clicks*cvr;
+    const rev=orders*price;
+    const acos=d/rev*100;
+    html+=`<div class="camp-card"><div class="type">${c.type}</div><div class="name">${c.id}: ${c.name}</div>
+    <div class="row"><span>Daily budget</span><span>$${d.toFixed(2)}</span></div>
+    <div class="row"><span>Monthly budget</span><span>$${m.toFixed(0)}</span></div>
+    <div class="row"><span>Daily clicks</span><span>${clicks.toFixed(0)}</span></div>
+    <div class="row"><span>Daily orders</span><span>${orders.toFixed(1)}</span></div>
+    <div class="row"><span>ACOS</span><span>${acos.toFixed(1)}%</span></div></div>`;
+  });
+  document.getElementById('campGrid').innerHTML=html;
+  const totalMonthly=daily*30;const totalClicks=daily/cpc;const totalOrders=totalClicks*cvr;
+  const totalRev=totalOrders*price;const totalAcos=daily/totalRev*100;
+  document.getElementById('totals').innerHTML=`
+  <div class="tot"><div class="n">$${daily.toFixed(0)}</div><div class="l">Daily Total</div></div>
+  <div class="tot"><div class="n">$${totalMonthly.toFixed(0)}</div><div class="l">Monthly Total</div></div>
+  <div class="tot"><div class="n">$${(totalMonthly*3).toFixed(0)}</div><div class="l">Quarterly Total</div></div>
+  <div class="tot"><div class="n">${totalClicks.toFixed(0)}</div><div class="l">Daily Clicks</div></div>
+  <div class="tot"><div class="n">${totalOrders.toFixed(1)}</div><div class="l">Daily Orders</div></div>
+  <div class="tot"><div class="n">${totalAcos.toFixed(1)}%</div><div class="l">Blended ACOS</div></div>
+  <div class="tot"><div class="n">${active.length}/8</div><div class="l">Active Campaigns</div></div>`;
+}
+calc();
+</script></body></html>

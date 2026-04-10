@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BIVVO Color Configurator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.config{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:24px}
+@media(max-width:768px){.config{grid-template-columns:1fr}}
+.view{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:40px;text-align:center;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.clip{width:180px;height:180px;border-radius:50%;border:10px solid #333;display:flex;align-items:center;justify-content:center;font-size:56px;transition:all .5s;box-shadow:0 0 60px rgba(0,0,0,.4)}
+.cname{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;margin-top:20px;transition:color .3s}
+.csku{font-family:'Space Mono',monospace;font-size:12px;color:var(--dim);margin-top:4px}
+.pills{display:flex;gap:14px;justify-content:center;margin-top:28px}
+.pill{width:52px;height:52px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .3s}
+.pill:hover{transform:scale(1.2)}.pill.on{border-color:var(--white);box-shadow:0 0 24px rgba(255,255,255,.25)}
+.specs{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:28px}
+.sr{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+.sr:last-child{border:none}.sr .l{color:var(--dim)}.sr .v{color:var(--white);font-weight:600;font-family:'Space Mono',monospace}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.pk{background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.pk:hover,.pk.on{border-color:var(--coral)}
+.pk .q{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--coral)}
+.pk .p{font-size:13px;color:var(--white);margin-top:2px}.pk .pp{font-size:10px;color:var(--dim)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="content.html" class="nl">Content</a><a href="day-by-day.html" class="nl">Day-by-Day</a>
+<a href="tracker.html" class="nl">Tracker</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🎨 BIVVO Color Configurator</h1><p>Explore all 5 clip colors. Click a color to see SKU, Pantone reference, and full specifications.</p></div>
+<section><div class="config">
+<div class="view">
+<div class="clip" id="cv" style="border-color:#333;background:radial-gradient(circle at 30% 30%,#444,#1a1a1a)">🔄</div>
+<div class="cname" id="cn">Black</div>
+<div class="csku" id="cs">BIV-TL-BLK-4PK</div>
+<div class="pills">
+<div class="pill on" style="background:#222" onclick="pick(0)"></div>
+<div class="pill" style="background:#F0F0F0" onclick="pick(1)"></div>
+<div class="pill" style="background:linear-gradient(135deg,rgba(200,220,255,.35),rgba(255,255,255,.15));border:1px solid rgba(255,255,255,.15)" onclick="pick(2)"></div>
+<div class="pill" style="background:#FF6B6B" onclick="pick(3)"></div>
+<div class="pill" style="background:#5DADE2" onclick="pick(4)"></div>
+</div>
+</div>
+<div class="specs">
+<h3 style="color:var(--coral);margin-bottom:14px">Product Specifications</h3>
+<div class="sr"><span class="l">Product</span><span class="v">BIVVO Twist-Lock Clip</span></div>
+<div class="sr"><span class="l">Pack</span><span class="v">4 clips / pack</span></div>
+<div class="sr"><span class="l">Mechanism</span><span class="v">3-lug bayonet, 90° twist</span></div>
+<div class="sr"><span class="l">Material</span><span class="v">POM (Delrin®)</span></div>
+<div class="sr"><span class="l">Diameter</span><span class="v">30mm</span></div>
+<div class="sr"><span class="l">Height</span><span class="v">8mm assembled</span></div>
+<div class="sr"><span class="l">Weight</span><span class="v">~2g/clip (~8g pack)</span></div>
+<div class="sr"><span class="l">Lifespan</span><span class="v">500+ cycles</span></div>
+<div class="sr"><span class="l">Magnets</span><span class="v" style="color:var(--green)">ZERO</span></div>
+<div class="sr"><span class="l">Fabric Damage</span><span class="v" style="color:var(--green)">ZERO</span></div>
+<div class="sr"><span class="l">Price</span><span class="v" style="color:var(--coral)">$14.99</span></div>
+<div class="sr"><span class="l">Color</span><span class="v" id="sc">Black</span></div>
+<div class="sr"><span class="l">Pantone</span><span class="v" id="sp">Pantone Black C</span></div>
+<div class="sr"><span class="l">SKU</span><span class="v" id="ss">BIV-TL-BLK-4PK</span></div>
+<div class="packs">
+<div class="pk on"><div class="q">4-pack</div><div class="p">$14.99</div><div class="pp">$3.75/clip</div></div>
+<div class="pk"><div class="q">2×4-pack</div><div class="p">$26.99</div><div class="pp">$3.37/clip</div></div>
+<div class="pk"><div class="q">3×4-pack</div><div class="p">$37.99</div><div class="pp">$3.17/clip</div></div>
+</div>
+</div>
+</div></section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Command Center</a> · <a href="index.html">Home</a></div></footer>
+<script>
+var C=[
+{n:'Black',s:'BIV-TL-BLK-4PK',p:'Pantone Black C',b:'#333',g:'radial-gradient(circle at 30% 30%,#444,#1a1a1a)',l:'#fff'},
+{n:'White',s:'BIV-TL-WHT-4PK',p:'Pantone White',b:'#DDD',g:'radial-gradient(circle at 30% 30%,#FFF,#DDD)',l:'#333'},
+{n:'Clear',s:'BIV-TL-CLR-4PK',p:'Transparent',b:'rgba(180,210,240,.4)',g:'radial-gradient(circle at 30% 30%,rgba(220,240,255,.4),rgba(180,200,220,.2))',l:'#88AACC'},
+{n:'Coral Pink',s:'BIV-TL-CRL-4PK',p:'Pantone 16-1546',b:'#FF6B6B',g:'radial-gradient(circle at 30% 30%,#FF8888,#FF4444)',l:'#FF6B6B'},
+{n:'Sky Blue',s:'BIV-TL-BLU-4PK',p:'Pantone 14-4122',b:'#5DADE2',g:'radial-gradient(circle at 30% 30%,#7EC8E3,#2E86C1)',l:'#5DADE2'}
+];
+function pick(i){var c=C[i];
+document.getElementById('cv').style.borderColor=c.b;document.getElementById('cv').style.background=c.g;
+document.getElementById('cn').textContent=c.n;document.getElementById('cn').style.color=c.l;
+document.getElementById('cs').textContent=c.s;
+document.getElementById('sc').textContent=c.n;document.getElementById('sp').textContent=c.p;document.getElementById('ss').textContent=c.s;
+document.querySelectorAll('.pill').forEach(function(p,j){p.classList.toggle('on',j===i)});
+}
+</script></body></html>
