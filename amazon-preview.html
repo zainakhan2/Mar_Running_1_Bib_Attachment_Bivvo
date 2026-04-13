@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Amazon Listing Preview — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.amz{background:#fff;border-radius:var(--rad);overflow:hidden;color:#0F1111;font-family:Arial,sans-serif}
+.amz-top{display:grid;grid-template-columns:400px 1fr;gap:0}
+@media(max-width:900px){.amz-top{grid-template-columns:1fr}}
+.amz-gal{background:#fff;padding:16px;border-right:1px solid #e3e6e6}
+.amz-main{width:100%;aspect-ratio:1;background:#f7f7f7;border:1px solid #e3e6e6;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative}
+.amz-main .ph{text-align:center;padding:20px;color:#888;font-size:13px}.amz-main .ph .ic{font-size:56px;margin-bottom:8px}
+.amz-main .sl{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:2px 8px;border-radius:3px}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap}
+.th{width:50px;height:50px;border:2px solid #e3e6e6;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;color:#888;background:#f7f7f7;text-align:center;line-height:1.1;transition:border-color .15s}
+.th:hover,.th.on{border-color:#e77600}
+.amz-det{padding:16px 20px;background:#fff}
+.amz-det .brand{color:#007185;font-size:13px;margin-bottom:4px;cursor:pointer}.amz-det .brand:hover{text-decoration:underline}
+.amz-det .title{font-size:19px;line-height:1.4;color:#0F1111;margin-bottom:8px}
+.stars-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.stars-row .s{color:#FFA41C;font-size:15px;letter-spacing:1px}.stars-row .c{color:#007185}
+.price-box{background:#f0f2f2;border-radius:8px;padding:14px;margin:10px 0}
+.price-box .p{font-size:26px;color:#0F1111}.price-box .sym{font-size:13px;vertical-align:top}.price-box .ct{font-size:13px;vertical-align:top}
+.price-box .note{font-size:12px;color:#565959;margin-top:4px}
+.prime{font-weight:700;color:#00485e;font-style:italic;font-size:13px}
+.del{font-size:13px;color:#0F1111;margin-top:6px}.del b{color:#007185}
+.stock{color:#007600;font-size:14px;font-weight:700;margin:10px 0}
+.var-sec{margin:14px 0;padding:14px 0;border-top:1px solid #e3e6e6}
+.var-sec .vl{font-size:13px;color:#0F1111;margin-bottom:8px;font-weight:700}
+.var-pills{display:flex;gap:6px;flex-wrap:wrap}
+.vp{padding:5px 14px;border:2px solid #e3e6e6;border-radius:18px;font-size:12px;cursor:pointer;background:#fff;color:#0F1111;transition:all .15s}
+.vp:hover{border-color:#e77600}.vp.on{border-color:#e77600;background:#fef8f2}
+.buybox{border:1px solid #e3e6e6;border-radius:8px;padding:14px;margin-top:14px}
+.bb{display:block;width:100%;padding:7px;border:none;border-radius:18px;font-size:13px;cursor:pointer;margin-bottom:6px}
+.bb-c{background:#FFD814;color:#0F1111;border:1px solid #FCD200}.bb-b{background:#FFA41C;color:#0F1111;border:1px solid #FF8F00}
+.buybox .sell{font-size:11px;color:#565959;margin-top:6px}.buybox .sell b{color:#007185}
+.bul{padding:16px 20px;border-top:1px solid #e3e6e6;background:#fff}
+.bul h3{font-size:15px;color:#0F1111;margin-bottom:10px;font-weight:700}
+.bul ul{list-style:disc;padding-left:18px;margin:0}.bul ul li{font-size:13px;color:#0F1111;padding:3px 0;line-height:1.6}.bul ul li::before{display:none}.bul ul li b{font-weight:700}
+.ap{padding:20px;border-top:1px solid #e3e6e6;background:#fff}
+.ap h3{font-size:17px;color:#0F1111;margin-bottom:14px;font-weight:700;text-align:center}
+.mod{margin-bottom:20px;border:1px solid #e3e6e6;border-radius:8px;overflow:hidden}
+.mod .mh{background:#f0f2f2;padding:10px 14px;font-size:12px;font-weight:700;color:#0F1111;display:flex;justify-content:space-between}
+.mod .mb{padding:16px;font-size:13px;color:#333;line-height:1.6}
+.mod .mb h4{font-size:14px;color:#0F1111;margin-bottom:6px}
+.cmp{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.cmp th{background:#f0f2f2;padding:7px;text-align:center;border:1px solid #e3e6e6;color:#0F1111;font-size:11px}
+.cmp td{padding:7px;text-align:center;border:1px solid #e3e6e6;color:#333}
+.nbar{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:14px 18px;margin-bottom:18px;font-size:13px;color:var(--dim)}
+.nbar strong{color:var(--coral)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🛒 Amazon Listing Preview</h1><p>Exactly how BIVVO appears on Amazon — title, images, bullets, Buy Box, and A+ Content. Based on P3B + P6E flat file. Click colors to switch variations.</p></div>
+<section>
+<div class="nbar"><strong>📝</strong> Image slots show placeholders — replace with product photography (Task #16). All listing copy is final approved per G-06.</div>
+<div class="amz">
+<div class="amz-top">
+<div class="amz-gal">
+<div class="amz-main" id="mi"><div class="ph"><div class="ic">📷</div>Main Product Image<br><small>2000×2000px · White bg</small></div><div class="sl" id="slab">Slot 1: Main Image</div></div>
+<div class="thumbs">
+<div class="th on" onclick="sS(0)">Main</div><div class="th" onclick="sS(1)">Life-<br>style</div><div class="th" onclick="sS(2)">Info-<br>graphic</div><div class="th" onclick="sS(3)">Size<br>Comp</div><div class="th" onclick="sS(4)">All 5<br>Colors</div><div class="th" onclick="sS(5)">Pack-<br>aging</div><div class="th" onclick="sS(6)">▶ Video</div>
+</div></div>
+<div class="amz-det">
+<div class="brand">Visit the BIVVO Store</div>
+<div class="title">BIVVO Race Bib Clips 4-Pack — Pinless Twist-Lock Bib Holders for Running — No Magnets No Safety Pins — Timing Chip Safe Race Number Clips — <span id="cn">Black</span></div>
+<div class="stars-row"><span class="s">★★★★★</span><span class="c">Target: 50+ ratings by Day 90</span></div>
+<div class="price-box"><div class="p"><span class="sym">$</span>14<span class="ct">.99</span></div><div class="note">FREE Returns · <span class="prime">prime</span> FREE delivery <b>Tomorrow</b></div></div>
+<div class="del"><b>FREE delivery tomorrow</b> — order within <b>12 hrs 34 mins</b></div>
+<div class="stock">In Stock</div>
+<div class="var-sec"><div class="vl">Color: <span id="cl" style="font-weight:400">Black</span></div>
+<div class="var-pills"><div class="vp on" onclick="pC(0)">⚫ Black</div><div class="vp" onclick="pC(1)">⚪ White</div><div class="vp" onclick="pC(2)">💎 Clear</div><div class="vp" onclick="pC(3)">🩷 Coral Pink</div><div class="vp" onclick="pC(4)">💙 Sky Blue</div></div></div>
+<div class="buybox"><button class="bb bb-c">Add to Cart</button><button class="bb bb-b">Buy Now</button><div class="sell">Ships from <b>Amazon.com</b> · Sold by <b>BIVVO</b></div></div>
+</div></div>
+<div class="bul"><h3>About this item</h3>
+<ul>
+<li><b>ZERO MAGNETS — TIMING CHIP SAFE:</b> Unlike magnetic bib clips, BIVVO uses a pure mechanical twist-lock with absolutely zero magnets. Your RFID timing chip reads perfectly at every mat.</li>
+<li><b>INSERT, TWIST, CLICK — 3 SECONDS:</b> Attach your race bib in 12 seconds (all 4 corners). Insert through bib + shirt, twist 90° clockwise, hear the satisfying CLICK.</li>
+<li><b>ZERO FABRIC DAMAGE:</b> Safety pins punch holes in your $60–$150 race jersey. BIVVO grips without puncturing. Singlets, tech shirts, and race kits stay hole-free.</li>
+<li><b>500+ RACE LIFESPAN:</b> POM (Delrin®) copolymer — the same material used in precision mechanical components. One purchase replaces a lifetime of safety pins.</li>
+<li><b>5 COLORS, 4-PACK:</b> Includes 4 twist-lock clips. Available in Black, White, Clear, Coral Pink, Sky Blue. Collect your favorite — or try them all.</li>
+</ul></div>
+<div class="ap"><h3>From the brand</h3>
+<div class="mod"><div class="mh"><span>Module 1: Brand Story</span><span style="color:#888">3000×600px</span></div><div class="mb" style="background:#1B2A4A;color:#fff;text-align:center;padding:28px"><h4 style="color:#FF6B6B;font-size:20px">Ditch the Pins. Keep the Click.</h4><p style="color:rgba(255,255,255,.7);max-width:500px;margin:6px auto 0;font-size:13px">Zero magnets. Zero pins. Zero holes. Insert, twist, click — race.</p></div></div>
+<div class="mod"><div class="mh"><span>Module 2: How It Works</span><span style="color:#888">3-step tiles</span></div><div class="mb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center"><div><div style="font-size:32px">1️⃣</div><h4>INSERT</h4><p style="font-size:11px">Through bib + shirt</p></div><div><div style="font-size:32px">2️⃣</div><h4>TWIST</h4><p style="font-size:11px">90° clockwise</p></div><div><div style="font-size:32px">3️⃣</div><h4>CLICK</h4><p style="font-size:11px">Locked & race-ready</p></div></div></div>
+<div class="mod"><div class="mh"><span>Module 3: Comparison Chart</span></div><div class="mb">
+<table class="cmp"><thead><tr><th></th><th style="background:#fef8f2;border-color:#e77600">BIVVO</th><th>Magnetic</th><th>Pins</th><th>Belt</th></tr></thead>
+<tbody><tr><td style="text-align:left;font-weight:700">Chip Safe</td><td style="background:#fef8f2">✅ Yes</td><td>⚠️ Risk</td><td>✅</td><td>✅</td></tr>
+<tr><td style="text-align:left;font-weight:700">Fabric Damage</td><td style="background:#fef8f2">✅ Zero</td><td>✅ Zero</td><td>❌ Holes</td><td>✅</td></tr>
+<tr><td style="text-align:left;font-weight:700">Durability</td><td style="background:#fef8f2">500+ races</td><td>50–200</td><td>1 use</td><td>200+</td></tr>
+<tr><td style="text-align:left;font-weight:700">Setup</td><td style="background:#fef8f2">12 sec</td><td>8 sec</td><td>60+ sec</td><td>15 sec</td></tr>
+<tr><td style="text-align:left;font-weight:700">Price</td><td style="background:#fef8f2">$14.99</td><td>$9–$15</td><td>~$0.01</td><td>$13–$20</td></tr></tbody></table>
+</div></div>
+<div class="mod"><div class="mh"><span>Module 4: Material</span></div><div class="mb"><h4>Why POM (Delrin®)?</h4><p>The same material in camera lens mounts and medical devices. 65–70 MPa tensile strength, 0.2% water absorption, consistent from 20°F to 140°F. 500+ cycles without losing holding force.</p></div></div>
+<div class="mod"><div class="mh"><span>Module 5: Brand Story</span></div><div class="mb" style="background:#f8f8f8;text-align:center;padding:20px"><h4>The Name Behind the Click</h4><p style="max-width:460px;margin:0 auto;font-size:12px"><b>BIVVO</b> = "bivouac" — a temporary camp for adventurers. Race morning is your bivouac: the focused moment before the adventure begins.</p></div></div>
+</div></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+var SL=[['Slot 1: Main Image','📷','Main product · White bg'],['Slot 2: Lifestyle','🏃','Runner at start line'],['Slot 3: Infographic','📊','3-step how-to diagram'],['Slot 4: Size Comp','📏','BIVVO vs safety pin'],['Slot 5: All Colors','🎨','5 colors arranged'],['Slot 6: Packaging','📦','RTE carton with window'],['Slot 7: Video','🎬','15-30s demo loop']];
+var CL=['Black','White','Clear','Coral Pink','Sky Blue'];
+function sS(i){document.getElementById('slab').textContent=SL[i][0];document.getElementById('mi').querySelector('.ph').innerHTML='<div class="ic">'+SL[i][1]+'</div>'+SL[i][2];document.querySelectorAll('.th').forEach(function(t,j){t.classList.toggle('on',j===i)})}
+function pC(i){document.getElementById('cn').textContent=CL[i];document.getElementById('cl').textContent=CL[i];document.querySelectorAll('.vp').forEach(function(p,j){p.classList.toggle('on',j===i)})}
+</script></body></html>

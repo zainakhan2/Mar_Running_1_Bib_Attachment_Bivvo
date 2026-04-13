@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pitch Deck — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.deck{max-width:960px;margin:0 auto}
+.slide{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);margin-bottom:20px;overflow:hidden;min-height:420px;display:flex;flex-direction:column;position:relative}
+.slide-num{position:absolute;top:12px;right:16px;font-family:'Space Mono',monospace;font-size:11px;color:var(--dim);background:var(--bg);padding:2px 10px;border-radius:10px;border:1px solid var(--border)}
+.slide-body{padding:40px 48px;flex:1;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:768px){.slide-body{padding:24px}}
+.slide h2{font-size:28px;color:var(--white);margin-bottom:20px;border:none;padding:0}
+.slide h2 span{color:var(--coral)}
+.slide h3{font-size:18px;color:var(--coral);margin:20px 0 10px}
+.slide p{font-size:15px;color:var(--dim);line-height:1.7;margin-bottom:12px}
+.slide strong{color:var(--white)}
+.slide .big-num{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;color:var(--coral)}
+.slide .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:20px 0}
+.slide .mg{text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.slide .mg .n{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:var(--green)}
+.slide .mg .l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.slide table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+.slide th{background:var(--navy);color:var(--white);padding:8px 12px;text-align:left;font-size:11px;text-transform:uppercase}
+.slide td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--dim)}
+.slide td:first-child{color:var(--white);font-weight:600}
+.cover{background:linear-gradient(135deg,#1B2A4A 0%,#0C1222 50%,#1B2A4A 100%);text-align:center;justify-content:center;align-items:center;min-height:500px}
+.cover h1{font-size:clamp(36px,5vw,56px);color:var(--white);margin-bottom:12px}
+.cover h1 span{color:var(--coral)}
+.cover .sub{font-size:18px;color:var(--dim);margin-bottom:24px}
+.cover .tag{display:inline-block;padding:6px 20px;border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--dim);margin:4px}
+.toc-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;justify-content:center}
+.toc-nav a{font-size:11px;padding:4px 12px;border:1px solid var(--border);border-radius:12px;color:var(--dim)}
+.toc-nav a:hover{border-color:var(--coral);color:var(--coral)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🎯 Investor & Partner Pitch Deck</h1><p>12-slide pitch deck for investors, wholesale partners, and race directors. Scroll through or jump to any slide.</p></div>
+<section>
+<div class="toc-nav">
+<a href="#s1">1 Cover</a><a href="#s2">2 Problem</a><a href="#s3">3 Solution</a><a href="#s4">4 Market</a><a href="#s5">5 Product</a><a href="#s6">6 Business</a><a href="#s7">7 Traction</a><a href="#s8">8 Competition</a><a href="#s9">9 Go-to-Market</a><a href="#s10">10 Financials</a><a href="#s11">11 Team</a><a href="#s12">12 Ask</a>
+</div>
+<div class="deck">
+
+<div class="slide cover" id="s1"><div class="slide-num">1/12</div><div class="slide-body">
+<h1><span>BIVVO</span></h1>
+<p class="sub">The Twist-Lock Race Bib Clip That Replaces Safety Pins</p>
+<p style="font-size:22px;color:var(--coral);margin:16px 0">Ditch the Pins. Keep the Click.</p>
+<div><span class="tag">Zero Magnets</span><span class="tag">Timing Chip Safe</span><span class="tag">500+ Race Lifespan</span><span class="tag">$14.99 / 4-Pack</span></div>
+</div></div>
+
+<div class="slide" id="s2"><div class="slide-num">2/12</div><div class="slide-body">
+<h2>The <span>Problem</span></h2>
+<p><strong>18.1 million US race finishers annually</strong> attach their bibs with safety pins — a 50-year-old method that punches holes in expensive jerseys, pokes fingers in the cold, and gets dropped in wet grass at 5:30 AM.</p>
+<p><strong>Magnetic clips emerged</strong> as an alternative but carry a theoretical risk of interfering with RFID timing chips — a deal-breaker for competitive runners chasing qualifying times and age group awards.</p>
+<p><strong>No mechanical (non-magnetic) pinless solution</strong> exists at consumer scale. The #1 race-morning complaint has no proper answer.</p>
+<div class="metric-grid">
+<div class="mg"><div class="n">18.1M</div><div class="l">US Race Finishers/Year</div></div>
+<div class="mg"><div class="n">72M+</div><div class="l">Pins Used Annually</div></div>
+<div class="mg"><div class="n">#1</div><div class="l">Race-Morning Complaint</div></div>
+</div>
+</div></div>
+
+<div class="slide" id="s3"><div class="slide-num">3/12</div><div class="slide-body">
+<h2>The <span>Solution</span></h2>
+<p><strong>BIVVO</strong> is a twist-lock (bayonet-mount) race bib clip. The same mechanical principle as a camera lens mount — proven in millions of devices worldwide — adapted for race bib attachment.</p>
+<h3>Insert. Twist. Click.</h3>
+<p>Push through bib + shirt → twist 90° → hear the click. 3 seconds per clip. 12 seconds total. Zero magnets. Zero pins. Zero holes.</p>
+<div class="metric-grid">
+<div class="mg"><div class="n">0</div><div class="l">Magnets</div></div>
+<div class="mg"><div class="n">0</div><div class="l">Fabric Holes</div></div>
+<div class="mg"><div class="n">500+</div><div class="l">Race Lifespan</div></div>
+<div class="mg"><div class="n">3 sec</div><div class="l">Per Clip</div></div>
+</div>
+</div></div>
+
+<div class="slide" id="s4"><div class="slide-num">4/12</div><div class="slide-body">
+<h2>The <span>Market</span></h2>
+<table><tr><td>TAM</td><td>$90.4B global running accessories</td></tr>
+<tr><td>SAM</td><td>$151M US race bib attachment products</td></tr>
+<tr><td>SOM Year 1</td><td>$60K–$150K (0.04–0.1% SAM)</td></tr>
+<tr><td>SOM Year 2</td><td>$150K–$300K</td></tr></table>
+<p><strong>Category dynamics:</strong> Amazon search volume for "race bib clips" up 35% YoY. Top seller (BibBoards) at BSR 5,000–15,000 does $3K–$8K/month. Category supports 5–8 profitable sellers. BIVVO enters as the only twist-lock, timing chip safe option.</p>
+</div></div>
+
+<div class="slide" id="s5"><div class="slide-num">5/12</div><div class="slide-body">
+<h2>The <span>Product</span></h2>
+<table><tr><td>Material</td><td>POM (Delrin®) acetal copolymer</td></tr>
+<tr><td>Mechanism</td><td>3-lug bayonet mount, 90° rotation, audible click</td></tr>
+<tr><td>Dimensions</td><td>30mm diameter × 8mm height, ~2g per clip</td></tr>
+<tr><td>Pack Size</td><td>4 clips (one per bib corner)</td></tr>
+<tr><td>Colors</td><td>Black, White, Clear, Coral Pink, Sky Blue</td></tr>
+<tr><td>Manufacturing</td><td>China injection molding, $0.50/unit landed</td></tr>
+<tr><td>MOQ</td><td>5,000 units (first run)</td></tr>
+<tr><td>Tooling</td><td>$2,500–$4,000 (one-time, 100K+ shot life)</td></tr></table>
+</div></div>
+
+<div class="slide" id="s6"><div class="slide-num">6/12</div><div class="slide-body">
+<h2>Business <span>Model</span></h2>
+<table><thead><tr><th>Channel</th><th>Year 1 Mix</th><th>Price</th><th>Net Margin</th></tr></thead>
+<tr><td>Amazon FBA</td><td>85%</td><td>$14.99</td><td>23.1% ($3.46/unit)</td></tr>
+<tr><td>Shopify DTC</td><td>5%</td><td>$14.99</td><td>38.4% ($5.76/unit)</td></tr>
+<tr><td>Race Expos</td><td>10%</td><td>$14.99</td><td>~50%</td></tr></table>
+<div class="metric-grid">
+<div class="mg"><div class="n">44</div><div class="l">Break-Even Units/Mo</div></div>
+<div class="mg"><div class="n">$660</div><div class="l">Monthly Fixed Costs</div></div>
+<div class="mg"><div class="n">M5–M7</div><div class="l">Profitable by Month</div></div>
+</div>
+</div></div>
+
+<div class="slide" id="s7"><div class="slide-num">7/12</div><div class="slide-body">
+<h2>Launch <span>Readiness</span></h2>
+<p>Complete GTM playbook: <strong>71 files, 116 founder tasks, 30/30 gaps resolved, A+ final grade.</strong></p>
+<div class="metric-grid">
+<div class="mg"><div class="n">7</div><div class="l">Strategy Projects</div></div>
+<div class="mg"><div class="n">38+</div><div class="l">Subprojects</div></div>
+<div class="mg"><div class="n">22</div><div class="l">Email Templates</div></div>
+<div class="mg"><div class="n">8</div><div class="l">PPC Campaigns</div></div>
+<div class="mg"><div class="n">103</div><div class="l">Launch Checklist Pts</div></div>
+<div class="mg"><div class="n">3</div><div class="l">Blog Posts Drafted</div></div>
+</div>
+</div></div>
+
+<div class="slide" id="s8"><div class="slide-num">8/12</div><div class="slide-body">
+<h2>Competitive <span>Landscape</span></h2>
+<table><thead><tr><th>Product</th><th>Type</th><th>Price</th><th>Chip Safe?</th><th>Durability</th></tr></thead>
+<tr><td>BIVVO</td><td style="color:var(--coral)">Twist-Lock</td><td>$14.99</td><td style="color:var(--green)">✅ Yes</td><td>500+ races</td></tr>
+<tr><td>BibBoards</td><td>Magnetic</td><td>$9.99</td><td style="color:var(--orange)">⚠️ Risk</td><td>50–200</td></tr>
+<tr><td>RooSportPlus</td><td>Magnetic</td><td>$14.99</td><td style="color:var(--orange)">⚠️ Risk</td><td>100+</td></tr>
+<tr><td>Fitletic Belt</td><td>Belt</td><td>$15.99</td><td style="color:var(--green)">✅ Yes</td><td>200+</td></tr></table>
+<p><strong>BIVVO's moat:</strong> Only non-magnetic clip at consumer scale. Patent filing creates 12–18 month lead. First to own "timing chip safe" positioning in Amazon search.</p>
+</div></div>
+
+<div class="slide" id="s9"><div class="slide-num">9/12</div><div class="slide-body">
+<h2>Go-to-Market <span>Strategy</span></h2>
+<h3>16-Week Launch Plan</h3>
+<p><strong>Phase 1 (W-16):</strong> LLC + Amazon + trademark → <strong>Phase 2 (W-14):</strong> Factory + brand → <strong>Phase 3 (W-12):</strong> Shopify + content + emails → <strong>Phase 4 (W-8):</strong> FBA + PPC + influencers → <strong>Phase 5 (W-4):</strong> QA + checklist → <strong>Launch Day</strong></p>
+<h3>Growth Engine</h3>
+<p>Amazon PPC (8 campaigns) drives discovery → Brand Store + A+ Content converts → Post-purchase email nurtures → Referral program ("Share the Click") acquires → Influencer seeding (Pace Team) amplifies → Race expos builds in-person trust.</p>
+</div></div>
+
+<div class="slide" id="s10"><div class="slide-num">10/12</div><div class="slide-body">
+<h2>Financial <span>Projections</span></h2>
+<table><thead><tr><th>Scenario</th><th>Investment</th><th>Year 1 Revenue</th><th>Net</th></tr></thead>
+<tr><td>$15K Bear</td><td>$10.7K</td><td>$30–$36K</td><td>Breakeven M10</td></tr>
+<tr><td>$15K Base</td><td>$14.6K</td><td>$45–$63K</td><td>12–18%</td></tr>
+<tr><td>$35K Base</td><td>$23.4K</td><td>$72–$108K</td><td>15–22%</td></tr>
+<tr><td>$35K Bull</td><td>$30.2K</td><td>$108–$180K</td><td>20–28%</td></tr></table>
+<p><strong>Year 2 target:</strong> $150K–$300K. Add Walmart (3–5%), TikTok Shop (2–4%), grow DTC to 15–20%.</p>
+</div></div>
+
+<div class="slide" id="s11"><div class="slide-num">11/12</div><div class="slide-body">
+<h2>The <span>Founder</span></h2>
+<p><strong>Solo founder, Pakistan-based.</strong> Operating via Wyoming LLC + Payoneer for USD→PKR. 12.5 hours/week time commitment (manageable alongside other projects).</p>
+<p><strong>Key advantage:</strong> China manufacturing relationship via Pakistan's existing export infrastructure. Cost-competitive sourcing with direct factory communication.</p>
+<p><strong>Portfolio context:</strong> BIVVO is Project 5 in a multi-brand retail ventures portfolio. Other projects include trail shorts, gel-carrying marathon shorts, and sustainable race ponchos — all targeting running accessories.</p>
+</div></div>
+
+<div class="slide cover" id="s12"><div class="slide-num">12/12</div><div class="slide-body">
+<h2>The <span>Ask</span></h2>
+<div class="metric-grid">
+<div class="mg"><div class="n">$15K</div><div class="l">Bootstrap Scenario</div></div>
+<div class="mg"><div class="n">$35K</div><div class="l">Full Launch Scenario</div></div>
+</div>
+<p style="font-size:16px;text-align:center;margin-top:20px">Investment covers: tooling, first production run, freight, photography, PPC budget (3 months), and working capital through break-even.</p>
+<p style="font-size:20px;color:var(--coral);text-align:center;margin-top:20px;font-weight:700">Ditch the Pins. Keep the Click.</p>
+<p style="text-align:center;color:var(--dim)">hello@bivvo.com · bivvo.com · @bivvo.run</p>
+</div></div>
+
+</div></section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+</body></html>

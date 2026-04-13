@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Social Media Content Preview — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.post-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);overflow:hidden;transition:all .3s}
+.post-card:hover{border-color:var(--coral);transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,107,107,.1)}
+.post-header{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.post-avatar{width:32px;height:32px;border-radius:50%;background:var(--coral);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--white)}
+.post-handle{font-size:13px;font-weight:600;color:var(--white)}
+.post-platform{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.post-image{width:100%;aspect-ratio:1;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.post-image .visual{font-size:48px;margin-bottom:8px}
+.post-image .caption-preview{font-size:13px;color:rgba(255,255,255,.7);line-height:1.4;max-width:240px}
+.post-body{padding:14px 16px}
+.post-body .caption{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:8px}
+.post-body .caption strong{color:var(--white)}
+.post-body .hashtags{font-size:11px;color:var(--blue)}
+.post-meta{padding:8px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--dim)}
+.post-meta .day{font-family:'Space Mono',monospace;color:var(--coral);font-weight:700}
+.post-meta .type{color:var(--dim)}
+.pillar-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-left:8px}
+.pb-demo{background:rgba(255,107,107,.15);color:#FF6B6B}
+.pb-pain{background:rgba(231,76,60,.15);color:#e74c3c}
+.pb-proof{background:rgba(46,204,113,.15);color:#2ecc71}
+.pb-edu{background:rgba(52,152,219,.15);color:#3498db}
+.pb-comm{background:rgba(155,89,182,.15);color:#bb6bd9}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filters button{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--dim);cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.filters button:hover{border-color:var(--coral);color:var(--coral)}
+.filters button.on{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.cal-bar{display:flex;gap:4px;margin:16px 0;overflow-x:auto;padding-bottom:8px}
+.cal-day{min-width:60px;text-align:center;padding:8px 4px;border-radius:6px;font-size:10px;color:var(--dim);background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.cal-day:hover{border-color:var(--coral)}.cal-day.active{border-color:var(--coral);background:var(--card2);color:var(--white)}
+.cal-day .dn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;color:var(--coral)}
+.cal-day .cnt{font-size:9px;margin-top:2px}
+.hashtag-sets{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.hs{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.hs h4{font-size:12px;color:var(--white);margin-bottom:6px}
+.hs p{font-size:11px;color:var(--blue);word-break:break-all;margin:0}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📱 Social Media Content Preview</h1><p>All 20 launch posts for the 14-day calendar. Visual preview showing exactly how each post looks with platform, caption, hashtags, and timing. From P6H.</p></div>
+<section>
+<div class="filters" id="filters">
+<button class="on" onclick="filterP('all',this)">All (20)</button>
+<button onclick="filterP('ig',this)">📸 Instagram (12)</button>
+<button onclick="filterP('tt',this)">🎵 TikTok (5)</button>
+<button onclick="filterP('story',this)">📱 IG Story (3)</button>
+</div>
+<div class="hashtag-sets">
+<div class="hs"><h4>🏷️ Primary</h4><p>#DitchThePins #BIVVO #RaceBibClips</p></div>
+<div class="hs"><h4>🏃 Running</h4><p>#RunningCommunity #MarathonTraining #RaceDay #5K #HalfMarathon</p></div>
+<div class="hs"><h4>📦 Product</h4><p>#NoMorePins #TimingChipSafe #TwistLockClips #PinlessRacing</p></div>
+<div class="hs"><h4>👥 Community</h4><p>#RunnersOfInstagram #RunHappy #RaceReady #RunnerLife</p></div>
+</div>
+<div class="post-grid" id="postGrid"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+var posts=[
+{day:"D-7",plat:"ig",type:"IG Feed",pillar:"demo",pb:"Demo",icon:"🔮",visual:"Something's coming...",caption:"Something's coming for race morning... 👀\n\nNo more fumbling. No more poking. No more holes.\n\nStay tuned.",hashtags:"#ComingSoon #RaceDay #DitchThePins",time:"7:00 AM EST"},
+{day:"D-5",plat:"tt",type:"TikTok",pillar:"demo",pb:"Demo",icon:"🔊",visual:"*click* *click* *click*",caption:"The most satisfying sound in running 🤤\n\nInsert. Twist. CLICK.\n\nZero magnets. Zero pins. Just the click.",hashtags:"#ASMR #SatisfyingClick #RunningGear #DitchThePins",time:"12:00 PM EST"},
+{day:"D-4",plat:"ig",type:"IG Feed",pillar:"pain",pb:"Pain Point",icon:"😤",visual:"POV: 5:30 AM, wet grass, numb fingers, 4 tiny pins",caption:"POV: It's 5:30 AM. Your fingers are numb. You just dropped the third safety pin in wet grass. Your $120 singlet already has 8 holes from last season.\n\nThere has to be a better way... (there is) 😏",hashtags:"#RaceDay #SafetyPins #RunnerProblems #DitchThePins",time:"7:00 AM EST"},
+{day:"D-3",plat:"story",type:"IG Story",pillar:"comm",pb:"Community",icon:"📊",visual:"POLL: How do you attach your bib?",caption:"Poll: How do you attach your race bib?\n\n🔴 Safety pins (the OG struggle)\n🔵 Magnetic clips\n🟡 Race belt\n🟢 Other / prayer",hashtags:"",time:"9:00 AM EST"},
+{day:"D-2",plat:"tt",type:"TikTok",pillar:"pain",pb:"Pain Point",icon:"🩸",visual:"Every runner's race morning ritual",caption:"The 4 stages of safety pin grief:\n1. Confidence (I got this)\n2. Fumbling (cold fingers edition)\n3. Blood (of course)\n4. Acceptance (I'll just use one pin)\n\nOr... you could skip all 4 stages 😉",hashtags:"#RunnerLife #RaceDay #Marathon #DitchThePins",time:"12:00 PM EST"},
+{day:"D-1",plat:"ig",type:"IG Feed",pillar:"demo",pb:"Demo",icon:"⏰",visual:"TOMORROW.",caption:"Tomorrow. Ditch the pins forever.\n\nInsert. Twist. Click. Race.\n\nLink in bio at 7 AM EST 🏃‍♂️",hashtags:"#LaunchDay #BIVVO #DitchThePins #RaceBibClips",time:"7:00 PM EST"},
+{day:"D0",plat:"ig",type:"IG Reel",pillar:"demo",pb:"Demo",icon:"🎬",visual:"INSERT → TWIST → CLICK",caption:"It's here. 🎉\n\nBIVVO — the twist-lock race bib clip.\n\n✅ Zero magnets (timing chip safe)\n✅ Zero pins (no more holes)\n✅ Zero fumbling (3 seconds flat)\n\n$14.99 / 4-pack. 5 colors. 500+ races.\n\nLink in bio. #DitchThePins",hashtags:"#BIVVO #RaceBibClips #LaunchDay #DitchThePins #TimingChipSafe",time:"7:00 AM EST"},
+{day:"D0",plat:"tt",type:"TikTok",pillar:"demo",pb:"Demo",icon:"🎬",visual:"WE'RE LIVE 🚀",caption:"POV: You never use safety pins again.\n\nInsert. Twist. CLICK.\n\nBIVVO twist-lock race bib clips. Out NOW.\n\n🏃 Zero magnets\n🏃 Zero pins\n🏃 Zero fumbling",hashtags:"#BIVVO #RunningGear #DitchThePins #RaceDay",time:"7:30 AM EST"},
+{day:"D0",plat:"story",type:"IG Story",pillar:"comm",pb:"Community",icon:"🎊",visual:"BTS: First orders coming in!",caption:"Launch day BTS! 🎊\n\nWatching the first orders roll in... this is really happening.\n\nThank you to everyone who believed in the click! 🥹",hashtags:"",time:"2:00 PM EST"},
+{day:"D1",plat:"ig",type:"IG Feed",pillar:"edu",pb:"Education",icon:"🧲",visual:"Why we have ZERO magnets",caption:"\"But why not just use magnets?\"\n\nGreat question. Here's why:\n\nMagnetic clips use neodymium magnets that generate 50-200 gauss near your timing chip. RFID chips read at 125kHz-960MHz.\n\nCould magnets interfere? Probably not. But \"probably\" isn't good enough when you're chasing a BQ.\n\nBIVVO: zero magnets. Guaranteed chip safety.\n\nFull explainer → link in bio",hashtags:"#TimingChip #RFID #RaceTiming #BIVVO #DitchThePins",time:"7:00 AM EST"},
+{day:"D2",plat:"tt",type:"TikTok",pillar:"pain",pb:"Pain Point",icon:"😂",visual:"POV: Your friend still using safety pins",caption:"POV: Your friend still uses safety pins at races\n\nYou: *click click click* done in 12 seconds\nThem: *fumbling* *dropping pins* *drawing blood* \"almost got it...\"\n\nTag a friend who needs this 😂",hashtags:"#RunningHumor #RaceDay #SafetyPins #DitchThePins",time:"12:00 PM EST"},
+{day:"D3",plat:"story",type:"IG Story",pillar:"proof",pb:"Social Proof",icon:"📸",visual:"REPOST: First customer unboxing!",caption:"Our first customer unboxing! 🥹📦\n\n(This is why we built this)\n\nShare YOUR unboxing → tag @bivvo.run",hashtags:"",time:"10:00 AM EST"},
+{day:"D4",plat:"ig",type:"IG Feed",pillar:"edu",pb:"Education",icon:"👕",visual:"Your jersey after 10 races with pins vs clips",caption:"Left: Your $120 singlet after 10 races with safety pins. (40 holes.)\n\nRight: Your singlet after 10 races with BIVVO. (Zero holes.)\n\nThe math is simple. Your gear deserves better.",hashtags:"#RaceJersey #RunningGear #FabricCare #BIVVO #DitchThePins",time:"7:00 AM EST"},
+{day:"D5",plat:"ig",type:"IG Feed",pillar:"demo",pb:"Demo",icon:"🏃",visual:"Runner at start line with BIVVO clips",caption:"Race morning, simplified.\n\n4 clips. 12 seconds. 0 stress.\n\nBIVVO twist-lock race bib clips — now available in 5 colors.\n\nWhich color are you? 👇\n⚫ Black\n⚪ White\n💎 Clear\n🩷 Coral Pink\n💙 Sky Blue",hashtags:"#RaceDay #BIVVO #RunningAccessories #DitchThePins",time:"7:00 AM EST"},
+{day:"D6",plat:"tt",type:"TikTok",pillar:"demo",pb:"Demo",icon:"🎨",visual:"5 colors • 3 seconds • 0 pins",caption:"5 colors. 3 seconds. 0 pins.\n\nBlack → White → Clear → Coral → Blue\n\nWhich one are you? Comment below 👇",hashtags:"#BIVVO #RunningGear #ColorReveal #DitchThePins",time:"12:00 PM EST"},
+{day:"D7",plat:"ig",type:"IG Feed",pillar:"proof",pb:"Social Proof",icon:"⭐",visual:"First reviews are in...",caption:"The reviews are coming in... 🥹\n\n⭐⭐⭐⭐⭐ \"Finally! No more pins!\"\n⭐⭐⭐⭐⭐ \"The click is so satisfying\"\n⭐⭐⭐⭐⭐ \"Timing chip safe — that's all I needed to hear\"\n\nThank you to our first customers. You're the reason we built this.",hashtags:"#CustomerReviews #BIVVO #RaceBibClips #DitchThePins",time:"7:00 AM EST"},
+{day:"D9",plat:"ig",type:"IG Feed",pillar:"edu",pb:"Education",icon:"📐",visual:"Size comparison: BIVVO vs safety pin",caption:"Size comparison time 📐\n\nBIVVO clip: 30mm, 2g, reusable 500+ times\nSafety pin: variable, sharp, reusable 0 times (because you lost it in the grass)\n\nOne costs $3.75 per clip. The other costs your sanity.",hashtags:"#SizeComparison #RaceBibClips #BIVVO #DitchThePins",time:"7:00 AM EST"},
+{day:"D11",plat:"ig",type:"IG Feed",pillar:"comm",pb:"Community",icon:"🏅",visual:"Join the BIVVO Strava Club",caption:"Runners who ditch the pins, run together. 🏅\n\nJoin the BIVVO Strava Club → link in bio\n\nMonthly challenges. Race recaps. Community vibes.\n\n#DitchThePins squad, assemble.",hashtags:"#StravaClub #RunningCommunity #BIVVO #DitchThePins",time:"7:00 AM EST"},
+{day:"D12",plat:"ig",type:"IG Feed",pillar:"proof",pb:"Social Proof",icon:"📊",visual:"Week 2 by the numbers",caption:"Two weeks in. Here's what happened:\n\n📦 [X] clips shipped\n⭐ [X] five-star reviews\n🏃 [X] runners ditched their pins\n🌍 [X] states reached\n\nThis is just the beginning. Thank you. 🙏",hashtags:"#MilestonePost #BIVVO #RaceBibClips #DitchThePins",time:"7:00 AM EST"},
+{day:"D14",plat:"ig",type:"IG Reel",pillar:"comm",pb:"Community",icon:"📸",visual:"YOUR race photos with BIVVO",caption:"#DitchThePins — your race photos with BIVVO 📸\n\nTwo weeks ago we launched. Today, runners across the country are clicking in.\n\nTag us @bivvo.run in your race photos. We'll repost our favorites every week.\n\nThis community is just getting started. 🏃‍♀️🏃‍♂️",hashtags:"#UGC #RunnersOfInstagram #BIVVO #DitchThePins #RacePhotos",time:"7:00 AM EST"},
+];
+function filterP(p,btn){
+  document.querySelectorAll('#filters button').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  renderPosts(p);
+}
+function renderPosts(filter){
+  var filtered=filter==='all'?posts:posts.filter(function(p){
+    if(filter==='ig') return p.plat==='ig'&&p.type!=='IG Story';
+    if(filter==='tt') return p.plat==='tt';
+    if(filter==='story') return p.type==='IG Story';
+    return true;
+  });
+  var html='';
+  filtered.forEach(function(p){
+    var platIcon=p.plat==='ig'?'📸':'🎵';
+    var pbClass='pb-'+p.pillar;
+    html+='<div class="post-card"><div class="post-header"><div class="post-avatar">B</div><div><div class="post-handle">@bivvo.run</div><div class="post-platform">'+p.type+'</div></div><span class="pillar-badge '+pbClass+'">'+p.pb+'</span></div>';
+    html+='<div class="post-image" style="background:linear-gradient(135deg,#1B2A4A,#0C1222)"><div><div class="visual">'+p.icon+'</div><div class="caption-preview">'+p.visual+'</div></div></div>';
+    html+='<div class="post-body"><div class="caption">'+p.caption.replace(/\n/g,'<br>')+'</div>';
+    if(p.hashtags) html+='<div class="hashtags">'+p.hashtags+'</div>';
+    html+='</div><div class="post-meta"><span class="day">'+p.day+'</span><span class="type">'+p.time+'</span></div></div>';
+  });
+  document.getElementById('postGrid').innerHTML=html;
+}
+renderPosts('all');
+</script></body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Search — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.search-box{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:24px;margin:24px 0;display:flex;gap:12px}
+.search-box input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 20px;color:var(--white);font-size:16px;font-family:'DM Sans',sans-serif}
+.search-box input:focus{outline:none;border-color:var(--coral)}
+.search-box input::placeholder{color:var(--dim)}
+.results{margin:24px 0}.results .count{font-size:13px;color:var(--dim);margin-bottom:16px;font-family:'Space Mono',monospace}
+.result{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:8px;transition:all .2s;display:block;color:var(--text)}
+.result:hover{border-color:var(--coral);transform:translateX(4px)}
+.result .cat{font-size:10px;color:var(--coral);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.result h4{color:var(--white);font-size:15px;margin:4px 0}
+.result .desc{font-size:13px;color:var(--dim);line-height:1.5}
+.result .match{background:rgba(255,107,107,.15);color:var(--coral);padding:1px 3px;border-radius:2px}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.cats button{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--dim);cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.cats button:hover{border-color:var(--coral);color:var(--coral)}
+.cats button.on{background:var(--coral);border-color:var(--coral);color:var(--white)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🔍 Search All Pages</h1><p>Search across all 90+ pages of the BIVVO GTM playbook. Type to filter instantly.</p></div>
+<section>
+<div class="search-box"><input type="text" id="q" placeholder="Search pages... (e.g. PPC, timing chip, Shopify, Prop 65, influencer)" oninput="doSearch()" autofocus></div>
+<div class="cats" id="cats"></div>
+<div class="results" id="results"></div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+var pages=[
+{u:"index.html",t:"Dashboard",c:"Core",d:"Main hub with manifesto, stats, timeline, scorecard, unit economics, gap summary, project cards, archive manifest"},
+{u:"executive-summary.html",t:"Executive Summary",c:"Core",d:"Problem, solution, business model, Year 1 revenue, competitive advantage, market sizing"},
+{u:"financials.html",t:"Financial Model",c:"Core",d:"Amazon FBA unit economics, DTC margins, startup costs, break-even analysis, $15K and $35K scenarios"},
+{u:"projections.html",t:"Revenue Projections",c:"Core",d:"Bear Base Bull scenarios, Year 2 channel mix, Walmart TikTok expansion"},
+{u:"tasks.html",t:"116 Founder Tasks",c:"Core",d:"Every task from LLC formation through launch and 90-day post-launch, 9 phases"},
+{u:"tracker.html",t:"Interactive Master Tracker",c:"Tool",d:"Filter sort check off 116 tasks, done open waiting-on-founder status, phase progress bars"},
+{u:"gaps.html",t:"Gap Analysis — 30/30 Closed",c:"Core",d:"20 P3-P5 gaps, 10 P6 gaps, all resolved with priority severity and resolution details"},
+{u:"day-by-day.html",t:"Day-by-Day Action Plan",c:"Core",d:"Visual chronological timeline, expandable phases, 116 tasks with timing estimates"},
+{u:"content.html",t:"Content Library",c:"Core",d:"Email templates, blog posts, social media, influencer DMs, FAQ, customer support replies"},
+{u:"files.html",t:"All Files — 71",c:"Core",d:"Complete archive manifest, 9 folders, DOCX XLSX SVG files"},
+{u:"action-plan.html",t:"Founder Action Plan",c:"Core",d:"How to use the task system, sequential execution guide"},
+{u:"unit-economics.html",t:"Unit Economics Calculator",c:"Tool",d:"Input price COGS fees, real-time margin across Amazon DTC Walmart TikTok, waterfall chart"},
+{u:"ppc-calculator.html",t:"PPC Budget Calculator",c:"Tool",d:"Daily budget split across 8 campaigns, 70/20/10 SP SB SD allocation, phase selector"},
+{u:"launch-calculator.html",t:"Launch Date Calculator",c:"Tool",d:"Pick date see 16-week countdown with calendar dates, Chinese New Year warning, season advice"},
+{u:"competitor-comparison.html",t:"Competitor Comparison",c:"Tool",d:"BIVVO vs BibBoards vs RooSportPlus vs Fitletic, 15 dimensions, color-coded advantages"},
+{u:"email-previews.html",t:"Email Flow Previews",c:"Tool",d:"7 Omnisend flows, 22 email templates, visual cards with subjects triggers content CTAs discount codes"},
+{u:"amazon-preview.html",t:"Amazon Listing Preview",c:"Tool",d:"Full Amazon product page, image gallery, Buy Box, bullets, A+ Content 5 modules, color variations"},
+{u:"pitch-deck.html",t:"Pitch Deck — 12 Slides",c:"Tool",d:"Investor partner presentation, problem solution market product business model competition financials ask"},
+{u:"supply-chain.html",t:"Supply Chain Flow",c:"Tool",d:"Factory inspection freight prep center FBA customer, interactive nodes, costs timelines risks, restock formula"},
+{u:"configurator.html",t:"Color Configurator",c:"Tool",d:"5 clip colors, specs, Pantone references, SKU codes, pack pricing, visual product selector"},
+{u:"risk-dashboard.html",t:"Risk Dashboard",c:"Tool",d:"23 risks heatmap, 5 categories, severity likelihood grid, 5 critical playbooks, filterable"},
+{u:"social-preview.html",t:"Social Media Preview",c:"Tool",d:"20 launch posts visual cards, Instagram TikTok Stories, captions hashtags timing, 5 content pillars"},
+{u:"expo-map.html",t:"Expo Calendar Map",c:"Tool",d:"12 target expos, season filter, booth costs attendance units sold, priority badges, playbook reference"},
+{u:"launch-dashboard.html",t:"Launch Metrics Dashboard",c:"Tool",d:"Enter actuals see KPIs, scenario tracking, review velocity gauge, milestone progress, channel mix"},
+{u:"p0.html",t:"P0: Market Research",c:"Project",d:"9 subprojects, sizing competitors VOC IP pricing expos supply chain legal operations"},
+{u:"p1.html",t:"P1: Product Development",c:"Project",d:"5 subprojects, mechanism evaluation industrial design FTO timing chips specifications"},
+{u:"p2.html",t:"P2: Brand Development",c:"Project",d:"6 subprojects, naming visual identity brand voice packaging photography SKU architecture"},
+{u:"p3.html",t:"P3: Amazon Launch",c:"Project",d:"5 subprojects, seller account listing optimization PPC FBA logistics Shopify DTC"},
+{u:"p4.html",t:"P4: Content & Community",c:"Project",d:"5 subprojects, social media influencer ambassador expos SEO blog community retention"},
+{u:"p5.html",t:"P5: Launch Execution",c:"Project",d:"5 subprojects, financial model timeline risk management Year 2 scaling readiness checklist"},
+{u:"p6.html",t:"P6: Execution Assets",c:"Project",d:"8 assets, email templates Excel model supplier pack blog posts flat file storefront Walmart TikTok social"},
+{u:"sub-p0a.html",t:"P0A: Market Sizing",c:"Deep Dive",d:"TAM SAM SOM, 18.1M US finishers, Amazon search volumes, BSR analysis, runner demographics"},
+{u:"sub-p0b.html",t:"P0B: Competitor Deep Dive",c:"Deep Dive",d:"13 competitors, BibBoards RooSportPlus SnapTags, pricing reviews weaknesses, BIVVO moat"},
+{u:"sub-p0c.html",t:"P0C: Community Sentiment",c:"Deep Dive",d:"Reddit LetsRun Strava forums, 5 pain points ranked, timing chip concern, UGC potential"},
+{u:"sub-p0d.html",t:"P0D: IP Landscape",c:"Deep Dive",d:"15 patents reviewed, FTO green, bayonet mount freedom, utility design trademark filing strategy"},
+{u:"sub-p0e.html",t:"P0E: Pricing Strategy",c:"Deep Dive",d:"$14.99 validation, competitive price map, sensitivity analysis, margin by price point"},
+{u:"sub-p0g.html",t:"P0G: Supply Chain",c:"Deep Dive",d:"China manufacturing, POM injection molding, factory criteria, logistics chain, freight options"},
+{u:"sub-p0h.html",t:"P0H: Legal & Compliance",c:"Deep Dive",d:"Wyoming LLC, Payoneer, W-8BEN, Prop 65, CPSIA, GCC, product liability insurance, Pakistan considerations"},
+{u:"sub-p1a.html",t:"P1A: Mechanism Evaluation",c:"Deep Dive",d:"8 mechanisms scored, twist-lock 8.4/10 winner, magnetic 7.2, snap 6.8, weighted criteria"},
+{u:"sub-p1d.html",t:"P1D: Timing Chip Testing",c:"Deep Dive",d:"RFID 125kHz 13.56MHz, zero magnetic field proof, Champion Chip MyLaps Chronotrack compatibility"},
+{u:"sub-p1e.html",t:"P1E: Product Specs",c:"Deep Dive",d:"Factory-ready spec sheet, 30mm POM Delrin, 5 colors, RTE carton, QC checkpoints"},
+{u:"sub-p3c.html",t:"P3C: PPC Advertising",c:"Deep Dive",d:"8 campaigns, SP SB SD, 70/20/10 split, negative keywords, budget allocation, ACOS targets"},
+{u:"sub-p3e.html",t:"P3E: Shopify DTC",c:"Deep Dive",d:"Dawn theme, 11 pages, 9 apps, ByteStand MCF, $4.50 fulfillment, 38.4% DTC margin"},
+{u:"sub-p4b.html",t:"P4B: Influencer Program",c:"Deep Dive",d:"Pace Team 3 tiers, Setter Leader Captain, DM templates, contractor agreement, FTC disclosure"},
+{u:"sub-p5a.html",t:"P5A: Financial Model",c:"Deep Dive",d:"$15K $35K scenarios, quarterly P&L, break-even 44 units, live Excel P6B"},
+{u:"sub-p6a.html",t:"P6A: Email Templates",c:"Deep Dive",d:"22 templates, 7 Omnisend flows, Welcome Cart Post-Purchase Browse Win-Back Sunset VIP"},
+{u:"sub-p6g.html",t:"P6G: Walmart & TikTok",c:"Deep Dive",d:"Year 2 expansion, WFS fulfillment, creator affiliate tiers, unit economics, new seller credits"},
+{u:"shopify.html",t:"Shopify Store Hub",c:"Shopify",d:"9 Shopify apps, store architecture, MCF fulfillment, page links"},
+{u:"shopify-product.html",t:"Product Page Copy",c:"Shopify",d:"BIVVO 4-pack listing, description features specs, 5 color variations"},
+{u:"shopify-faq.html",t:"FAQ Page — 10 Q&As",c:"Shopify",d:"How it works, timing chips, fabrics, durability, colors, vs magnets, returns, race rules"},
+{u:"shopify-privacy.html",t:"Privacy Policy",c:"Shopify",d:"Data collection, cookies, CCPA, sharing, retention, rights, children's privacy"},
+{u:"shopify-terms.html",t:"Terms of Service",c:"Shopify",d:"Products, pricing, shipping, returns, safety, IP, liability, governing law"},
+{u:"article-bib-attachment.html",t:"Blog: Attach Bib Without Pins",c:"Blog",d:"5 methods compared, twist-lock magnetic belt adhesive snap, comparison table, timing chip FAQ"},
+{u:"article-timing-chips.html",t:"Blog: Timing Chips & Magnets",c:"Blog",d:"RFID science, magnetic interference analysis, zero-risk alternative, runner type recommendations"},
+{u:"article-race-checklist.html",t:"Blog: Race Day Checklist — 25 Items",c:"Blog",d:"Night before and race morning checklist, GPS watch fuel body glide bib clips sunscreen"},
+{u:"article-best-bib-clips.html",t:"Blog: Best Bib Clips 2026",c:"Blog",d:"Pins vs magnets vs twist-lock comparison, decision framework, value analysis"},
+{u:"article-safety-pins-jersey.html",t:"Blog: Safety Pins Ruin Jerseys",c:"Blog",d:"40 holes math, fabric damage, wicking disruption, seam stress, color fading"},
+{u:"article-triathlon-bib-clips.html",t:"Blog: Triathlon Bib Clips",c:"Blog",d:"Multi-mat timing, wet transitions, tri suit fabric, number flip, T2 optimization"},
+{u:"article-gifts-runners.html",t:"Blog: 15 Gifts for Runners 2026",c:"Blog",d:"Under $15 $50 $100, Body Glide Goodr Flipbelt Maurten Theragun Coros"},
+];
+var activeCat='all';
+function doSearch(){
+  var q=document.getElementById('q').value.toLowerCase().trim();
+  var filtered=pages.filter(function(p){
+    if(activeCat!=='all'&&p.c!==activeCat) return false;
+    if(!q) return true;
+    return (p.t+' '+p.d+' '+p.c).toLowerCase().indexOf(q)>=0;
+  });
+  var html='<div class="count">'+filtered.length+' results'+(q?' for "'+q+'"':'')+'</div>';
+  filtered.forEach(function(p){
+    var desc=p.d;
+    if(q){desc=desc.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="match">$1</span>');}
+    html+='<a href="'+p.u+'" class="result"><span class="cat">'+p.c+'</span><h4>'+p.t+'</h4><div class="desc">'+desc+'</div></a>';
+  });
+  document.getElementById('results').innerHTML=html;
+}
+function filterCat(c,btn){
+  activeCat=c;
+  document.querySelectorAll('.cats button').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  doSearch();
+}
+// Build category buttons
+var allCats=['all',...new Set(pages.map(function(p){return p.c}))];
+document.getElementById('cats').innerHTML=allCats.map(function(c){return '<button class="'+(c==='all'?'on':'')+'" onclick="filterCat(\''+c+'\',this)">'+(c==='all'?'All ('+pages.length+')':c)+'</button>'}).join('');
+doSearch();
+</script></body></html>

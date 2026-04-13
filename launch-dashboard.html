@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Launch Metrics Dashboard — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.metric-input{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.mi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.mi label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px}
+.mi input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--white);font-family:'Space Mono',monospace;font-size:14px;width:100%}
+.mi input:focus{outline:none;border-color:var(--coral)}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;text-align:center}
+.kpi .val{font-family:'Space Mono',monospace;font-size:32px;font-weight:700}.kpi .val.green{color:var(--green)}.kpi .val.coral{color:var(--coral)}.kpi .val.blue{color:#3498db}.kpi .val.orange{color:var(--orange)}
+.kpi .lab{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.kpi .delta{font-size:11px;margin-top:4px;font-family:'Space Mono',monospace}
+.kpi .delta.up{color:var(--green)}.kpi .delta.down{color:var(--coral)}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+@media(max-width:768px){.chart-row{grid-template-columns:1fr}}
+.chart-box{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px}
+.chart-box h3{font-size:14px;color:var(--white);margin-bottom:12px}
+.bar-chart{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.bar-row .bl{min-width:80px;color:var(--dim);text-align:right}
+.bar-row .bv{height:20px;border-radius:3px;transition:width .4s;min-width:2px;display:flex;align-items:center;padding-left:8px;font-size:10px;color:var(--white);font-family:'Space Mono',monospace;font-weight:700}
+.gauge{width:100%;height:24px;background:var(--bg);border-radius:12px;overflow:hidden;margin:8px 0;position:relative}
+.gauge .fill{height:100%;border-radius:12px;transition:width .4s}
+.gauge .marker{position:absolute;top:-4px;width:2px;height:32px;background:var(--white);transition:left .4s}
+.milestone-track{display:flex;gap:0;margin:20px 0}
+.ms{flex:1;text-align:center;padding:12px 4px;border-bottom:3px solid var(--border);font-size:11px;color:var(--dim);position:relative;transition:all .2s}
+.ms.done{border-color:var(--green);color:var(--green)}.ms.active{border-color:var(--coral);color:var(--coral)}
+.ms .mn{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;display:block}
+.scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.scen{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
+.scen h4{font-size:12px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.scen .v{font-family:'Space Mono',monospace;font-size:22px;font-weight:700}
+.scen .v.bear{color:var(--orange)}.scen .v.base{color:var(--blue)}.scen .v.bull{color:var(--green)}
+.scen .sub{font-size:11px;color:var(--dim);margin-top:4px}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>📈 Launch Metrics Dashboard</h1><p>Enter your actual numbers post-launch to see live KPIs, scenario tracking, and milestone progress. Input fields update all charts instantly.</p></div>
+<section>
+<h2>Enter Your <span>Actuals</span></h2>
+<div class="metric-input">
+<div class="mi"><label>Days Since Launch</label><input type="number" id="days" value="30" oninput="calc()"></div>
+<div class="mi"><label>Total Units Sold</label><input type="number" id="units" value="150" oninput="calc()"></div>
+<div class="mi"><label>Total Revenue ($)</label><input type="number" id="rev" value="2249" oninput="calc()"></div>
+<div class="mi"><label>Total PPC Spend ($)</label><input type="number" id="ppc" value="750" oninput="calc()"></div>
+<div class="mi"><label>Amazon Reviews</label><input type="number" id="reviews" value="8" oninput="calc()"></div>
+<div class="mi"><label>DTC Orders</label><input type="number" id="dtc" value="5" oninput="calc()"></div>
+<div class="mi"><label>Email Subscribers</label><input type="number" id="subs" value="85" oninput="calc()"></div>
+<div class="mi"><label>IG Followers</label><input type="number" id="ig" value="220" oninput="calc()"></div>
+</div>
+<h2>Key <span>Performance Indicators</span></h2>
+<div class="kpi-grid" id="kpiGrid"></div>
+<div class="chart-row">
+<div class="chart-box"><h3>Revenue vs Scenario Targets</h3><div id="scenBars"></div></div>
+<div class="chart-box"><h3>Channel Mix (Actual)</h3><div id="channelBars"></div></div>
+</div>
+<h2>Scenario <span>Tracking</span></h2>
+<div class="scenarios" id="scenCards"></div>
+<h2>Launch <span>Milestones</span></h2>
+<div class="milestone-track" id="milestones"></div>
+<div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px">
+<h3 style="color:var(--coral);margin-bottom:12px">Review Velocity Gauge</h3>
+<p style="font-size:13px;color:var(--dim);margin-bottom:8px">Target: 50 reviews by Day 90. Current pace shown below.</p>
+<div class="gauge"><div class="fill" id="revGauge" style="width:0%;background:var(--green)"></div></div>
+<p style="font-size:12px;color:var(--dim)" id="revGaugeLabel"></p>
+</div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+function v(id){return parseFloat(document.getElementById(id).value)||0}
+function calc(){
+  var days=v('days'),units=v('units'),rev=v('rev'),ppc=v('ppc'),reviews=v('reviews'),dtc=v('dtc'),subs=v('subs'),ig=v('ig');
+  var dailyUnits=days>0?units/days:0;
+  var dailyRev=days>0?rev/days:0;
+  var acos=rev>0?(ppc/rev*100):0;
+  var monthlyRev=dailyRev*30;
+  var cogs=units*2.50;
+  var amzFees=units*5.65;
+  var grossProfit=rev-cogs-amzFees-ppc;
+  var margin=rev>0?(grossProfit/rev*100):0;
+  var amzPct=rev>0?((rev-dtc*14.99)/rev*100):0;
+  var dtcPct=rev>0?(dtc*14.99/rev*100):0;
+  var convRate=units>0?(reviews/units*100):0;
+  var projectedAnnual=dailyRev*365;
+  // KPIs
+  document.getElementById('kpiGrid').innerHTML=
+    kpi(dailyUnits.toFixed(1),'Units / Day','green',dailyUnits>=5?'▲ On track':'▼ Below 5/day target',dailyUnits>=5)+
+    kpi('$'+monthlyRev.toFixed(0),'Monthly Revenue Run Rate','coral','',true)+
+    kpi(acos.toFixed(1)+'%','Blended ACOS','blue',acos<=25?'▲ Healthy':'▼ Above 25% target',acos<=25)+
+    kpi(margin.toFixed(1)+'%','Net Margin','green',margin>0?'▲ Profitable':'▼ Negative',margin>0)+
+    kpi(reviews,'Amazon Reviews','coral',reviews>=50?'▲ Hit 50 target':'▼ Need '+(50-reviews)+' more',reviews>=50)+
+    kpi(subs,'Email Subscribers','blue','',true)+
+    kpi('$'+projectedAnnual.toFixed(0),'Projected Annual Revenue','green','',true)+
+    kpi(ig,'IG Followers','coral','',true);
+  // Scenario bars
+  var bearTarget=days/365*36000;var baseTarget=days/365*80000;var bullTarget=days/365*150000;
+  document.getElementById('scenBars').innerHTML='<div class="bar-chart">'+
+    barRow('Actual','$'+rev,rev,bullTarget,'var(--coral)')+
+    barRow('Bear','$'+Math.round(bearTarget),bearTarget,bullTarget,'var(--orange)')+
+    barRow('Base','$'+Math.round(baseTarget),baseTarget,bullTarget,'var(--blue)')+
+    barRow('Bull','$'+Math.round(bullTarget),bullTarget,bullTarget,'var(--green)')+'</div>';
+  // Channel bars
+  document.getElementById('channelBars').innerHTML='<div class="bar-chart">'+
+    barRow('Amazon',Math.round(100-dtcPct)+'%',100-dtcPct,100,'var(--blue)')+
+    barRow('DTC',dtcPct.toFixed(1)+'%',dtcPct,100,'var(--green)')+
+    barRow('Expo','0%',0,100,'var(--orange)')+'</div>';
+  // Scenario cards
+  document.getElementById('scenCards').innerHTML=
+    '<div class="scen"><h4>Bear ($15K)</h4><div class="v bear">$'+Math.round(bearTarget)+'</div><div class="sub">target at Day '+days+'</div></div>'+
+    '<div class="scen"><h4>Base ($35K)</h4><div class="v base">$'+Math.round(baseTarget)+'</div><div class="sub">target at Day '+days+'</div></div>'+
+    '<div class="scen"><h4>Bull ($35K)</h4><div class="v bull">$'+Math.round(bullTarget)+'</div><div class="sub">target at Day '+days+'</div></div>';
+  // Milestones
+  var ms=[{n:'First Sale',d:1},{n:'10 Reviews',d:14},{n:'$1K Rev',d:21},{n:'50 Reviews',d:60},{n:'Break-Even',d:120},{n:'$10K Rev',d:150},{n:'100 Reviews',d:180},{n:'Year 1 Goal',d:365}];
+  document.getElementById('milestones').innerHTML=ms.map(function(m){
+    var st=days>=m.d?'done':(days>=m.d-7?'active':'');
+    return '<div class="ms '+st+'"><span class="mn">'+m.n+'</span>Day '+m.d+'</div>';
+  }).join('');
+  // Review gauge
+  var target50=50;var pace=days>0?(reviews/days*90):0;
+  var pct=Math.min(reviews/target50*100,100);
+  document.getElementById('revGauge').style.width=pct+'%';
+  document.getElementById('revGauge').style.background=pct>=100?'var(--green)':pct>=50?'var(--orange)':'var(--coral)';
+  document.getElementById('revGaugeLabel').textContent=reviews+'/'+target50+' reviews ('+pct.toFixed(0)+'%). At current pace: '+pace.toFixed(0)+' reviews by Day 90.';
+}
+function kpi(val,lab,color,delta,isUp){
+  return '<div class="kpi"><div class="val '+color+'">'+val+'</div><div class="lab">'+lab+'</div>'+(delta?'<div class="delta '+(isUp?'up':'down')+'">'+delta+'</div>':'')+'</div>';
+}
+function barRow(label,valText,val,max,color){
+  var w=max>0?(val/max*100):0;
+  return '<div class="bar-row"><span class="bl">'+label+'</span><div class="bv" style="width:'+Math.max(w,2)+'%;background:'+color+'">'+valText+'</div></div>';
+}
+calc();
+</script></body></html>

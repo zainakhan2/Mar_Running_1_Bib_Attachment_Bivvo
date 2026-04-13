@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Supply Chain Flow — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.chain{position:relative;margin:32px 0}
+.node{background:var(--card);border:2px solid var(--border);border-radius:var(--rad);padding:24px;margin-bottom:0;position:relative;cursor:pointer;transition:all .3s}
+.node:hover,.node.active{border-color:var(--coral);box-shadow:0 0 30px rgba(255,107,107,.1)}
+.node .icon{font-size:36px;margin-bottom:8px}
+.node h3{font-size:16px;color:var(--white);margin:0 0 6px}
+.node .timing{font-family:'Space Mono',monospace;font-size:12px;color:var(--coral);font-weight:700;margin-bottom:8px}
+.node .cost{font-family:'Space Mono',monospace;font-size:14px;color:var(--green);margin-bottom:6px}
+.node .desc{font-size:13px;color:var(--dim);line-height:1.5}
+.node .details{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.node.active .details{display:block}
+.node .details table{width:100%;font-size:12px;margin:8px 0}
+.node .details th{background:var(--navy);color:var(--white);padding:6px 10px;font-size:10px}
+.node .details td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--dim)}
+.arrow-connector{display:flex;justify-content:center;padding:8px 0}
+.arrow-connector .arrow{width:3px;height:40px;background:linear-gradient(180deg,var(--border),var(--coral));position:relative}
+.arrow-connector .arrow::after{content:'▼';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);color:var(--coral);font-size:14px}
+.arrow-connector .label{position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);font-size:11px;color:var(--dim);white-space:nowrap;font-family:'Space Mono',monospace}
+.flow-grid{display:grid;grid-template-columns:1fr;max-width:600px;margin:0 auto}
+.totals{background:var(--card);border:2px solid var(--green);border-radius:var(--rad);padding:24px;margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.totals .t{text-align:center}.totals .t .n{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:var(--green)}.totals .t .l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.risk-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:8px}
+.risk-low{background:rgba(39,174,96,.15);color:#2ecc71}
+.risk-med{background:rgba(230,126,34,.15);color:#e67e22}
+.risk-high{background:rgba(192,57,43,.15);color:#e74c3c}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🔗 Supply Chain Flow</h1><p>Interactive visualization of the complete supply chain from Chinese factory to customer doorstep. Click any node to expand details, costs, timelines, and risk factors.</p></div>
+<section>
+<div class="flow-grid">
+
+<div class="node" onclick="tog(this)">
+<div class="icon">🏭</div>
+<h3>1. Factory (China — Guangdong)</h3>
+<div class="timing">Week -14 to -10 · 4–6 weeks production</div>
+<div class="cost">$0.40–$0.60 / 4-pack FOB</div>
+<div class="desc">POM (Delrin®) injection molding. 5,000 units first run. 5 colors simultaneous. RTE cartons + insert cards printed alongside product.</div>
+<span class="risk-badge risk-low">Risk: Low</span>
+<div class="details">
+<table><tr><th>Parameter</th><th>Detail</th></tr>
+<tr><td>Material</td><td>POM acetal copolymer, UV stabilized</td></tr>
+<tr><td>Mold</td><td>Steel, 2-cavity (base + cap), 100K+ shot life</td></tr>
+<tr><td>Tooling cost</td><td>$2,500–$4,000 (one-time)</td></tr>
+<tr><td>Unit cost</td><td>$0.40–$0.60 FOB per 4-pack at 5,000 MOQ</td></tr>
+<tr><td>Production time</td><td>4–6 weeks after tooling approval</td></tr>
+<tr><td>Color changeover</td><td>15–30 min barrel purge between colors</td></tr>
+<tr><td>Packaging</td><td>RTE carton (100×70×25mm) + insert card (350gsm)</td></tr>
+<tr><td>Communication</td><td>Email + WeChat, &lt;24hr response</td></tr>
+<tr><td>Templates</td><td>P6C: RFQ, Sample Request, PO (10 clauses), QC Checklist</td></tr>
+</table>
+<p style="margin-top:8px"><strong style="color:var(--white)">Key risk:</strong> Mold defect requiring re-cutting adds 2–3 weeks. Mitigation: approve T1 samples before mass production.</p>
+</div>
+</div>
+
+<div class="arrow-connector"><div class="arrow"><span class="label">PO signed → production starts</span></div></div>
+
+<div class="node" onclick="tog(this)">
+<div class="icon">🔍</div>
+<h3>2. Pre-Shipment Inspection (QIMA)</h3>
+<div class="timing">Week -10 · 1–2 days on-site</div>
+<div class="cost">$250–$350 per inspection</div>
+<div class="desc">Third-party quality inspection at factory before goods ship. AQL 2.5 sampling. 30+ checkpoint QC checklist from P6C.</div>
+<span class="risk-badge risk-med">Risk: Medium</span>
+<div class="details">
+<table><tr><th>Checkpoint</th><th>Criteria</th></tr>
+<tr><td>Mechanism function</td><td>100% of sample batch: audible click, firm lock</td></tr>
+<tr><td>Pull strength</td><td>Holds 2kg without releasing (simulates running)</td></tr>
+<tr><td>Color consistency</td><td>Within ΔE &lt; 2.0 of Pantone reference</td></tr>
+<tr><td>Flash/mold lines</td><td>No visible flash on clip face</td></tr>
+<tr><td>Packaging</td><td>Window cutout clean, product centered, UPC scannable</td></tr>
+<tr><td>Insert card</td><td>QR code scans to bivvo.com/welcome</td></tr>
+<tr><td>Labeling</td><td>Correct SKU, color name, barcode on each carton</td></tr>
+</table>
+<p style="margin-top:8px"><strong style="color:var(--white)">Key risk:</strong> Fail triggers re-production (2–4 week delay). Mitigation: send golden sample to factory as quality benchmark before mass production.</p>
+</div>
+</div>
+
+<div class="arrow-connector"><div class="arrow"><span class="label">Inspection PASS → ship authorization</span></div></div>
+
+<div class="node" onclick="tog(this)">
+<div class="icon">✈️</div>
+<h3>3. Air Freight (China → US)</h3>
+<div class="timing">Week -8 to -6 · 7–15 days transit</div>
+<div class="cost">$800–$1,500 for 5,000 units</div>
+<div class="desc">Air freight from Guangdong to US prep center. Faster than ocean (35–45 days) at higher cost. Justified for first shipment speed.</div>
+<span class="risk-badge risk-low">Risk: Low</span>
+<div class="details">
+<table><tr><th>Parameter</th><th>Detail</th></tr>
+<tr><td>Mode</td><td>Air freight (first shipment). Ocean for restocks.</td></tr>
+<tr><td>Origin</td><td>Guangzhou Baiyun International (CAN)</td></tr>
+<tr><td>Transit time</td><td>7–15 days (air) / 35–45 days (ocean)</td></tr>
+<tr><td>Cost per unit</td><td>$0.16–$0.30 (air) / $0.06–$0.12 (ocean)</td></tr>
+<tr><td>Customs</td><td>US customs clearance. Harmonized code: 3926.90 (plastic articles)</td></tr>
+<tr><td>Duty rate</td><td>3.4–5.3% (plastic articles, non-Chapter 301)</td></tr>
+<tr><td>Customs broker</td><td>Freight forwarder handles clearance (included in freight quote)</td></tr>
+<tr><td>Insurance</td><td>Marine cargo insurance recommended ($50–$100)</td></tr>
+</table>
+<p style="margin-top:8px"><strong style="color:var(--white)">Restock strategy:</strong> Switch to ocean freight for reorders ($0.06–$0.12/unit). Air freight only for urgent restocks or first shipment.</p>
+</div>
+</div>
+
+<div class="arrow-connector"><div class="arrow"><span class="label">Customs cleared → delivered to prep center</span></div></div>
+
+<div class="node" onclick="tog(this)">
+<div class="icon">📦</div>
+<h3>4. US Prep Center</h3>
+<div class="timing">Week -4 · 2–3 days processing</div>
+<div class="cost">$0.30–$0.50 / unit</div>
+<div class="desc">Receives shipment, applies FNSKU labels, packs into FBA-compliant master cartons, creates FBA shipment plan. Also serves as FBM fallback shipper (G-14).</div>
+<span class="risk-badge risk-low">Risk: Low</span>
+<div class="details">
+<table><tr><th>Service</th><th>Detail</th></tr>
+<tr><td>Receive + count</td><td>Spot-check quantity and condition vs packing list</td></tr>
+<tr><td>FNSKU labeling</td><td>Print and apply Amazon FNSKU barcode to each unit</td></tr>
+<tr><td>Master cartons</td><td>Pack into FBA-compliant cartons (50 lbs max, standard size)</td></tr>
+<tr><td>FBA shipment plan</td><td>Create in Seller Central, generate shipping labels</td></tr>
+<tr><td>FBM backup</td><td>Can ship direct-to-customer if FBA stock runs out (G-14)</td></tr>
+<tr><td>Cost</td><td>$0.30–$0.50/unit for label + pack + ship to FC</td></tr>
+<tr><td>Selection</td><td>Task #47: Select and onboard prep center (W-6)</td></tr>
+</table>
+</div>
+</div>
+
+<div class="arrow-connector"><div class="arrow"><span class="label">FBA inbound via Amazon Partnered Carrier</span></div></div>
+
+<div class="node" onclick="tog(this)">
+<div class="icon">📦</div>
+<h3>5. Amazon Fulfillment Center (FBA)</h3>
+<div class="timing">Week -3 to -2 · 3–7 days check-in</div>
+<div class="cost">$3.40 / unit fulfillment fee</div>
+<div class="desc">Amazon receives, sorts, and stores inventory. Once "Available," units appear in search and can be purchased by customers. Prime-eligible delivery.</div>
+<span class="risk-badge risk-med">Risk: Medium</span>
+<div class="details">
+<table><tr><th>Stage</th><th>Detail</th></tr>
+<tr><td>Receiving</td><td>Amazon checks in shipment (3–7 days)</td></tr>
+<tr><td>Storage</td><td>$0.03/unit/month (Small Standard Tier)</td></tr>
+<tr><td>Fulfillment fee</td><td>$3.40/unit (Small Standard, per G-04 resolution)</td></tr>
+<tr><td>Referral fee</td><td>15% of sale price ($2.25 on $14.99)</td></tr>
+<tr><td>Delivery</td><td>Prime: 1–2 day. Standard: 3–5 day.</td></tr>
+<tr><td>MCF orders</td><td>Shopify orders fulfilled via MCF at $4.50/unit (G-05)</td></tr>
+<tr><td>Returns</td><td>Amazon handles. Returned units go back to sellable inventory.</td></tr>
+</table>
+<p style="margin-top:8px"><strong style="color:var(--white)">Key risk:</strong> Receiving delays during peak (Oct–Dec, Prime Day). Mitigation: ship FBA inbound 2 weeks earlier than needed. Monitor Shipment Queue daily.</p>
+</div>
+</div>
+
+<div class="arrow-connector"><div class="arrow"><span class="label">Customer orders → Amazon picks, packs, ships</span></div></div>
+
+<div class="node" onclick="tog(this)" style="border-color:var(--green)">
+<div class="icon">🏃</div>
+<h3>6. Customer Doorstep</h3>
+<div class="timing">1–2 days (Prime) / 3–5 days (Standard)</div>
+<div class="cost">$0 to customer (free shipping)</div>
+<div class="desc">Customer receives BIVVO 4-pack in Amazon packaging. Unboxes, reads insert card, scans QR to bivvo.com/welcome, attaches clips to race bib. Post-purchase email flow triggers.</div>
+<span class="risk-badge risk-low">Risk: Low</span>
+<div class="details">
+<table><tr><th>Touchpoint</th><th>Action</th></tr>
+<tr><td>Unboxing</td><td>RTE carton with window cutout. Insert card with 3-step how-to.</td></tr>
+<tr><td>QR scan</td><td>bivvo.com/welcome → demo video + 10% off next order (WELCOME10)</td></tr>
+<tr><td>Email Day 0</td><td>Omnisend: order confirmation + what to expect</td></tr>
+<tr><td>Email Day 5–7</td><td>Product education: 3-step video + race tips</td></tr>
+<tr><td>Email Day 14</td><td>Review request (neutral tone, Amazon TOS compliant)</td></tr>
+<tr><td>Email Day 21</td><td>Referral: Share the Click — Give $3/Get $3</td></tr>
+<tr><td>Email Day 30</td><td>Cross-sell: try a new color (BIVVO-REPEAT 10% code)</td></tr>
+</table>
+</div>
+</div>
+
+</div><!-- flow-grid -->
+
+<div class="totals">
+<div class="t"><div class="n">8–12 wks</div><div class="l">Total Lead Time</div></div>
+<div class="t"><div class="n">$2.50</div><div class="l">Landed COGS/Unit</div></div>
+<div class="t"><div class="n">6</div><div class="l">Supply Chain Nodes</div></div>
+<div class="t"><div class="n">$3.46</div><div class="l">Amazon Net Profit</div></div>
+<div class="t"><div class="n">$5.76</div><div class="l">DTC Net Profit</div></div>
+</div>
+
+<div style="margin-top:32px">
+<h2>Restock <span>Formula</span></h2>
+<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:24px;font-size:14px;color:var(--dim)">
+<p><strong style="color:var(--white)">Reorder Point = (Average Daily Sales × Lead Time Days) + Safety Stock</strong></p>
+<p>Lead time: 70 days (ocean freight + prep). Safety stock: 14 days. Example at 5 units/day:</p>
+<p style="font-family:'Space Mono',monospace;color:var(--coral);font-size:16px;margin:12px 0">(5 × 70) + (5 × 14) = 420 units → reorder when inventory hits 420</p>
+<p>Monitor daily via Task #102. P6B Excel Sheet 5 (Restock Calculator) auto-calculates based on your actual daily sales rate.</p>
+</div>
+</div>
+
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+function tog(el){
+  var wasActive = el.classList.contains('active');
+  document.querySelectorAll('.node').forEach(function(n){n.classList.remove('active')});
+  if(!wasActive) el.classList.add('active');
+}
+</script></body></html>

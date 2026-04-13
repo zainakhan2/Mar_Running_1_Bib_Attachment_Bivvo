@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Expo Calendar Map — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.map-wrap{position:relative;margin:24px 0;background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:24px;overflow:hidden}
+.map-wrap svg{width:100%;height:auto}
+.map-wrap svg path{fill:var(--card2);stroke:var(--border);stroke-width:.5;transition:fill .2s;cursor:pointer}
+.map-wrap svg path:hover{fill:var(--navy)}
+.map-wrap svg path.highlighted{fill:rgba(255,107,107,.25);stroke:var(--coral);stroke-width:1.5}
+.expo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:24px 0}
+.expo-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;transition:all .2s}
+.expo-card:hover{border-color:var(--coral);transform:translateY(-2px)}
+.expo-card .month{font-family:'Space Mono',monospace;font-size:11px;color:var(--coral);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.expo-card h4{color:var(--white);font-size:15px;margin:6px 0}
+.expo-card .loc{font-size:13px;color:var(--dim);margin-bottom:6px}
+.expo-card .details{font-size:12px;color:var(--dim);line-height:1.6}
+.expo-card .details strong{color:var(--white)}
+.expo-card .priority{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;margin-top:8px}
+.expo-card .priority.p1{background:rgba(255,107,107,.15);color:#FF6B6B}
+.expo-card .priority.p2{background:rgba(45,90,160,.15);color:#5DADE2}
+.expo-card .priority.p3{background:rgba(149,165,166,.15);color:#95a5a6}
+.season-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.season-tabs button{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 16px;color:var(--dim);cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.season-tabs button:hover{border-color:var(--coral);color:var(--coral)}
+.season-tabs button.on{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.sr-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.sr-card .n{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--coral)}
+.sr-card .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>🗺️ Expo Calendar & Race Map</h1><p>Target race expos by month and region. Year 1 strategy: 3–5 expos focused on fall marathon season (Sep–Nov). Based on P0F + P4C analysis. Click a season to filter.</p></div>
+<section>
+<div class="summary-row">
+<div class="sr-card"><div class="n">3–5</div><div class="l">Expos Year 1</div></div>
+<div class="sr-card"><div class="n">$200–$500</div><div class="l">Avg Booth Cost</div></div>
+<div class="sr-card"><div class="n">30–80</div><div class="l">Units Sold / Expo</div></div>
+<div class="sr-card"><div class="n">Sep–Nov</div><div class="l">Peak Season</div></div>
+<div class="sr-card"><div class="n">1.5–4x</div><div class="l">ROI Range</div></div>
+</div>
+
+<div class="season-tabs">
+<button class="on" onclick="filterSeason('all',this)">All Expos (12)</button>
+<button onclick="filterSeason('spring',this)">🌸 Spring (Mar–May)</button>
+<button onclick="filterSeason('summer',this)">☀️ Summer (Jun–Aug)</button>
+<button onclick="filterSeason('fall',this)">🍂 Fall ★ (Sep–Nov)</button>
+<button onclick="filterSeason('winter',this)">❄️ Winter (Dec–Feb)</button>
+</div>
+
+<div class="expo-grid" id="expoGrid"></div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;margin-top:24px">
+<h3 style="color:var(--coral);margin-bottom:12px">Expo Playbook Quick Reference</h3>
+<p style="font-size:13px;color:var(--dim)"><strong style="color:var(--white)">Apply:</strong> 8–12 weeks before event · <strong style="color:var(--white)">Pack:</strong> 22-item checklist (PG-08) · <strong style="color:var(--white)">Bring:</strong> 50–100 units + demo clips + Square reader · <strong style="color:var(--white)">Demo:</strong> 15-sec Insert-Twist-Click script · <strong style="color:var(--white)">Follow-up:</strong> Email within 48 hrs</p>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">Full materials: <a href="sub-p4c.html">P4C: Race Expo Marketing</a> · <a href="sub-p6f.html">P6F: Expo Materials</a> · <a href="gaps.html">PG-08: Packing Checklist</a></p>
+</div>
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+var expos=[
+{name:"Boston Marathon Expo",city:"Boston, MA",month:"Apr",season:"spring",booth:"$800–$2,000",attendance:"30,000+",units:"60–150",priority:"p1",notes:"Largest spring expo in US. Highly motivated BQ runners — perfect BIVVO audience. Apply by January."},
+{name:"Brooklyn Half Expo",city:"Brooklyn, NY",month:"May",season:"spring",booth:"$400–$800",attendance:"15,000+",units:"40–80",priority:"p2",notes:"NYC area half marathon. Strong DTC-aware, Brooklyn running community. Good for brand building."},
+{name:"Grandma's Marathon Expo",city:"Duluth, MN",month:"Jun",season:"summer",booth:"$200–$400",attendance:"8,000+",units:"25–50",priority:"p3",notes:"Beloved mid-size marathon. Loyal Midwest runner community. Lower booth cost, good learning event."},
+{name:"Peachtree Road Race Expo",city:"Atlanta, GA",month:"Jul",season:"summer",booth:"$400–$800",attendance:"50,000+",units:"50–100",priority:"p2",notes:"Largest 10K in the world. Massive attendance but hot-weather timing. Great for volume brand awareness."},
+{name:"Chicago Marathon Expo",city:"Chicago, IL",month:"Oct",season:"fall",booth:"$500–$1,500",attendance:"40,000+",units:"80–200",priority:"p1",notes:"World Major marathon. Peak fall season. 45,000 runners + families. Highest ROI potential. Apply by June."},
+{name:"Marine Corps Marathon Expo",city:"Arlington, VA",month:"Oct",season:"fall",booth:"$300–$600",attendance:"20,000+",units:"40–80",priority:"p2",notes:"'The People's Marathon.' Military-connected runner community. Strong expo culture. DC metro area."},
+{name:"NYC Marathon Expo",city:"New York, NY",month:"Nov",season:"fall",booth:"$1,000–$2,500",attendance:"50,000+",units:"100–250",priority:"p1",notes:"The biggest marathon expo in the world. 50,000+ runners, 100K+ visitors. Highest volume but highest cost. Worth it for brand launch visibility."},
+{name:"Philadelphia Marathon Expo",city:"Philadelphia, PA",month:"Nov",season:"fall",booth:"$300–$600",attendance:"15,000+",units:"30–60",priority:"p2",notes:"Mid-size fall marathon in Northeast corridor. Budget-friendly alternative to NYC. Strong local running community."},
+{name:"Richmond Marathon Expo",city:"Richmond, VA",month:"Nov",season:"fall",booth:"$200–$400",attendance:"10,000+",units:"25–50",priority:"p3",notes:"Well-organized mid-size event. Great for first-time expo vendors. Lower pressure, good practice run."},
+{name:"Dallas Marathon Expo",city:"Dallas, TX",month:"Dec",season:"winter",booth:"$300–$500",attendance:"12,000+",units:"25–50",priority:"p3",notes:"December marathon in the Sun Belt. Smaller but engaged community. Low booth cost."},
+{name:"Houston Marathon Expo",city:"Houston, TX",month:"Jan",season:"winter",booth:"$400–$800",attendance:"25,000+",units:"40–80",priority:"p2",notes:"Major January marathon. Strong Texas running community. Good early-year visibility for spring race season."},
+{name:"Local 5K / Half Marathon (×5–10)",city:"Various",month:"Year-round",season:"all",booth:"$100–$200",attendance:"200–2,000",units:"8–20 per event",priority:"p3",notes:"Low-cost, low-risk learning events. Test your pitch, demo, and booth setup. Great for building local word-of-mouth. Apply through race director websites."},
+];
+function filterSeason(s,btn){
+  document.querySelectorAll('.season-tabs button').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  var filtered=s==='all'?expos:expos.filter(function(e){return e.season===s||e.season==='all'});
+  renderExpos(filtered);
+}
+function renderExpos(list){
+  var html='';
+  list.forEach(function(e){
+    html+='<div class="expo-card"><div class="month">'+e.month+'</div><h4>'+e.name+'</h4><div class="loc">📍 '+e.city+'</div><div class="details"><strong>Booth:</strong> '+e.booth+' · <strong>Attendance:</strong> '+e.attendance+'<br><strong>Est. units sold:</strong> '+e.units+'<br>'+e.notes+'</div><div class="priority '+e.priority+'">'+(e.priority==='p1'?'★ Priority 1':e.priority==='p2'?'Priority 2':'Priority 3')+'</div></div>';
+  });
+  document.getElementById('expoGrid').innerHTML=html;
+}
+renderExpos(expos);
+</script></body></html>

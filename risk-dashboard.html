@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Risk Dashboard — BIVVO GTM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+.heatmap{display:grid;grid-template-columns:80px repeat(5,1fr);gap:2px;margin:24px 0;font-size:11px}
+.hm-cell{padding:10px 6px;text-align:center;border-radius:4px;font-weight:600;min-height:50px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .2s;cursor:pointer;position:relative}
+.hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.hm-cell .count{font-family:'Space Mono',monospace;font-size:16px;font-weight:700}
+.hm-cell .label{font-size:9px;margin-top:2px;opacity:.8}
+.hm-header{background:var(--navy);color:var(--white);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;border-radius:4px}
+.hm-axis{background:var(--card);color:var(--dim);font-weight:700;font-size:10px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;border-radius:4px;letter-spacing:.5px}
+.sev-crit{background:rgba(192,57,43,.3);color:#e74c3c}.sev-high{background:rgba(230,126,34,.3);color:#f39c12}
+.sev-med{background:rgba(241,196,15,.25);color:#f1c40f}.sev-low{background:rgba(39,174,96,.2);color:#2ecc71}
+.sev-vlow{background:rgba(52,152,219,.15);color:#3498db}
+.risk-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:24px 0}
+.rcat{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;cursor:pointer;transition:all .2s}
+.rcat:hover{border-color:var(--coral);transform:translateY(-2px)}
+.rcat .icon{font-size:28px;margin-bottom:8px}
+.rcat h4{color:var(--white);font-size:14px;margin-bottom:4px}
+.rcat .cnt{font-family:'Space Mono',monospace;font-size:12px;color:var(--coral)}
+.rcat .bar{height:4px;background:var(--bg);border-radius:2px;margin-top:8px;overflow:hidden}
+.rcat .bar .fill{height:100%;border-radius:2px}
+.risk-table{width:100%;border-collapse:collapse;font-size:12px;margin:20px 0}
+.risk-table th{background:var(--navy);color:var(--white);padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left}
+.risk-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
+.risk-table tr:hover td{background:rgba(45,90,160,.05)}
+.sev-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.sev-badge.critical{background:rgba(192,57,43,.2);color:#e74c3c}
+.sev-badge.high{background:rgba(230,126,34,.2);color:#f39c12}
+.sev-badge.medium{background:rgba(241,196,15,.2);color:#f1c40f}
+.sev-badge.low{background:rgba(39,174,96,.2);color:#2ecc71}
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
+.sc .n{font-family:'Space Mono',monospace;font-size:28px;font-weight:700}.sc .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.playbook{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:20px;margin-bottom:12px}
+.playbook h4{color:var(--coral);font-size:14px;margin-bottom:8px}
+.playbook p{font-size:13px;color:var(--dim);margin-bottom:6px}
+.playbook .steps{font-size:12px;color:var(--dim);padding-left:16px}
+.playbook .steps li{padding:3px 0}
+.playbook .steps li::before{display:none}
+.filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-row button{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--dim);cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.filter-row button:hover{border-color:var(--coral);color:var(--coral)}
+.filter-row button.on{background:var(--coral);border-color:var(--coral);color:var(--white)}
+</style></head><body>
+<nav><div class="wrap"><span class="logo">BIVVO</span><a href="index.html" class="nl">Dashboard</a><a href="executive-summary.html" class="nl">Summary</a><a href="financials.html" class="nl">Financials</a><a href="projections.html" class="nl">Projections</a><a href="tracker.html" class="nl">Tracker</a><a href="gaps.html" class="nl">Gaps</a><a href="day-by-day.html" class="nl">Day-by-Day</a><a href="content.html" class="nl">Content</a><a href="shopify.html" class="nl">Shopify</a><a href="files.html" class="nl">Files</a><a href="https://apseter.github.io/Retail_Ventures_Command_Center/" class="cc">🏠 Command Center</a></div></nav>
+<div class="wrap">
+<a href="index.html" class="back">← Dashboard</a>
+<div class="page-hero"><h1>⚠️ Risk Dashboard</h1><p>23 risks across 5 categories from P5C Risk Management. Visual heatmap by severity × likelihood. Click any category to filter. 5 critical playbooks included.</p></div>
+<section>
+<div class="summary-cards">
+<div class="sc"><div class="n" style="color:#e74c3c">4</div><div class="l">Critical / High</div></div>
+<div class="sc"><div class="n" style="color:#f39c12">9</div><div class="l">Medium</div></div>
+<div class="sc"><div class="n" style="color:#2ecc71">10</div><div class="l">Low</div></div>
+<div class="sc"><div class="n" style="color:var(--white)">23</div><div class="l">Total Risks</div></div>
+<div class="sc"><div class="n" style="color:var(--coral)">5</div><div class="l">Playbooks Ready</div></div>
+</div>
+
+<h2>Risk <span>Heatmap</span></h2>
+<p style="font-size:13px;color:var(--dim);margin-bottom:8px">Severity (vertical) × Likelihood (horizontal). Numbers show risk count in each cell.</p>
+<div class="heatmap">
+<div class="hm-header"></div><div class="hm-header">Very Low</div><div class="hm-header">Low</div><div class="hm-header">Medium</div><div class="hm-header">High</div><div class="hm-header">Very High</div>
+<div class="hm-axis">Critical</div><div class="hm-cell sev-med"><div class="count">0</div></div><div class="hm-cell sev-high"><div class="count">1</div><div class="label">Mold defect</div></div><div class="hm-cell sev-crit"><div class="count">1</div><div class="label">Suspension</div></div><div class="hm-cell sev-crit"><div class="count">0</div></div><div class="hm-cell sev-crit"><div class="count">0</div></div>
+<div class="hm-axis">High</div><div class="hm-cell sev-low"><div class="count">0</div></div><div class="hm-cell sev-med"><div class="count">1</div><div class="label">Cash flow</div></div><div class="hm-cell sev-high"><div class="count">1</div><div class="label">Quality fail</div></div><div class="hm-cell sev-crit"><div class="count">0</div></div><div class="hm-cell sev-crit"><div class="count">0</div></div>
+<div class="hm-axis">Medium</div><div class="hm-cell sev-vlow"><div class="count">1</div></div><div class="hm-cell sev-low"><div class="count">3</div><div class="label">FX, tariff, IP</div></div><div class="hm-cell sev-med"><div class="count">4</div><div class="label">Competitor, demand...</div></div><div class="hm-cell sev-high"><div class="count">1</div><div class="label">Burnout</div></div><div class="hm-cell sev-high"><div class="count">0</div></div>
+<div class="hm-axis">Low</div><div class="hm-cell sev-vlow"><div class="count">2</div></div><div class="hm-cell sev-vlow"><div class="count">3</div></div><div class="hm-cell sev-low"><div class="count">3</div></div><div class="hm-cell sev-med"><div class="count">1</div></div><div class="hm-cell sev-med"><div class="count">1</div></div>
+</div>
+
+<h2>Risks by <span>Category</span></h2>
+<div class="filter-row">
+<button class="on" onclick="filterCat('all',this)">All (23)</button>
+<button onclick="filterCat('supply',this)">📦 Supply Chain (5)</button>
+<button onclick="filterCat('amazon',this)">🛒 Amazon (5)</button>
+<button onclick="filterCat('financial',this)">💰 Financial (5)</button>
+<button onclick="filterCat('market',this)">📊 Market (4)</button>
+<button onclick="filterCat('ops',this)">⚙️ Operational (4)</button>
+</div>
+
+<table class="risk-table"><thead><tr><th>ID</th><th>Risk</th><th>Category</th><th>Severity</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+<tbody id="riskBody">
+<tr data-cat="supply"><td>R1</td><td>Injection mold defect requiring re-cut</td><td>Supply Chain</td><td><span class="sev-badge critical">Critical</span></td><td>Low</td><td>Approve T1 samples before mass production. Budget 2-week buffer.</td></tr>
+<tr data-cat="supply"><td>R2</td><td>Factory production delay (CNY, COVID)</td><td>Supply Chain</td><td><span class="sev-badge medium">Medium</span></td><td>Medium</td><td>Order 16 weeks before launch. Avoid Jan-Feb factory orders.</td></tr>
+<tr data-cat="supply"><td>R3</td><td>QIMA inspection failure</td><td>Supply Chain</td><td><span class="sev-badge high">High</span></td><td>Medium</td><td>Send golden sample. QC checklist (30+ points) in P6C.</td></tr>
+<tr data-cat="supply"><td>R4</td><td>Freight delay or customs hold</td><td>Supply Chain</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>Use established freight forwarder. Correct HS code 3926.90.</td></tr>
+<tr data-cat="supply"><td>R5</td><td>Prep center error (wrong FNSKU)</td><td>Supply Chain</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>Spot-check first batch. Verify FNSKU matches ASIN.</td></tr>
+<tr data-cat="amazon"><td>R6</td><td>Amazon account suspension</td><td>Amazon</td><td><span class="sev-badge critical">Critical</span></td><td>Medium</td><td>Maintain Account Health >200. Respond to all policy notices <24hr. Appeal template ready.</td></tr>
+<tr data-cat="amazon"><td>R7</td><td>Listing suppression</td><td>Amazon</td><td><span class="sev-badge medium">Medium</span></td><td>Medium</td><td>Listing Quality Dashboard daily check. Brand Catalog Lock active.</td></tr>
+<tr data-cat="amazon"><td>R8</td><td>Hijacker on listing</td><td>Amazon</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>Brand Registry + Brand Catalog Lock. Report via Brand Dashboard.</td></tr>
+<tr data-cat="amazon"><td>R9</td><td>FBA fee increase</td><td>Amazon</td><td><span class="sev-badge low">Low</span></td><td>Medium</td><td>Quarterly fee review (Task #114). Sensitivity analysis in P6B.</td></tr>
+<tr data-cat="amazon"><td>R10</td><td>Negative review campaign</td><td>Amazon</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>Monitor weekly. Report abuse via Brand Dashboard. Build review velocity.</td></tr>
+<tr data-cat="financial"><td>R11</td><td>Cash flow gap (restock before revenue)</td><td>Financial</td><td><span class="sev-badge high">High</span></td><td>Low</td><td>Track cash flow monthly (Task #111). Payoneer balance buffer.</td></tr>
+<tr data-cat="financial"><td>R12</td><td>USD/PKR exchange rate volatility</td><td>Financial</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>Convert in batches. Don't hold USD longer than needed.</td></tr>
+<tr data-cat="financial"><td>R13</td><td>Tariff/Section 301 increase on China imports</td><td>Financial</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>HS 3926.90 currently 3.4-5.3%. Monitor quarterly. Price buffer in margins.</td></tr>
+<tr data-cat="financial"><td>R14</td><td>PPC ACOS exceeds 30% sustained</td><td>Financial</td><td><span class="sev-badge medium">Medium</span></td><td>Medium</td><td>Weekly STR reviews. Negative keyword hygiene. Pause underperformers.</td></tr>
+<tr data-cat="financial"><td>R15</td><td>Payoneer account issue</td><td>Financial</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>Keep identity docs current. Have backup receiving method.</td></tr>
+<tr data-cat="market"><td>R16</td><td>Magnetic clip price war (BibBoards drops to $6)</td><td>Market</td><td><span class="sev-badge medium">Medium</span></td><td>Medium</td><td>Compete on value (timing chip safe) not price. Don't match below $12.</td></tr>
+<tr data-cat="market"><td>R17</td><td>New twist-lock competitor enters</td><td>Market</td><td><span class="sev-badge medium">Medium</span></td><td>Low</td><td>Patent filing creates 12-18 month barrier. Build review moat first.</td></tr>
+<tr data-cat="market"><td>R18</td><td>Lower-than-expected demand</td><td>Market</td><td><span class="sev-badge medium">Medium</span></td><td>Medium</td><td>$15K bootstrap scenario limits downside. Break-even at only 44 units/mo.</td></tr>
+<tr data-cat="market"><td>R19</td><td>Timing chip concern proven unfounded (removes differentiator)</td><td>Market</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>Secondary differentiators: durability (500+), fabric protection, brand.</td></tr>
+<tr data-cat="ops"><td>R20</td><td>Founder burnout (12.5 hrs/week overrun)</td><td>Operational</td><td><span class="sev-badge medium">Medium</span></td><td>High</td><td>Time budget (G-07). Automate: Omnisend, Later/Buffer, QIMA. Delegate: prep center, photography.</td></tr>
+<tr data-cat="ops"><td>R21</td><td>IP/design copied by Chinese factory</td><td>Operational</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>NDA in PO (P6C). Don't share all design files with one factory.</td></tr>
+<tr data-cat="ops"><td>R22</td><td>Product safety incident</td><td>Operational</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>Product liability insurance ($500K-$1M). CPSIA age 13+. GCC on file.</td></tr>
+<tr data-cat="ops"><td>R23</td><td>Key tool/platform outage (Omnisend, Shopify)</td><td>Operational</td><td><span class="sev-badge low">Low</span></td><td>Low</td><td>Amazon is primary (85%). Shopify down doesn't halt 85% of revenue.</td></tr>
+</tbody></table>
+
+<h2>Critical <span>Playbooks</span> (5)</h2>
+<div class="playbook"><h4>🚨 Playbook 1: Amazon Account Suspension</h4><p><strong>Trigger:</strong> Account Health drops below 100 or suspension notice received.</p><ol class="steps"><li>Stop all PPC immediately (prevent ad spend on non-buyable ASINs)</li><li>Read suspension notice carefully — identify specific policy violation</li><li>Draft Plan of Action (POA): root cause → corrective action → preventive measures</li><li>Submit appeal via Seller Central within 48 hours</li><li>Activate FBM fallback (prep center ships direct) for DTC orders</li><li>If denied, escalate to jeff@amazon.com with revised POA</li></ol></div>
+
+<div class="playbook"><h4>🏭 Playbook 2: Factory Quality Failure</h4><p><strong>Trigger:</strong> QIMA inspection fails AQL 2.5 sampling.</p><ol class="steps"><li>Document all defects with photos and measurements</li><li>Send formal rejection notice per P6C PO clause 7</li><li>Request factory rework or re-production at factory cost</li><li>Schedule re-inspection ($250-$350 additional)</li><li>Adjust launch timeline by 2-4 weeks if needed</li><li>Consider backup factory for future orders</li></ol></div>
+
+<div class="playbook"><h4>💸 Playbook 3: Cash Flow Crunch</h4><p><strong>Trigger:</strong> Payoneer balance insufficient for next restock order.</p><ol class="steps"><li>Pause non-essential spending (social ads, new photography)</li><li>Reduce PPC to brand defense only (Campaign #6, $3-5/day)</li><li>Delay restock by 1-2 weeks — run existing FBA inventory lower</li><li>Increase DTC margin by removing any active discounts</li><li>Consider smaller restock (2,500 units vs 5,000)</li></ol></div>
+
+<div class="playbook"><h4>📉 Playbook 4: Sustained Low Demand</h4><p><strong>Trigger:</strong> Below 2 units/day after 60 days on Amazon.</p><ol class="steps"><li>Audit listing: images, title, bullets — compare to top 3 competitors</li><li>Run Vine if not already (get to 15+ reviews faster)</li><li>Test lower price point ($12.99) for 2 weeks, measure velocity</li><li>Increase PPC budget 50% for 2 weeks, measure ACOS impact</li><li>Add 2 more influencer creators for external traffic</li><li>If still below 2/day at Day 90, evaluate pivot or exit</li></ol></div>
+
+<div class="playbook"><h4>😰 Playbook 5: Founder Burnout</h4><p><strong>Trigger:</strong> Consistently exceeding 15 hrs/week for 3+ weeks.</p><ol class="steps"><li>Review time allocation vs G-07 budget — identify the overrun category</li><li>Automate: batch social content (Sunday), automate email flows, use saved replies</li><li>Delegate: prep center handles logistics, Fiverr handles photography</li><li>Reduce scope: cut social from 8 posts/week to 5</li><li>Take 1 full day off per week — no Seller Central, no DMs</li><li>Re-evaluate at monthly P&L: is the business worth the hours?</li></ol></div>
+
+</section></div>
+<footer><div class="wrap">BIVVO GTM · <a href="https://apseter.github.io/Retail_Ventures_Command_Center/">← Retail Ventures Command Center</a> · <a href="index.html">Project Home</a></div></footer>
+<script>
+function filterCat(cat,btn){
+  document.querySelectorAll('.filter-row button').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  document.querySelectorAll('#riskBody tr').forEach(function(r){
+    r.style.display=(cat==='all'||r.dataset.cat===cat)?'':'none';
+  });
+}
+</script></body></html>
